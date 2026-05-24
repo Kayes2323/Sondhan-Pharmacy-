@@ -1,0 +1,228 @@
+/* ── Sondhan Pharmacy — Shared Styles ── */
+:root {
+  --primary: #0a7c6e;
+  --primary-light: #e0f5f1;
+  --primary-dark: #076357;
+  --bg: #ffffff;
+  --bg2: #f4faf8;
+  --fg: #1a2e28;
+  --text2: #5a7268;
+  --text3: #9ab5ad;
+  --border: #e2edea;
+  --error: #e74c3c;
+  --warning: #f59e0b;
+  --success: #16a34a;
+  --info: #2563eb;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 2px 12px rgba(10,124,110,0.07);
+  --shadow-md: 0 4px 20px rgba(10,124,110,0.12);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+body {
+  font-family: 'Hind Siliguri', 'Inter', sans-serif;
+  background: var(--bg2);
+  color: var(--fg);
+  min-height: 100vh;
+  max-width: 420px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ── HEADER ── */
+.header { position:sticky; top:0; background:var(--bg); border-bottom:1px solid var(--border); padding:14px 16px 10px; z-index:100; }
+.header-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:8px; }
+.greeting { font-size:12px; color:var(--text2); margin-bottom:1px; }
+.username { font-size:20px; font-weight:700; color:var(--fg); }
+.icon-btn { width:36px; height:36px; border-radius:50%; border:none; background:var(--bg2); display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; }
+.notif-dot { position:absolute; top:6px; right:6px; width:7px; height:7px; background:var(--error); border-radius:50%; border:2px solid var(--bg); }
+.location-bar { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--text2); cursor:pointer; }
+
+/* ── SUB HEADER ── */
+.sub-header { position:sticky; top:0; background:var(--bg); border-bottom:1px solid var(--border); padding:14px 16px; z-index:100; display:flex; align-items:center; gap:10px; }
+.back-btn { width:34px; height:34px; border-radius:10px; border:none; background:var(--bg2); display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; }
+.sub-title { font-size:16px; font-weight:700; color:var(--fg); }
+
+/* ── MAIN ── */
+.main { padding:16px; display:flex; flex-direction:column; gap:18px; padding-bottom:90px; }
+
+/* ── CARDS ── */
+.card { background:var(--bg); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); }
+
+/* ── SEARCH BAR ── */
+.search-bar { background:var(--bg); border:1.5px solid var(--border); border-radius:var(--radius); padding:12px 14px; display:flex; align-items:center; gap:10px; cursor:pointer; box-shadow:var(--shadow); }
+.search-input { flex:1; border:none; outline:none; font-size:14px; color:var(--fg); background:transparent; font-family:'Hind Siliguri',sans-serif; }
+.search-input::placeholder { color:var(--text3); }
+
+/* ── BANNER ── */
+.delivery-banner { background:linear-gradient(135deg,var(--primary) 0%,#0e9e8e 100%); border-radius:var(--radius); padding:16px; display:flex; align-items:center; gap:12px; position:relative; overflow:hidden; }
+.delivery-banner::before { content:''; position:absolute; top:-20px; right:-20px; width:90px; height:90px; border-radius:50%; background:rgba(255,255,255,0.08); }
+.banner-icon { width:42px; height:42px; background:rgba(255,255,255,0.2); border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:20px; }
+.banner-title { font-size:14px; font-weight:700; color:#fff; margin-bottom:2px; }
+.banner-sub { font-size:11px; color:rgba(255,255,255,0.8); }
+.banner-btn { background:#fff; color:var(--primary); border:none; border-radius:10px; padding:8px 12px; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; font-family:'Hind Siliguri',sans-serif; flex-shrink:0; }
+
+/* ── SECTION ── */
+.section-title { font-size:15px; font-weight:700; color:var(--fg); margin-bottom:10px; }
+.section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.see-all { font-size:12px; color:var(--primary); font-weight:600; cursor:pointer; }
+
+/* ── QUICK ACTIONS ── */
+.quick-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.quick-card { background:var(--bg); border-radius:var(--radius); padding:14px; display:flex; align-items:center; gap:10px; cursor:pointer; box-shadow:var(--shadow); border:1px solid var(--border); transition:transform 0.15s; }
+.quick-card:active { transform:scale(0.97); }
+.quick-icon { width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:18px; }
+.quick-label { font-size:12px; font-weight:700; color:var(--fg); }
+.quick-sub { font-size:10px; color:var(--text2); margin-top:1px; }
+
+/* ── CATEGORIES ── */
+.cat-scroll { display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; scrollbar-width:none; }
+.cat-scroll::-webkit-scrollbar { display:none; }
+.cat-chip { flex-shrink:0; background:var(--bg); border:1.5px solid var(--border); border-radius:100px; padding:7px 14px; display:flex; align-items:center; gap:6px; cursor:pointer; white-space:nowrap; transition:all 0.15s; }
+.cat-chip.active { background:var(--primary); border-color:var(--primary); }
+.cat-chip.active .cat-name { color:#fff; }
+.cat-name { font-size:12px; font-weight:600; color:var(--fg); }
+
+/* ── PHARMACY CARD ── */
+.pharmacy-list { display:flex; flex-direction:column; gap:10px; }
+.pharmacy-card { background:var(--bg); border-radius:var(--radius); padding:14px; display:flex; align-items:center; gap:12px; cursor:pointer; box-shadow:var(--shadow); border:1px solid var(--border); transition:transform 0.15s; }
+.pharmacy-card:active { transform:scale(0.98); }
+.pharmacy-img { width:48px; height:48px; border-radius:12px; background:var(--primary-light); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+.pharmacy-name { font-size:14px; font-weight:700; color:var(--fg); margin-bottom:2px; }
+.pharmacy-area { font-size:11px; color:var(--text2); margin-bottom:5px; }
+.pharmacy-meta { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text2); flex-wrap:wrap; }
+.meta-dot { color:var(--text3); }
+
+/* ── BADGES ── */
+.open-badge { background:#dcfce7; color:var(--success); font-size:10px; font-weight:700; padding:3px 9px; border-radius:100px; flex-shrink:0; }
+.closed-badge { background:#fee2e2; color:var(--error); font-size:10px; font-weight:700; padding:3px 9px; border-radius:100px; flex-shrink:0; }
+.user-role-badge { font-size:10px; font-weight:700; padding:2px 8px; border-radius:100px; margin-left:6px; }
+.badge-user { background:var(--primary-light); color:var(--primary); }
+.badge-pharmacy { background:#fef3c7; color:#92400e; }
+
+/* ── MEDICINE GRID ── */
+.medicine-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.med-card { background:var(--bg); border-radius:var(--radius); padding:12px; cursor:pointer; box-shadow:var(--shadow); border:1px solid var(--border); transition:transform 0.15s; }
+.med-card:active { transform:scale(0.97); }
+.med-img { width:100%; height:88px; border-radius:12px; background:var(--primary-light); display:flex; align-items:center; justify-content:center; font-size:32px; margin-bottom:10px; }
+.med-name { font-size:14px; font-weight:700; color:var(--fg); }
+.med-generic { font-size:11px; color:var(--text2); margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.med-brand { font-size:10px; color:var(--text3); margin-top:1px; }
+.med-footer { display:flex; align-items:center; justify-content:space-between; margin-top:8px; }
+.med-price { font-size:15px; font-weight:700; color:var(--fg); }
+.add-btn { width:30px; height:30px; border-radius:9px; background:var(--primary-light); color:var(--primary); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:18px; transition:all 0.15s; }
+.add-btn:active { background:var(--primary); color:#fff; }
+
+/* ── SEARCH RESULTS ── */
+.filter-row { display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; }
+.filter-row::-webkit-scrollbar { display:none; }
+.filter-chip { flex-shrink:0; padding:6px 14px; border-radius:100px; border:1.5px solid var(--border); background:var(--bg); font-size:12px; font-weight:600; color:var(--text2); cursor:pointer; transition:all 0.15s; }
+.filter-chip.active { background:var(--primary); border-color:var(--primary); color:#fff; }
+.search-med-card { background:var(--bg); border-radius:var(--radius); padding:14px; display:flex; align-items:center; gap:12px; cursor:pointer; box-shadow:var(--shadow); border:1px solid var(--border); transition:transform 0.15s; }
+.search-med-card:active { transform:scale(0.98); }
+.search-med-img { width:52px; height:52px; border-radius:12px; background:var(--primary-light); display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; }
+.in-stock { font-size:10px; color:var(--success); font-weight:600; }
+.out-stock { font-size:10px; color:var(--error); font-weight:600; }
+.generic-tag { display:inline-block; background:var(--primary-light); color:var(--primary); font-size:10px; font-weight:600; padding:2px 8px; border-radius:6px; margin-top:4px; }
+
+/* ── CART ── */
+.cart-item { background:var(--bg); border-radius:var(--radius); padding:14px; display:flex; gap:12px; box-shadow:var(--shadow); border:1px solid var(--border); }
+.cart-item-img { width:56px; height:56px; border-radius:12px; background:var(--primary-light); display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0; }
+.cart-item-name { font-size:14px; font-weight:700; color:var(--fg); }
+.cart-item-sub { font-size:11px; color:var(--text2); margin-top:2px; }
+.cart-item-bottom { display:flex; align-items:center; justify-content:space-between; margin-top:8px; }
+.cart-price { font-size:15px; font-weight:700; color:var(--fg); }
+.cart-qty { display:flex; align-items:center; gap:8px; }
+.cart-qty-btn { width:26px; height:26px; border-radius:7px; border:1px solid var(--border); background:var(--bg); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--fg); }
+.cart-qty-val { font-size:14px; font-weight:700; min-width:18px; text-align:center; }
+.del-btn { background:none; border:none; cursor:pointer; font-size:18px; color:var(--error); padding:4px; }
+.cart-summary { background:var(--bg); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); border:1px solid var(--border); }
+.summary-row { display:flex; justify-content:space-between; padding:8px 0; font-size:13px; color:var(--text2); }
+.summary-row.total { border-top:1.5px dashed var(--border); margin-top:4px; font-size:15px; font-weight:700; color:var(--fg); }
+
+/* ── FORMS ── */
+.form-section { background:var(--bg); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); border:1px solid var(--border); display:flex; flex-direction:column; gap:12px; }
+.form-label { font-size:12px; font-weight:700; color:var(--text2); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.4px; }
+.form-input { width:100%; border:1.5px solid var(--border); border-radius:12px; padding:12px 14px; font-size:14px; color:var(--fg); font-family:'Hind Siliguri',sans-serif; outline:none; background:var(--bg); transition:border-color 0.2s; }
+.form-input:focus { border-color:var(--primary); }
+
+/* ── PAYMENT ── */
+.pay-opt { display:flex; align-items:center; gap:12px; background:var(--bg2); border:1.5px solid var(--border); border-radius:12px; padding:14px; cursor:pointer; transition:all 0.2s; }
+.pay-opt.selected { border-color:var(--primary); background:var(--primary-light); }
+.pay-label { font-size:14px; font-weight:600; color:var(--fg); }
+.pay-sub { font-size:11px; color:var(--text2); }
+.pay-radio { width:18px; height:18px; border-radius:50%; border:2px solid var(--border); margin-left:auto; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+.pay-opt.selected .pay-radio { border-color:var(--primary); background:var(--primary); }
+.pay-opt.selected .pay-radio::after { content:''; width:7px; height:7px; background:#fff; border-radius:50%; }
+
+/* ── TRACKING ── */
+.track-steps { display:flex; flex-direction:column; }
+.track-step { display:flex; gap:14px; }
+.step-line-wrap { display:flex; flex-direction:column; align-items:center; }
+.step-dot { width:20px; height:20px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:10px; }
+.step-dot.done { background:var(--primary); color:#fff; }
+.step-dot.active { background:var(--primary); color:#fff; box-shadow:0 0 0 4px var(--primary-light); }
+.step-dot.pending { background:var(--bg2); border:2px solid var(--border); }
+.step-connector { width:2px; flex:1; min-height:28px; }
+.step-connector.done { background:var(--primary); }
+.step-connector.pending { background:var(--border); }
+.step-content { padding-bottom:24px; flex:1; }
+.step-title { font-size:13px; font-weight:700; color:var(--fg); }
+.step-sub { font-size:11px; color:var(--text2); margin-top:2px; }
+
+/* ── PROFILE ── */
+.stat-row { display:flex; gap:1px; background:var(--border); border-radius:var(--radius); overflow:hidden; }
+.stat-item { flex:1; background:var(--bg); padding:14px 10px; text-align:center; }
+.stat-num { font-size:20px; font-weight:700; color:var(--primary); }
+.stat-label { font-size:10px; color:var(--text2); margin-top:2px; }
+.menu-list { background:var(--bg); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); border:1px solid var(--border); }
+.menu-item { display:flex; align-items:center; gap:12px; padding:16px; border-bottom:1px solid var(--border); cursor:pointer; transition:background 0.15s; }
+.menu-item:last-child { border-bottom:none; }
+.menu-item:active { background:var(--bg2); }
+.menu-icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.menu-label { font-size:14px; font-weight:600; color:var(--fg); flex:1; }
+.menu-arrow { font-size:16px; color:var(--text3); }
+
+/* ── BUTTONS ── */
+.btn-primary { width:100%; background:linear-gradient(135deg,var(--primary),#0e9e8e); color:#fff; border:none; border-radius:14px; padding:15px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Hind Siliguri',sans-serif; box-shadow:0 4px 16px rgba(10,124,110,0.3); transition:all 0.15s; }
+.btn-primary:active { transform:scale(0.98); }
+.btn-primary:disabled { opacity:0.5; transform:none; }
+.btn-danger { width:100%; background:#fee2e2; color:var(--error); border:none; border-radius:14px; padding:14px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Hind Siliguri',sans-serif; }
+
+/* ── BOTTOM NAV ── */
+.bottom-nav { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:420px; background:var(--bg); border-top:1px solid var(--border); padding:8px 8px 16px; display:flex; justify-content:space-around; z-index:200; box-shadow:0 -4px 20px rgba(0,0,0,0.06); }
+.nav-item { display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer; padding:4px 10px; border-radius:12px; min-width:50px; }
+.nav-item.active .nav-icon-wrap { color:var(--primary); }
+.nav-item.active .nav-label { color:var(--primary); font-weight:700; }
+.nav-item:not(.active) .nav-icon-wrap { color:var(--text3); }
+.nav-item:not(.active) .nav-label { color:var(--text3); }
+.nav-icon-wrap { font-size:22px; }
+.nav-label { font-size:10px; font-weight:600; }
+.nav-center-wrap { display:flex; flex-direction:column; align-items:center; position:relative; top:-12px; }
+.nav-center-btn { width:50px; height:50px; border-radius:50%; background:linear-gradient(135deg,var(--primary),#0e9e8e); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(10,124,110,0.4); border:3px solid var(--bg2); font-size:22px; cursor:pointer; }
+.nav-center-label { font-size:10px; font-weight:700; color:var(--primary); margin-top:2px; }
+.cart-badge { position:relative; }
+.cart-count { position:absolute; top:-6px; right:-8px; background:var(--error); color:#fff; font-size:9px; font-weight:700; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid var(--bg); }
+
+/* ── SOS ── */
+.sos-btn { position:fixed; bottom:82px; right:14px; width:46px; height:46px; border-radius:50%; background:var(--error); color:#fff; border:none; font-size:10px; font-weight:800; cursor:pointer; box-shadow:0 4px 16px rgba(231,76,60,0.45); z-index:150; font-family:'Hind Siliguri',sans-serif; display:flex; align-items:center; justify-content:center; animation:pulse-sos 2s infinite; }
+@keyframes pulse-sos { 0%,100%{box-shadow:0 4px 16px rgba(231,76,60,0.4)} 50%{box-shadow:0 4px 28px rgba(231,76,60,0.7)} }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.fade-up { animation:fadeUp 0.25s ease both; }
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+
+/* ── PROMO ── */
+.promo-inner { background:linear-gradient(135deg,#fff9e6,#fef3c7); border-left:4px solid var(--warning); border-radius:var(--radius); padding:16px; display:flex; align-items:center; gap:12px; }
+.promo-label { font-size:10px; color:#92400e; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+.promo-title { font-size:14px; font-weight:700; color:#78350f; margin-top:2px; }
+.promo-sub { font-size:11px; color:#92400e; margin-top:2px; }
+.promo-btn { background:var(--warning); color:#fff; border:none; border-radius:10px; padding:8px 14px; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; font-family:'Hind Siliguri',sans-serif; flex-shrink:0; }
+
+/* ── POPULAR CHIPS ── */
+.popular-wrap { display:flex; flex-wrap:wrap; gap:8px; }
+.popular-chip { background:var(--bg); border:1px solid var(--border); border-radius:100px; padding:6px 12px; font-size:12px; color:var(--fg); cursor:pointer; display:flex; align-items:center; gap:5px; box-shadow:var(--shadow); }
+.popular-chip:active { background:var(--primary-light); border-color:var(--primary); color:var(--primary); }

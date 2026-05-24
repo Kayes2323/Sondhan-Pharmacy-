@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>লগইন — Sondhan Pharmacy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+body { background:var(--bg2); display:flex; flex-direction:column; min-height:100vh; }
+
+.login-page { flex:1; display:flex; flex-direction:column; padding:24px 20px 40px; }
+
+/* LOGO */
+.logo-wrap { text-align:center; padding:32px 0 24px; }
+.logo-icon { width:72px; height:72px; background:linear-gradient(135deg,var(--primary),#0e9e8e); border-radius:22px; display:flex; align-items:center; justify-content:center; font-size:34px; margin:0 auto 14px; box-shadow:0 8px 24px rgba(10,124,110,0.3); }
+.logo-name { font-size:24px; font-weight:700; color:var(--fg); }
+.logo-sub { font-size:13px; color:var(--text2); margin-top:4px; }
+
+/* SCREENS */
+.screen { display:none; animation:fadeUp 0.25s ease both; }
+.screen.active { display:flex; flex-direction:column; gap:14px; }
+
+/* ROLE CARDS */
+.role-cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.role-card { border:2px solid var(--border); border-radius:18px; padding:20px 12px; text-align:center; cursor:pointer; transition:all 0.2s; background:var(--bg); }
+.role-card:active { transform:scale(0.97); }
+.role-card.selected { border-color:var(--primary); background:var(--primary-light); }
+.role-card-icon { font-size:34px; margin-bottom:10px; }
+.role-card-label { font-size:15px; font-weight:700; color:var(--fg); }
+.role-card-sub { font-size:11px; color:var(--text2); margin-top:4px; }
+
+/* PHONE */
+.phone-wrap { display:flex; gap:8px; }
+.country-code { background:var(--bg2); border:1.5px solid var(--border); border-radius:12px; padding:13px 14px; font-size:14px; font-weight:600; color:var(--fg); white-space:nowrap; display:flex; align-items:center; gap:6px; }
+.phone-input { flex:1; border:1.5px solid var(--border); border-radius:12px; padding:13px 14px; font-size:15px; color:var(--fg); font-family:'Hind Siliguri',sans-serif; outline:none; background:var(--bg); transition:border-color 0.2s; }
+.phone-input:focus { border-color:var(--primary); }
+
+/* OTP */
+.otp-wrap { display:flex; gap:10px; justify-content:center; margin:8px 0; }
+.otp-box { width:46px; height:54px; border:2px solid var(--border); border-radius:12px; font-size:22px; font-weight:700; text-align:center; color:var(--fg); font-family:'Hind Siliguri',sans-serif; outline:none; background:var(--bg); transition:border-color 0.2s; }
+.otp-box:focus { border-color:var(--primary); }
+.otp-resend { text-align:center; font-size:13px; color:var(--text2); }
+.otp-resend span { color:var(--primary); font-weight:600; cursor:pointer; }
+
+/* GOOGLE BTN */
+.google-btn { width:100%; border:1.5px solid var(--border); border-radius:12px; padding:13px; font-size:14px; font-weight:600; color:var(--fg); background:var(--bg); cursor:pointer; font-family:'Hind Siliguri',sans-serif; display:flex; align-items:center; justify-content:center; gap:10px; transition:all 0.15s; }
+.google-btn:active { background:var(--bg2); }
+
+/* DIVIDER */
+.divider { display:flex; align-items:center; gap:10px; color:var(--text3); font-size:12px; }
+.divider::before,.divider::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* INFO BOX */
+.info-box { background:#fef3c7; border-left:3px solid var(--warning); border-radius:12px; padding:12px 14px; font-size:12px; color:#92400e; line-height:1.6; }
+
+/* PENDING */
+.pending-screen { text-align:center; padding:20px 0; }
+.pending-icon { font-size:60px; margin-bottom:16px; }
+.pending-title { font-size:20px; font-weight:700; color:var(--fg); margin-bottom:8px; }
+.pending-sub { font-size:13px; color:var(--text2); line-height:1.8; }
+.pending-contact { margin-top:20px; background:var(--primary-light); border-radius:12px; padding:14px; font-size:13px; color:var(--primary); font-weight:600; }
+
+/* BACK LINK */
+.back-link { text-align:center; font-size:13px; color:var(--text2); }
+.back-link span { color:var(--primary); font-weight:600; cursor:pointer; }
+
+/* GUEST LINK */
+.guest-link { text-align:center; font-size:13px; color:var(--text2); }
+.guest-link a { color:var(--primary); font-weight:600; text-decoration:none; }
+</style>
+</head>
+<body>
+<div class="login-page">
+
+  <!-- LOGO -->
+  <div class="logo-wrap">
+    <div class="logo-icon">💊</div>
+    <div class="logo-name">Sondhan Pharmacy</div>
+    <div class="logo-sub" id="screen-subtitle">আপনাকে স্বাগতম</div>
+  </div>
+
+  <!-- ── SCREEN 1: ROLE ── -->
+  <div class="screen active" id="screen-role">
+    <div style="font-size:15px;font-weight:700;color:var(--fg);text-align:center">আপনি কে?</div>
+    <div class="role-cards">
+      <div class="role-card" id="role-user" onclick="selectRole('user')">
+        <div class="role-card-icon">👤</div>
+        <div class="role-card-label">ব্যবহারকারী</div>
+        <div class="role-card-sub">ওষুধ কিনতে চাই</div>
+      </div>
+      <div class="role-card" id="role-pharmacy" onclick="selectRole('pharmacy')">
+        <div class="role-card-icon">🏪</div>
+        <div class="role-card-label">ফার্মেসি</div>
+        <div class="role-card-sub">অর্ডার পরিচালনা</div>
+      </div>
+    </div>
+    <button class="btn-primary" id="role-next-btn" disabled onclick="showScreen('phone')">পরবর্তী →</button>
+    <div class="guest-link"><a href="index.html">Guest হিসেবে দেখুন →</a></div>
+  </div>
+
+  <!-- ── SCREEN 2: PHONE ── -->
+  <div class="screen" id="screen-phone">
+    <div style="font-size:15px;font-weight:700;color:var(--fg);text-align:center" id="phone-title">ফোন নম্বর দিন</div>
+    <button class="google-btn" onclick="googleLogin()">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Google দিয়ে লগইন
+    </button>
+    <div class="divider">অথবা ফোন নম্বর দিয়ে</div>
+    <div class="phone-wrap">
+      <div class="country-code">🇧🇩 +880</div>
+      <input class="phone-input" id="phone-input" type="tel" placeholder="01XXXXXXXXX" maxlength="11" oninput="checkPhone()">
+    </div>
+    <button class="btn-primary" id="otp-send-btn" disabled onclick="sendOtp()">OTP পাঠান</button>
+    <div class="back-link"><span onclick="showScreen('role')">← পেছনে যান</span></div>
+  </div>
+
+  <!-- ── SCREEN 3: OTP ── -->
+  <div class="screen" id="screen-otp">
+    <div style="font-size:15px;font-weight:700;color:var(--fg);text-align:center">OTP যাচাই করুন</div>
+    <div style="font-size:13px;color:var(--text2);text-align:center" id="otp-sub">আপনার ফোনে ৬ সংখ্যার কোড পাঠানো হয়েছে</div>
+    <div class="otp-wrap">
+      <input class="otp-box" type="tel" maxlength="1" oninput="otpNext(this,1)">
+      <input class="otp-box" type="tel" maxlength="1" oninput="otpNext(this,2)">
+      <input class="otp-box" type="tel" maxlength="1" oninput="otpNext(this,3)">
+      <input class="otp-box" type="tel" maxlength="1" oninput="otpNext(this,4)">
+      <input class="otp-box" type="tel" maxlength="1" oninput="otpNext(this,5)">
+      <input class="otp-box" type="tel" maxlength="1" oninput="otpNext(this,6)">
+    </div>
+    <div class="otp-resend">কোড পাননি? <span id="resend-btn" onclick="resendOtp()">পুনরায় পাঠান</span> <span id="resend-timer"></span></div>
+    <button class="btn-primary" id="verify-btn" disabled onclick="verifyOtp()">যাচাই করুন ও লগইন →</button>
+    <div class="back-link"><span onclick="showScreen('phone')">← পেছনে যান</span></div>
+  </div>
+
+  <!-- ── SCREEN 4: PHARMACY INFO ── -->
+  <div class="screen" id="screen-pharmacy-info">
+    <div style="font-size:15px;font-weight:700;color:var(--fg);text-align:center">ফার্মেসির তথ্য দিন</div>
+    <div class="info-box">⚠️ Trade License যাচাই হলে আপনার account সক্রিয় হবে। সাধারণত ২৪ ঘন্টার মধ্যে।</div>
+    <input class="form-input" placeholder="ফার্মেসির নাম *" id="pharma-name">
+    <input class="form-input" placeholder="পূর্ণ ঠিকানা *" id="pharma-address">
+    <input class="form-input" placeholder="Trade License নম্বর *" id="pharma-license">
+    <input class="form-input" placeholder="মালিকের নাম *" id="pharma-owner">
+    <button class="btn-primary" onclick="submitPharmacy()">আবেদন জমা দিন →</button>
+    <div class="back-link"><span onclick="showScreen('otp')">← পেছনে যান</span></div>
+  </div>
+
+  <!-- ── SCREEN 5: PENDING ── -->
+  <div class="screen" id="screen-pending">
+    <div class="pending-screen">
+      <div class="pending-icon">⏳</div>
+      <div class="pending-title">আবেদন জমা হয়েছে!</div>
+      <div class="pending-sub">আপনার Trade License যাচাই করা হচ্ছে।<br>সাধারণত <strong>২৪ ঘন্টার</strong> মধ্যে approve হয়।<br>SMS এ জানানো হবে।</div>
+      <div class="pending-contact">📞 জরুরি: 01700-000000</div>
+    </div>
+    <a href="index.html" class="btn-primary" style="text-align:center;text-decoration:none;display:block">হোমে যান</a>
+  </div>
+
+</div>
+
+<script>
+let currentRole = null;
+
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  const subs = {
+    role: 'আপনাকে স্বাগতম',
+    phone: 'লগইন বা নতুন account',
+    otp: 'OTP যাচাই',
+    'pharmacy-info': 'একবারই লাগবে',
+    pending: 'আবেদন জমা হয়েছে'
+  };
+  document.getElementById('screen-subtitle').textContent = subs[name] || '';
+}
+
+function selectRole(role) {
+  currentRole = role;
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('role-' + role).classList.add('selected');
+  document.getElementById('role-next-btn').disabled = false;
+  document.getElementById('phone-title').textContent =
+    role === 'pharmacy' ? 'ফার্মেসির ফোন নম্বর' : 'ফোন নম্বর দিন';
+}
+
+function checkPhone() {
+  const v = document.getElementById('phone-input').value;
+  document.getElementById('otp-send-btn').disabled = v.length < 11;
+}
+
+function sendOtp() {
+  const phone = document.getElementById('phone-input').value;
+  document.getElementById('otp-sub').textContent = `+880 ${phone} নম্বরে কোড পাঠানো হয়েছে`;
+  showScreen('otp');
+  startResendTimer();
+  // Demo: auto fill after 0.8s
+  setTimeout(() => {
+    document.querySelectorAll('.otp-box').forEach((b, i) => b.value = i + 1);
+    document.getElementById('verify-btn').disabled = false;
+  }, 800);
+}
+
+let resendInterval;
+function startResendTimer() {
+  let sec = 30;
+  const btn = document.getElementById('resend-btn');
+  const timer = document.getElementById('resend-timer');
+  btn.style.pointerEvents = 'none'; btn.style.opacity = '0.5';
+  clearInterval(resendInterval);
+  resendInterval = setInterval(() => {
+    sec--;
+    timer.textContent = `(${sec}s)`;
+    if (sec <= 0) {
+      clearInterval(resendInterval);
+      btn.style.pointerEvents = ''; btn.style.opacity = '1';
+      timer.textContent = '';
+    }
+  }, 1000);
+}
+
+function otpNext(el, idx) {
+  if (el.value.length === 1 && idx < 6) document.querySelectorAll('.otp-box')[idx].focus();
+  const allFilled = [...document.querySelectorAll('.otp-box')].every(b => b.value.length === 1);
+  document.getElementById('verify-btn').disabled = !allFilled;
+}
+
+function resendOtp() { startResendTimer(); }
+
+function verifyOtp() {
+  if (currentRole === 'pharmacy') {
+    showScreen('pharmacy-info');
+  } else {
+    // user login success → go to main app
+    localStorage.setItem('sondhan_role', 'user');
+    localStorage.setItem('sondhan_logged_in', 'true');
+    window.location.href = 'index.html';
+  }
+}
+
+function googleLogin() {
+  if (currentRole === 'pharmacy') {
+    showScreen('pharmacy-info');
+  } else {
+    localStorage.setItem('sondhan_role', 'user');
+    localStorage.setItem('sondhan_logged_in', 'true');
+    window.location.href = 'index.html';
+  }
+}
+
+function submitPharmacy() {
+  const name = document.getElementById('pharma-name').value;
+  const license = document.getElementById('pharma-license').value;
+  if (!name || !license) { alert('ফার্মেসির নাম ও Trade License দিন'); return; }
+  localStorage.setItem('sondhan_role', 'pharmacy');
+  localStorage.setItem('sondhan_pharmacy_status', 'pending');
+  showScreen('pending');
+}
+</script>
+</body>
+</html>
