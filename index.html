@@ -915,5 +915,36 @@ document.querySelectorAll('.filter-chip').forEach(c => {
 const h = new Date().getHours();
 document.getElementById('greeting-text').textContent = h<12?'শুভ সকাল 👋':h<17?'শুভ অপরাহ্ন 👋':'শুভ সন্ধ্যা 👋';
 </script>
+<script type="module">
+  import { onAuthChange } from './firebase.js';
+  import { getUserProfile } from './firebase.js';
+
+  onAuthChange(async (user) => {
+    if (user) {
+      const profile = await getUserProfile(user.uid);
+      const role = profile?.role || 'user';
+      localStorage.setItem('sondhan_role', role);
+      localStorage.setItem('sondhan_logged_in', 'true');
+
+      // username update
+      const nameEl = document.querySelector('.username');
+      if (nameEl) nameEl.textContent = user.displayName || 'আপনি';
+
+      // pharmacy হলে dashboard এ পাঠাও
+      if (role === 'pharmacy' || role === 'admin') {
+        window.location.href = 'login.html';
+      }
+    }
+  });
+
+  // Protected pages redirect
+  function checkAuth(pageName) {
+    const protected_ = ['cart','checkout','orders','profile'];
+    if (protected_.includes(pageName) && !localStorage.getItem('sondhan_logged_in')) {
+      window.location.href = 'login.html';
+    }
+  }
+  window.checkAuth = checkAuth;
+</script>
 </body>
 </html>
