@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Seed Pharmacy Data — Admin Only</title>
+<style>
+body{font-family:sans-serif;max-width:600px;margin:40px auto;padding:20px;background:#f0faf8}
+h2{color:#0a7c6e}
+.btn{background:#0a7c6e;color:#fff;border:none;padding:14px 28px;border-radius:10px;font-size:15px;cursor:pointer;margin:10px 0}
+.btn:disabled{opacity:0.5}
+.log{background:#1a2e28;color:#7effc4;padding:16px;border-radius:10px;font-size:12px;font-family:monospace;height:300px;overflow-y:auto;margin-top:16px}
+.success{color:#7effc4}.error{color:#ff7e7e}.info{color:#7ec8ff}
+</style>
+</head>
+<body>
+<h2>🏪 Sondhan Pharmacy — Pharmacy Seeder</h2>
+<p>Demo pharmacies Firestore এ add করবে।</p>
+<button class="btn" id="seed-btn" onclick="seedAll()">🚀 Seed Pharmacies</button>
+<div class="log" id="log">Ready...<br></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, setDoc, GeoPoint } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBn3uC3F6QsfNNzRTaCPfBVHu8_BlLYNy8",
+  authDomain: "pharmacy-6d661.firebaseapp.com",
+  projectId: "pharmacy-6d661",
+  storageBucket: "pharmacy-6d661.firebasestorage.app",
+  messagingSenderId: "601956352826",
+  appId: "1:601956352826:web:a639bd54f58383c33d8603"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const pharmacies = [
+  {
+    id: 'popular-dhanmondi',
+    name: 'Popular Pharmacy',
+    nameLower: 'popular pharmacy',
+    area: 'ধানমন্ডি ২৭',
+    address: 'বাড়ি ৩২, রোড ২৭, ধানমন্ডি, ঢাকা-১২০৯',
+    phone: '01711-000001',
+    location: new GeoPoint(23.7461, 90.3742),
+    status: 'approved',
+    isOpen: true,
+    rating: 4.9,
+    totalOrders: 1200,
+    deliveryTime: '২০-৩০ মিনিট',
+    deliveryCharge: 30,
+    minOrder: 50,
+    openTime: '08:00',
+    closeTime: '24:00',
+    deliveryAreas: ['ধানমন্ডি', 'কলাবাগান', 'লালমাটিয়া', 'শ্যামলী'],
+    emoji: '💊'
+  },
+  {
+    id: 'lazz-mirpur',
+    name: 'Lazz Pharma',
+    nameLower: 'lazz pharma',
+    area: 'মিরপুর ১০',
+    address: 'শপিং কমপ্লেক্স, মিরপুর ১০, ঢাকা-১২১৬',
+    phone: '01711-000002',
+    location: new GeoPoint(23.8058, 90.3674),
+    status: 'approved',
+    isOpen: true,
+    rating: 4.7,
+    totalOrders: 850,
+    deliveryTime: '২৫-৩৫ মিনিট',
+    deliveryCharge: 30,
+    minOrder: 50,
+    openTime: '08:00',
+    closeTime: '23:00',
+    deliveryAreas: ['মিরপুর ১০', 'মিরপুর ১১', 'মিরপুর ১২', 'পল্লবী'],
+    emoji: '🏥'
+  },
+  {
+    id: 'ibnsina-uttara',
+    name: 'Ibn Sina Pharmacy',
+    nameLower: 'ibn sina pharmacy',
+    area: 'উত্তরা সেক্টর ৬',
+    address: 'সেক্টর ৬, উত্তরা, ঢাকা-১২৩০',
+    phone: '01711-000003',
+    location: new GeoPoint(23.8728, 90.3984),
+    status: 'approved',
+    isOpen: true,
+    rating: 4.8,
+    totalOrders: 2000,
+    deliveryTime: '৩০-৪৫ মিনিট',
+    deliveryCharge: 40,
+    minOrder: 100,
+    openTime: '08:00',
+    closeTime: '22:00',
+    deliveryAreas: ['উত্তরা', 'আজমপুর', 'তুরাগ'],
+    emoji: '🏪'
+  },
+  {
+    id: 'neon-mohammadpur',
+    name: 'Neon Pharmacy',
+    nameLower: 'neon pharmacy',
+    area: 'মোহাম্মদপুর',
+    address: 'টাউন হল মার্কেট, মোহাম্মদপুর, ঢাকা',
+    phone: '01711-000004',
+    location: new GeoPoint(23.7625, 90.3564),
+    status: 'approved',
+    isOpen: false,
+    rating: 4.6,
+    totalOrders: 600,
+    deliveryTime: '৩৫-৫০ মিনিট',
+    deliveryCharge: 30,
+    minOrder: 50,
+    openTime: '09:00',
+    closeTime: '21:00',
+    deliveryAreas: ['মোহাম্মদপুর', 'আদাবর', 'শেখেরটেক'],
+    emoji: '🏪'
+  },
+  {
+    id: 'medinova-gulshan',
+    name: 'Medinova Pharmacy',
+    nameLower: 'medinova pharmacy',
+    area: 'গুলশান ১',
+    address: 'গুলশান এভিনিউ, গুলশান ১, ঢাকা-১২১২',
+    phone: '01711-000005',
+    location: new GeoPoint(23.7808, 90.4155),
+    status: 'approved',
+    isOpen: true,
+    rating: 4.9,
+    totalOrders: 3000,
+    deliveryTime: '২০-৩০ মিনিট',
+    deliveryCharge: 50,
+    minOrder: 200,
+    openTime: '08:00',
+    closeTime: '24:00',
+    deliveryAreas: ['গুলশান', 'বনানী', 'বারিধারা', 'নিকুঞ্জ'],
+    emoji: '💊'
+  }
+];
+
+window.seedAll = async function() {
+  const btn = document.getElementById('seed-btn');
+  const log = document.getElementById('log');
+  btn.disabled = true;
+  log.innerHTML = '';
+
+  function addLog(msg, type='info') {
+    log.innerHTML += `<span class="${type}">${msg}</span><br>`;
+    log.scrollTop = log.scrollHeight;
+  }
+
+  addLog('🚀 Pharmacy seeding শুরু হচ্ছে...', 'info');
+
+  let success = 0;
+  for (const pharma of pharmacies) {
+    try {
+      await setDoc(doc(db, 'pharmacies', pharma.id), {
+        ...pharma,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+      addLog(`✅ ${pharma.name} — ${pharma.area}`, 'success');
+      success++;
+    } catch(e) {
+      addLog(`❌ Error: ${pharma.name} — ${e.message}`, 'error');
+    }
+  }
+
+  addLog(`━━━━━━━━━━━━━━━━━━━━━`, 'info');
+  addLog(`✅ ${success}টি pharmacy add হয়েছে!`, 'success');
+  btn.disabled = false;
+};
+</script>
+</body>
+</html>

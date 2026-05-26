@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Seed Medicine Data — Admin Only</title>
+<style>
+body{font-family:sans-serif;max-width:600px;margin:40px auto;padding:20px;background:#f0faf8}
+h2{color:#0a7c6e}
+.btn{background:#0a7c6e;color:#fff;border:none;padding:14px 28px;border-radius:10px;font-size:15px;cursor:pointer;margin:10px 0}
+.btn:disabled{opacity:0.5}
+.log{background:#1a2e28;color:#7effc4;padding:16px;border-radius:10px;font-size:12px;font-family:monospace;height:300px;overflow-y:auto;margin-top:16px}
+.success{color:#7effc4}.error{color:#ff7e7e}.info{color:#7ec8ff}
+</style>
+</head>
+<body>
+<h2>💊 Sondhan Pharmacy — Medicine Seeder</h2>
+<p>এই page টা একবার run করলেই সব medicine Firestore এ চলে যাবে।</p>
+<button class="btn" id="seed-btn" onclick="seedAll()">🚀 Seed All Medicines</button>
+<div class="log" id="log">Ready...<br></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, setDoc, collection, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBn3uC3F6QsfNNzRTaCPfBVHu8_BlLYNy8",
+  authDomain: "pharmacy-6d661.firebaseapp.com",
+  projectId: "pharmacy-6d661",
+  storageBucket: "pharmacy-6d661.firebasestorage.app",
+  messagingSenderId: "601956352826",
+  appId: "1:601956352826:web:a639bd54f58383c33d8603"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const medicines = [
+  // ── জ্বর ও ব্যথা ──
+  {id:'napa-500',name:'Napa',nameLower:'napa',generic:'Paracetamol',strength:'500mg',type:'tablet',brand:'Beximco Pharma',price:8,stripSize:10,category:'fever-pain',categoryBn:'জ্বর ও ব্যথা',otc:true,description:'জ্বর, মাথাব্যথা ও মৃদু ব্যথায় কার্যকর',uses:'জ্বর, মাথাব্যথা, দাঁতব্যথা, মাংসপেশির ব্যথা',dose:'১-২টি ট্যাবলেট ৪-৬ ঘন্টা পর পর',emoji:'💊',altBrands:['Ace','Renova','Apacel','Dolo','Pamol'],saltGroup:'paracetamol-500'},
+  {id:'ace-500',name:'Ace',nameLower:'ace',generic:'Paracetamol',strength:'500mg',type:'tablet',brand:'Square Pharma',price:8,stripSize:10,category:'fever-pain',categoryBn:'জ্বর ও ব্যথা',otc:true,description:'জ্বর ও ব্যথায় Napa এর alternative',uses:'জ্বর, মাথাব্যথা, ব্যথা',dose:'১-২টি ট্যাবলেট ৪-৬ ঘন্টা পর পর',emoji:'💊',altBrands:['Napa','Renova','Apacel','Dolo'],saltGroup:'paracetamol-500'},
+  {id:'napa-extra',name:'Napa Extra',nameLower:'napa extra',generic:'Paracetamol+Caffeine',strength:'500mg+65mg',type:'tablet',brand:'Beximco Pharma',price:12,stripSize:10,category:'fever-pain',categoryBn:'জ্বর ও ব্যথা',otc:true,description:'মাইগ্রেন ও তীব্র মাথাব্যথায় কার্যকর',uses:'মাইগ্রেন, তীব্র মাথাব্যথা',dose:'১-২টি ট্যাবলেট ৪-৬ ঘন্টা পর পর',emoji:'💊',altBrands:['Ace Plus','Renova Extra'],saltGroup:'paracetamol-caffeine'},
+  {id:'ibuprofen-400',name:'Brufen',nameLower:'brufen',generic:'Ibuprofen',strength:'400mg',type:'tablet',brand:'Abbott',price:15,stripSize:10,category:'fever-pain',categoryBn:'জ্বর ও ব্যথা',otc:true,description:'প্রদাহ ও ব্যথায় কার্যকর NSAID',uses:'জ্বর, মাথাব্যথা, দাঁতব্যথা, আর্থ্রাইটিস',dose:'১টি ট্যাবলেট ৮ ঘন্টা পর পর খাবার সাথে',emoji:'🔴',altBrands:['Ibufen','Profen'],saltGroup:'ibuprofen-400'},
+  {id:'naproxen-500',name:'Naprosyn',nameLower:'naprosyn',generic:'Naproxen',strength:'500mg',type:'tablet',brand:'Roche',price:20,stripSize:10,category:'fever-pain',categoryBn:'জ্বর ও ব্যথা',otc:false,description:'দীর্ঘস্থায়ী ব্যথায় কার্যকর',uses:'আর্থ্রাইটিস, মাংসপেশির ব্যথা',dose:'১টি ট্যাবলেট ১২ ঘন্টা পর পর',emoji:'🔴',altBrands:['Flanax'],saltGroup:'naproxen-500'},
+
+  // ── গ্যাস্ট্রিক ──
+  {id:'seclo-20',name:'Seclo',nameLower:'seclo',generic:'Omeprazole',strength:'20mg',type:'capsule',brand:'Square Pharma',price:60,stripSize:10,category:'gastric',categoryBn:'গ্যাস্ট্রিক',otc:true,description:'গ্যাস্ট্রিক ও বুক জ্বালায় কার্যকর',uses:'গ্যাস্ট্রিক আলসার, GERD, বুক জ্বালা',dose:'১টি ক্যাপসুল সকালে খালি পেটে',emoji:'🟢',altBrands:['Losectil','Omepril','Losec'],saltGroup:'omeprazole-20'},
+  {id:'losectil-20',name:'Losectil',nameLower:'losectil',generic:'Omeprazole',strength:'20mg',type:'capsule',brand:'Incepta Pharma',price:55,stripSize:10,category:'gastric',categoryBn:'গ্যাস্ট্রিক',otc:true,description:'Seclo এর alternative — একই Omeprazole 20mg',uses:'গ্যাস্ট্রিক, বুক জ্বালা',dose:'১টি ক্যাপসুল সকালে খালি পেটে',emoji:'🟢',altBrands:['Seclo','Omepril'],saltGroup:'omeprazole-20'},
+  {id:'pantoprazole-40',name:'Pantop',nameLower:'pantop',generic:'Pantoprazole',strength:'40mg',type:'tablet',brand:'Incepta Pharma',price:80,stripSize:10,category:'gastric',categoryBn:'গ্যাস্ট্রিক',otc:false,description:'তীব্র গ্যাস্ট্রিকে কার্যকর PPI',uses:'গুরুতর GERD, গ্যাস্ট্রিক আলসার',dose:'১টি ট্যাবলেট সকালে খালি পেটে',emoji:'🟢',altBrands:['Pantopas','Neoppi'],saltGroup:'pantoprazole-40'},
+  {id:'ranitidine-150',name:'Ranison',nameLower:'ranison',generic:'Ranitidine',strength:'150mg',type:'tablet',brand:'Square Pharma',price:30,stripSize:10,category:'gastric',categoryBn:'গ্যাস্ট্রিক',otc:true,description:'গ্যাস্ট্রিকে দ্রুত আরাম',uses:'গ্যাস্ট্রিক, বুক জ্বালা',dose:'১টি ট্যাবলেট দিনে ২ বার',emoji:'🟢',altBrands:['Neoceptin-R'],saltGroup:'ranitidine-150'},
+  {id:'antacid-susp',name:'Antacid',nameLower:'antacid',generic:'Aluminium+Magnesium',strength:'Suspension',type:'suspension',brand:'Beximco Pharma',price:45,stripSize:1,category:'gastric',categoryBn:'গ্যাস্ট্রিক',otc:true,description:'তাৎক্ষণিক গ্যাস্ট্রিক উপশম',uses:'গ্যাস্ট্রিক, বুক জ্বালা, অম্বল',dose:'২ চামচ খাবার পরে',emoji:'🟡',altBrands:['Maalox','Mylanta'],saltGroup:'antacid'},
+
+  // ── অ্যান্টিবায়োটিক ──
+  {id:'azimax-500',name:'Azimax',nameLower:'azimax',generic:'Azithromycin',strength:'500mg',type:'tablet',brand:'Square Pharma',price:120,stripSize:5,category:'antibiotic',categoryBn:'অ্যান্টিবায়োটিক',otc:false,description:'ব্যাকটেরিয়াল ইনফেকশনে কার্যকর',uses:'শ্বাসতন্ত্রের ইনফেকশন, টনসিল, কানের ইনফেকশন',dose:'১টি ট্যাবলেট দিনে ১ বার ৩-৫ দিন',emoji:'🔵',altBrands:['Zimax','Azithin','Zithromax'],saltGroup:'azithromycin-500'},
+  {id:'zimax-500',name:'Zimax',nameLower:'zimax',generic:'Azithromycin',strength:'500mg',type:'tablet',brand:'Incepta Pharma',price:115,stripSize:5,category:'antibiotic',categoryBn:'অ্যান্টিবায়োটিক',otc:false,description:'Azimax এর alternative',uses:'শ্বাসতন্ত্রের ইনফেকশন',dose:'১টি ট্যাবলেট দিনে ১ বার',emoji:'🔵',altBrands:['Azimax','Azithin'],saltGroup:'azithromycin-500'},
+  {id:'clavam-500',name:'Clavam',nameLower:'clavam',generic:'Amoxicillin+Clavulanate',strength:'500mg+125mg',type:'tablet',brand:'Beximco Pharma',price:180,stripSize:10,category:'antibiotic',categoryBn:'অ্যান্টিবায়োটিক',otc:false,description:'শ্বাসতন্ত্র ও ইউটিআই ইনফেকশনে কার্যকর',uses:'নিউমোনিয়া, সাইনাসাইটিস, UTI',dose:'১টি ট্যাবলেট দিনে ২ বার ৭ দিন',emoji:'🔴',altBrands:['Augmentin','Moxaclav'],saltGroup:'amoxiclav-500'},
+  {id:'ciproflox-500',name:'Ciprocin',nameLower:'ciprocin',generic:'Ciprofloxacin',strength:'500mg',type:'tablet',brand:'Square Pharma',price:90,stripSize:10,category:'antibiotic',categoryBn:'অ্যান্টিবায়োটিক',otc:false,description:'ব্রড স্পেকট্রাম অ্যান্টিবায়োটিক',uses:'UTI, ডায়রিয়া, শ্বাসতন্ত্রের ইনফেকশন',dose:'১টি ট্যাবলেট দিনে ২ বার',emoji:'🔴',altBrands:['Ciproflox','Cipro'],saltGroup:'ciprofloxacin-500'},
+  {id:'metronidazole-400',name:'Amodis',nameLower:'amodis',generic:'Metronidazole',strength:'400mg',type:'tablet',brand:'Square Pharma',price:25,stripSize:10,category:'antibiotic',categoryBn:'অ্যান্টিবায়োটিক',otc:false,description:'অ্যামিবিয়াসিস ও অ্যানারোবিক ইনফেকশনে কার্যকর',uses:'আমাশয়, ডায়রিয়া, দাঁতের ইনফেকশন',dose:'১টি ট্যাবলেট দিনে ৩ বার',emoji:'🟡',altBrands:['Flagyl','Metro'],saltGroup:'metronidazole-400'},
+
+  // ── ডায়াবেটিস ──
+  {id:'metformin-500',name:'Glucomin',nameLower:'glucomin',generic:'Metformin HCl',strength:'500mg',type:'tablet',brand:'ACI Pharma',price:40,stripSize:20,category:'diabetes',categoryBn:'ডায়াবেটিস',otc:false,description:'টাইপ-২ ডায়াবেটিসে প্রথম সারির ওষুধ',uses:'টাইপ-২ ডায়াবেটিস',dose:'১টি ট্যাবলেট দিনে ২ বার খাবার সাথে',emoji:'🩺',altBrands:['Metformin','Diabecon','Glumet'],saltGroup:'metformin-500'},
+  {id:'glibenclamide-5',name:'Daonil',nameLower:'daonil',generic:'Glibenclamide',strength:'5mg',type:'tablet',brand:'Sanofi',price:35,stripSize:20,category:'diabetes',categoryBn:'ডায়াবেটিস',otc:false,description:'রক্তের সুগার কমায়',uses:'টাইপ-২ ডায়াবেটিস',dose:'১টি ট্যাবলেট সকালে খাবার সাথে',emoji:'🩺',altBrands:['Gliben','Euglucon'],saltGroup:'glibenclamide-5'},
+
+  // ── ভিটামিন ──
+  {id:'vitamin-c-500',name:'C-Vit',nameLower:'c-vit',generic:'Vitamin C',strength:'500mg',type:'tablet',brand:'Beximco Pharma',price:30,stripSize:30,category:'vitamin',categoryBn:'ভিটামিন',otc:true,description:'রোগ প্রতিরোধ ক্ষমতা বাড়ায়',uses:'ভিটামিন C ঘাটতি, রোগ প্রতিরোধ',dose:'১টি ট্যাবলেট দিনে ১ বার',emoji:'🟡',altBrands:['Ceevit','Vitamin C'],saltGroup:'vitaminc-500'},
+  {id:'zinc-20',name:'Zinc-B',nameLower:'zinc-b',generic:'Zinc Sulfate',strength:'20mg',type:'tablet',brand:'ACI Pharma',price:25,stripSize:30,category:'vitamin',categoryBn:'ভিটামিন',otc:true,description:'রোগ প্রতিরোধ ও ক্ষত নিরাময়ে সাহায্য করে',uses:'জিংক ঘাটতি, ডায়রিয়া',dose:'১টি ট্যাবলেট দিনে ১ বার',emoji:'🟡',altBrands:['Zincovit','Zinc-Plus'],saltGroup:'zinc-20'},
+  {id:'vitamin-d3',name:'D-Vit',nameLower:'d-vit',generic:'Vitamin D3',strength:'1000 IU',type:'capsule',brand:'Incepta Pharma',price:60,stripSize:30,category:'vitamin',categoryBn:'ভিটামিন',otc:true,description:'হাড় ও দাঁতের শক্তি বাড়ায়',uses:'ভিটামিন D ঘাটতি, হাড় দুর্বলতা',dose:'১টি ক্যাপসুল দিনে ১ বার',emoji:'🟡',altBrands:['Solvit D','D3-Plus'],saltGroup:'vitamind3-1000'},
+
+  // ── শিশু ওষুধ ──
+  {id:'napa-syrup',name:'Napa Syrup',nameLower:'napa syrup',generic:'Paracetamol',strength:'120mg/5ml',type:'syrup',brand:'Beximco Pharma',price:35,stripSize:1,category:'baby',categoryBn:'শিশু ওষুধ',otc:true,description:'শিশুদের জ্বর ও ব্যথায় কার্যকর',uses:'শিশুদের জ্বর, ব্যথা',dose:'বয়স ও ওজন অনুযায়ী',emoji:'👶',altBrands:['Ace Syrup','Renova Syrup'],saltGroup:'paracetamol-syrup'},
+  {id:'ors-sachet',name:'ORS',nameLower:'ors',generic:'Oral Rehydration Salt',strength:'Sachet',type:'sachet',brand:'Square Pharma',price:5,stripSize:1,category:'baby',categoryBn:'শিশু ওষুধ',otc:true,description:'ডায়রিয়ায় পানিশূন্যতা রোধ করে',uses:'ডায়রিয়া, বমি, পানিশূন্যতা',dose:'১ স্যাচেট ১ লিটার পানিতে মিশিয়ে',emoji:'💧',altBrands:['Electral','Rehydral'],saltGroup:'ors'},
+
+  // ── হার্ট ──
+  {id:'amlodipine-5',name:'Amlodip',nameLower:'amlodip',generic:'Amlodipine',strength:'5mg',type:'tablet',brand:'Square Pharma',price:50,stripSize:30,category:'heart',categoryBn:'হার্ট',otc:false,description:'উচ্চ রক্তচাপ নিয়ন্ত্রণ করে',uses:'হাইপারটেনশন, এনজিনা',dose:'১টি ট্যাবলেট দিনে ১ বার',emoji:'❤️',altBrands:['Norvasc','Amlovas'],saltGroup:'amlodipine-5'},
+  {id:'atorvastatin-10',name:'Lipitor',nameLower:'lipitor',generic:'Atorvastatin',strength:'10mg',type:'tablet',brand:'Pfizer',price:80,stripSize:30,category:'heart',categoryBn:'হার্ট',otc:false,description:'কোলেস্টেরল কমায়',uses:'হাই কোলেস্টেরল, হার্টের সুরক্ষা',dose:'১টি ট্যাবলেট রাতে',emoji:'❤️',altBrands:['Torvastat','Atorva'],saltGroup:'atorvastatin-10'},
+
+  // ── চর্মরোগ ──
+  {id:'clotrimazole-cream',name:'Canesten',nameLower:'canesten',generic:'Clotrimazole',strength:'1%',type:'cream',brand:'Bayer',price:90,stripSize:1,category:'skin',categoryBn:'চর্মরোগ',otc:true,description:'ছত্রাক সংক্রমণ দূর করে',uses:'দাদ, খোস পাঁচড়া, ক্যান্ডিডিয়াসিস',dose:'দিনে ২-৩ বার আক্রান্ত স্থানে লাগান',emoji:'🧴',altBrands:['Clotrin','Mycospot'],saltGroup:'clotrimazole-1'},
+  {id:'betamethasone-cream',name:'Betnovate',nameLower:'betnovate',generic:'Betamethasone',strength:'0.1%',type:'cream',brand:'GSK',price:70,stripSize:1,category:'skin',categoryBn:'চর্মরোগ',otc:false,description:'চর্মরোগের প্রদাহ কমায়',uses:'একজিমা, সোরিয়াসিস, অ্যালার্জি',dose:'দিনে ১-২ বার পাতলা করে লাগান',emoji:'🧴',altBrands:['Dermovate','Betacort'],saltGroup:'betamethasone-cream'},
+
+  // ── ইমার্জেন্সি ──
+  {id:'antihist-10',name:'Atarax',nameLower:'atarax',generic:'Hydroxyzine',strength:'10mg',type:'tablet',brand:'UCB',price:45,stripSize:10,category:'emergency',categoryBn:'ইমার্জেন্সি',otc:false,description:'অ্যালার্জি ও চুলকানিতে কার্যকর',uses:'অ্যালার্জি, চুলকানি, উদ্বেগ',dose:'১টি ট্যাবলেট দিনে ৩ বার',emoji:'🚨',altBrands:['Hyrox','Vistaril'],saltGroup:'hydroxyzine-10'},
+  {id:'fexo-120',name:'Fexo',nameLower:'fexo',generic:'Fexofenadine',strength:'120mg',type:'tablet',brand:'Sanofi',price:55,stripSize:10,category:'emergency',categoryBn:'ইমার্জেন্সি',otc:true,description:'অ্যান্টিহিস্টামিন — ঘুম আসে না',uses:'অ্যালার্জিক রাইনাইটিস, আর্টিকারিয়া',dose:'১টি ট্যাবলেট দিনে ১ বার',emoji:'🚨',altBrands:['Telfast','Allegra'],saltGroup:'fexofenadine-120'},
+];
+
+window.seedAll = async function() {
+  const btn = document.getElementById('seed-btn');
+  const log = document.getElementById('log');
+  btn.disabled = true;
+  log.innerHTML = '';
+
+  function addLog(msg, type='info') {
+    log.innerHTML += `<span class="${type}">${msg}</span><br>`;
+    log.scrollTop = log.scrollHeight;
+  }
+
+  addLog('🚀 Seeding শুরু হচ্ছে...', 'info');
+  addLog(`📊 মোট ${medicines.length}টি medicine পাওয়া গেছে`, 'info');
+
+  let success = 0, failed = 0;
+
+  for (const med of medicines) {
+    try {
+      await setDoc(doc(db, 'medicines', med.id), {
+        ...med,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+      addLog(`✅ ${med.name} (${med.generic} ${med.strength})`, 'success');
+      success++;
+    } catch (e) {
+      addLog(`❌ Error: ${med.name} — ${e.message}`, 'error');
+      failed++;
+    }
+  }
+
+  addLog('', 'info');
+  addLog(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`, 'info');
+  addLog(`✅ সফল: ${success}টি`, 'success');
+  if(failed > 0) addLog(`❌ ব্যর্থ: ${failed}টি`, 'error');
+  addLog(`🎉 Seeding সম্পন্ন!`, 'success');
+  btn.disabled = false;
+  btn.textContent = '✅ Done! আবার run করতে click করুন';
+};
+</script>
+</body>
+</html>
