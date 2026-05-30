@@ -595,7 +595,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, doc, getDoc, addDoc, query, where, orderBy, limit, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, getDoc, addDoc, updateDoc, query, where, orderBy, limit, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const app = initializeApp({
   apiKey:"AIzaSyBn3uC3F6QsfNNzRTaCPfBVHu8_BlLYNy8",
@@ -873,27 +873,144 @@ window.placeOrder = async function() {
   const name = document.getElementById('checkout-name').value;
   const phone = document.getElementById('checkout-phone').value;
   const address = document.getElementById('checkout-address').value;
+  const payLabel = document.querySelector('.pay-opt.selected .pay-label');
+  const payMethod = payLabel ? payLabel.textContent.trim() : 'ক্যাশ অন ডেলিভারি';
   if(!name||!phone||!address) { alert('সব তথ্য পূরণ করুন'); return; }
+
+  const btn = document.querySelector('.place-order-btn');
+  btn.textContent = '⏳ অর্ডার দেওয়া হচ্ছে...';
+  btn.disabled = true;
+
   const subtotal = cartItems.reduce((s,i)=>s+(i.price*i.qty),0);
+  const total = subtotal + 30;
+
   try {
+    const nearestPharmacy = allPharmacies.find(p=>p.isOpen) || allPharmacies[0];
     const orderRef = await addDoc(collection(db,'orders'), {
       userId: currentUser.uid,
       userName: name,
       userPhone: phone,
+      userEmail: currentUser.email || '',
       deliveryAddress: address,
-      items: cartItems.map(i=>({id:i.id,name:i.name,qty:i.qty,price:i.price})),
+      items: cartItems.map(i=>({id:i.id,name:i.name,qty:i.qty,price:i.price,emoji:i.emoji||'💊'})),
       subtotal,
       deliveryCharge: 30,
-      total: subtotal+30,
-      status: 'searching',
-      createdAt: serverTimestamp()
+      total,
+      paymentMethod: payMethod,
+      paymentStatus: payMethod==='ক্যাশ অন ডেলিভারি' ? 'cod_pending' : 'pending',
+      status: 'confirmed',
+      pharmacyId: nearestPharmacy?.id || '',
+      pharmacyName: nearestPharmacy?.name || 'Sondhan Pharmacy',
+      riderId: null,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
     });
-    document.getElementById('tracking-order-id').textContent = '#'+orderRef.id.slice(0,8).toUpperCase();
+
+    const shortId = '#' + orderRef.id.slice(0,8).toUpperCase();
+
+    if(payMethod === 'bKash') {
+      btn.textContent = '✅ অর্ডার নিশ্চিত করুন'; btn.disabled = false;
+      showBkashModal(total, orderRef.id); return;
+    }
+    if(payMethod === 'Nagad') {
+      btn.textContent = '✅ অর্ডার নিশ্চিত করুন'; btn.disabled = false;
+      showNagadModal(total, orderRef.id); return;
+    }
+
+    // COD
+    document.getElementById('tracking-order-id').textContent = shortId;
+    document.getElementById('tracking-pharmacy').textContent = nearestPharmacy?.name || 'Sondhan Pharmacy';
     document.getElementById('t1-time').textContent = new Date().toLocaleTimeString('bn-BD');
-    cartItems = [];
-    updateCartUI();
+    cartItems = []; updateCartUI();
+    btn.textContent = '✅ অর্ডার নিশ্চিত করুন'; btn.disabled = false;
+    listenToOrder(orderRef.id);
     goPage('tracking');
-  } catch(e) { alert('অর্ডার দিতে সমস্যা হয়েছে: '+e.message); }
+
+  } catch(e) {
+    alert('অর্ডার দিতে সমস্যা হয়েছে: '+e.message);
+    btn.textContent = '✅ অর্ডার নিশ্চিত করুন'; btn.disabled = false;
+  }
+}
+
+function listenToOrder(orderId) {
+  if(window.__orderUnsubscribe) window.__orderUnsubscribe();
+  window.__orderUnsubscribe = onSnapshot(doc(db,'orders',orderId), (snap) => {
+    if(!snap.exists()) return;
+    const order = snap.data();
+    const stepMap = {'confirmed':0,'preparing':1,'picked':2,'delivered':3};
+    const currentStep = stepMap[order.status] ?? 0;
+    const dots = document.querySelectorAll('.step-dot');
+    const connectors = document.querySelectorAll('.step-connector');
+    const icons = ['✓','⏳','🛵','✅'];
+    dots.forEach((dot,i) => {
+      dot.className = 'step-dot';
+      if(i < currentStep){dot.classList.add('done');dot.textContent='✓';}
+      else if(i===currentStep){dot.classList.add('active');dot.textContent=icons[i];}
+      else{dot.classList.add('pending');dot.textContent='';}
+    });
+    connectors.forEach((c,i)=>{c.className='step-connector';c.classList.add(i<currentStep?'done':'pending');});
+    if(order.pharmacyName) document.getElementById('tracking-pharmacy').textContent=order.pharmacyName;
+  });
+}
+
+function showBkashModal(amount, orderId) {
+  const m = document.createElement('div');
+  m.id = 'payment-modal';
+  m.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:600;display:flex;align-items:center;justify-content:center;padding:20px';
+  m.innerHTML = `<div style="background:#fff;border-radius:20px;padding:24px;width:100%;max-width:360px;text-align:center">
+    <div style="font-size:48px;margin-bottom:10px">📱</div>
+    <div style="font-size:18px;font-weight:700;color:#e2136e;margin-bottom:6px">bKash পেমেন্ট</div>
+    <div style="font-size:13px;color:#666;margin-bottom:16px">নিচের নম্বরে <strong>৳${amount}</strong> পাঠান</div>
+    <div style="background:#fce4ec;border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="font-size:22px;font-weight:700;color:#e2136e;letter-spacing:2px">01700-000000</div>
+      <div style="font-size:11px;color:#c62828;margin-top:4px">Merchant নম্বর</div>
+    </div>
+    <div style="font-size:13px;color:#666;margin-bottom:8px">Transaction ID দিন:</div>
+    <input id="bkash-txn" style="width:100%;border:1.5px solid #ddd;border-radius:10px;padding:12px;font-size:14px;margin-bottom:14px;outline:none" placeholder="8N6XXXXXXX">
+    <button onclick="confirmPayment('bkash','${orderId}',${amount})" style="width:100%;background:#e2136e;color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif">✅ নিশ্চিত করুন</button>
+    <div style="margin-top:10px;font-size:12px;color:#999;cursor:pointer" onclick="document.getElementById('payment-modal').remove()">বাতিল করুন</div>
+  </div>`;
+  document.body.appendChild(m);
+}
+
+function showNagadModal(amount, orderId) {
+  const m = document.createElement('div');
+  m.id = 'payment-modal';
+  m.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:600;display:flex;align-items:center;justify-content:center;padding:20px';
+  m.innerHTML = `<div style="background:#fff;border-radius:20px;padding:24px;width:100%;max-width:360px;text-align:center">
+    <div style="font-size:48px;margin-bottom:10px">🟠</div>
+    <div style="font-size:18px;font-weight:700;color:#f7941d;margin-bottom:6px">Nagad পেমেন্ট</div>
+    <div style="font-size:13px;color:#666;margin-bottom:16px">নিচের নম্বরে <strong>৳${amount}</strong> পাঠান</div>
+    <div style="background:#fff3e0;border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="font-size:22px;font-weight:700;color:#e65100;letter-spacing:2px">01700-000000</div>
+      <div style="font-size:11px;color:#bf360c;margin-top:4px">Merchant নম্বর</div>
+    </div>
+    <div style="font-size:13px;color:#666;margin-bottom:8px">Transaction ID দিন:</div>
+    <input id="nagad-txn" style="width:100%;border:1.5px solid #ddd;border-radius:10px;padding:12px;font-size:14px;margin-bottom:14px;outline:none" placeholder="Transaction ID">
+    <button onclick="confirmPayment('nagad','${orderId}',${amount})" style="width:100%;background:#f7941d;color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif">✅ নিশ্চিত করুন</button>
+    <div style="margin-top:10px;font-size:12px;color:#999;cursor:pointer" onclick="document.getElementById('payment-modal').remove()">বাতিল করুন</div>
+  </div>`;
+  document.body.appendChild(m);
+}
+
+window.confirmPayment = async function(method, orderId, amount) {
+  const txnId = document.getElementById(method+'-txn')?.value?.trim();
+  if(!txnId) { alert('Transaction ID দিন'); return; }
+  try {
+    await updateDoc(doc(db,'orders',orderId), {
+      paymentStatus: 'paid',
+      paymentTxnId: txnId,
+      paymentMethod: method,
+      paidAt: serverTimestamp()
+    });
+    document.getElementById('payment-modal')?.remove();
+    const shortId = '#' + orderId.slice(0,8).toUpperCase();
+    document.getElementById('tracking-order-id').textContent = shortId;
+    document.getElementById('t1-time').textContent = new Date().toLocaleTimeString('bn-BD');
+    cartItems = []; updateCartUI();
+    listenToOrder(orderId);
+    goPage('tracking');
+  } catch(e) { alert('সমস্যা হয়েছে: '+e.message); }
 }
 
 // ── ORDERS ──
