@@ -856,14 +856,14 @@ window.removeFromCart = function(idx) {
   updateCartUI();
 }
 
-function goToCheckout() {
+window.goToCheckout = function() {
   const subtotal = cartItems.reduce((s,i)=>s+(i.price*i.qty),0);
   const total = subtotal + 30;
   document.getElementById('checkout-name').value = currentUser?.displayName || '';
   document.getElementById('checkout-phone').value = currentUser?.phoneNumber || '';
   document.getElementById('checkout-summary').innerHTML = `
     <div class="summary-row"><span>সাবটোটাল</span><span>৳${subtotal}</span></div>
-    <div class="summary-row"><span>ডেলিভারি</span><span>৳30</span></div>
+    <div class="summary-row"><span>ডেলিভারি</span><span>৳৩০</span></div>
     <div class="summary-row total"><span>মোট</span><span>৳${total}</span></div>`;
   goPage('checkout');
 }
@@ -897,7 +897,7 @@ window.placeOrder = async function() {
 }
 
 // ── ORDERS ──
-async function loadOrders() {
+window.loadOrders = async function() {
   if(!currentUser) return;
   const list = document.getElementById('orders-list');
   try {
