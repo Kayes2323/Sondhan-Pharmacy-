@@ -930,7 +930,9 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById('profile-phone').textContent = user.phoneNumber || user.email || '—';
     if(user.photoURL) document.getElementById('profile-avatar').innerHTML=`<img src="${user.photoURL}" alt="">`;
     document.getElementById('notif-dot').style.display = 'block';
-    document.getElementById('header-btn').innerHTML = `<img src="${user.photoURL||''}" style="width:28px;height:28px;border-radius:50%;object-fit:cover" onerror="this.outerHTML='<svg width=18 height=18 fill=none stroke=currentColor stroke-width=2 viewBox=\"0 0 24 24\"><path d=\"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\"/><circle cx=12 cy=7 r=4/></svg>'" alt="">`;
+    // Header button — show initial letter, not broken image
+    const initial = (user.displayName||user.email||'U')[0].toUpperCase();
+    document.getElementById('header-btn').innerHTML = `<span style="font-size:14px;font-weight:700;color:var(--primary);font-family:'Hind Siliguri',sans-serif">${initial}</span>`;
     if(user.email === ADMIN_EMAIL) window.location.href = 'login.html';
   } else {
     document.getElementById('display-name').textContent = 'অতিথি';
