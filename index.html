@@ -1014,28 +1014,55 @@ window.confirmPayment = async function(method, orderId, amount) {
 }
 
 // ── ORDERS ──
-window.loadOrders = async function() {
+window.loadOrders = function() {
   if(!currentUser) return;
   const list = document.getElementById('orders-list');
-  try {
-    const q = query(collection(db,'orders'), where('userId','==',currentUser.uid), orderBy('createdAt','desc'), limit(20));
-    const snap = await getDocs(q);
+  list.innerHTML = '<div class="empty-state"><div>⏳</div><div>লোড হচ্ছে...</div></div>';
+  const q = query(
+    collection(db,'orders'),
+    where('userId','==',currentUser.uid),
+    orderBy('createdAt','desc'),
+    limit(20)
+  );
+  if(window.__ordersUnsubscribe) window.__ordersUnsubscribe();
+  window.__ordersUnsubscribe = onSnapshot(q, (snap) => {
     if(snap.empty) {
       list.innerHTML='<div class="empty-state"><div>📦</div><div>কোনো অর্ডার নেই</div></div>';
       return;
     }
     list.innerHTML = snap.docs.map(d => {
       const o = d.data();
+      const isActive = ['confirmed','preparing','picked'].includes(o.status);
       const statusBadge = o.status==='delivered'?'badge-delivered':o.status==='cancelled'?'badge-cancelled':'badge-pending';
-      const statusText = o.status==='delivered'?'ডেলিভারি হয়েছে ✓':o.status==='cancelled'?'বাতিল ✕':'চলমান 🟡';
-      return `<div class="order-hist-card" onclick="goPage('tracking')">
-        <div class="order-hist-top"><span class="order-hist-id">#${d.id.slice(0,8).toUpperCase()}</span><span class="order-status-badge ${statusBadge}">${statusText}</span></div>
-        <div class="order-hist-pharmacy">Sondhan Pharmacy</div>
-        <div class="order-hist-items">${o.items?.map(i=>`${i.name} × ${i.qty}`).join(', ')}</div>
-        <div class="order-hist-bottom"><span class="order-hist-total">৳${o.total}</span><button class="reorder-btn">বিস্তারিত</button></div>
+      const statusText = {'confirmed':'নিশ্চিত হয়েছে 🟡','preparing':'প্রস্তুত হচ্ছে ⏳','picked':'রাইডার আসছে 🛵','delivered':'ডেলিভারি হয়েছে ✓','cancelled':'বাতিল ✕'}[o.status]||'চলমান 🟡';
+      const time = o.createdAt?.toDate ? o.createdAt.toDate().toLocaleDateString('bn-BD',{day:'numeric',month:'short'}) : '';
+      const oid = d.id;
+      const trackBtn = isActive
+        ? `<button class="reorder-btn" onclick="event.stopPropagation();viewOrder('${oid}')">ট্র্যাক করুন</button>`
+        : `<button class="reorder-btn" onclick="event.stopPropagation();alert('শীঘ্রই আসছে!')">আবার অর্ডার</button>`;
+      return `<div class="order-hist-card" onclick="viewOrder('${oid}')">
+        <div class="order-hist-top">
+          <span class="order-hist-id">#${oid.slice(0,8).toUpperCase()}</span>
+          <span class="order-status-badge ${statusBadge}">${statusText}</span>
+        </div>
+        <div class="order-hist-pharmacy">${o.pharmacyName||'Sondhan Pharmacy'}</div>
+        <div class="order-hist-items">${o.items?.map(i=>(i.emoji||'💊')+' '+i.name+' × '+i.qty).join(', ')||''}</div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:8px">${time} · ${o.paymentMethod||'COD'}</div>
+        <div class="order-hist-bottom">
+          <span class="order-hist-total">৳${o.total}</span>
+          ${trackBtn}
+        </div>
       </div>`;
     }).join('');
-  } catch(e) { list.innerHTML='<div class="empty-state"><div>⚠️</div><div>লোড করতে সমস্যা</div></div>'; }
+  }, (e) => {
+    list.innerHTML='<div class="empty-state"><div>⚠️</div><div>লোড করতে সমস্যা</div></div>';
+  });
+}
+
+window.viewOrder = function(orderId) {
+  document.getElementById('tracking-order-id').textContent = '#'+orderId.slice(0,8).toUpperCase();
+  listenToOrder(orderId);
+  goPage('tracking');
 }
 
 // ── AUTH ──
