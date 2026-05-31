@@ -1,23 +1,20 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<link rel="stylesheet" href="style.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Sondhan Pharmacy</title>
+<title>Sondhan Pharmacy — ৩০ মিনিটে ওষুধ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 <style>
-:root{--primary:#0a7c6e;--primary-light:#e0f5f1;--primary-dark:#076357;--bg:#ffffff;--bg2:#f4faf8;--fg:#1a2e28;--text2:#5a7268;--text3:#9ab5ad;--border:#e2edea;--error:#e74c3c;--warning:#f59e0b;--success:#16a34a;--info:#2563eb;--radius:16px;--radius-sm:10px;--shadow:0 2px 12px rgba(10,124,110,0.07);--shadow-md:0 4px 20px rgba(10,124,110,0.12)}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:var(--fg);min-height:100vh;max-width:420px;margin:0 auto;position:relative}
 .page{display:none;min-height:100vh;padding-bottom:80px}.page.active{display:block}
 .header{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);padding:14px 16px 10px;z-index:100}
 .header-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
 .greeting{font-size:12px;color:var(--text2);margin-bottom:1px}
 .username{font-size:20px;font-weight:700;color:var(--fg)}
 .icon-btn{width:36px;height:36px;border-radius:50%;border:none;background:var(--bg2);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
-.notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:var(--error);border-radius:50%;border:2px solid var(--bg)}
+.notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:var(--error);border-radius:50%;border:2px solid var(--bg);display:none}
 .location-bar{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2);cursor:pointer}
 .sub-header{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);padding:14px 16px;z-index:100;display:flex;align-items:center;gap:10px}
 .back-btn{width:34px;height:34px;border-radius:10px;border:none;background:var(--bg2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
@@ -67,11 +64,10 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
 .med-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
 .med-price{font-size:15px;font-weight:700;color:var(--fg)}
 .add-btn{width:30px;height:30px;border-radius:9px;background:var(--primary-light);color:var(--primary);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:all 0.15s}
-.add-btn:active{background:var(--primary);color:#fff;transform:scale(0.9)}
+.add-btn:active{background:var(--primary);color:#fff}
 .popular-wrap{display:flex;flex-wrap:wrap;gap:8px}
-.popular-chip{background:var(--bg);border:1px solid var(--border);border-radius:100px;padding:6px 12px;font-size:12px;color:var(--fg);cursor:pointer;display:flex;align-items:center;gap:5px;box-shadow:var(--shadow);transition:all 0.15s}
-.popular-chip:active{background:var(--primary-light);border-color:var(--primary);color:var(--primary)}
-.promo-inner{background:linear-gradient(135deg,#fff9e6 0%,#fef3c7 100%);border-left:4px solid var(--warning);border-radius:var(--radius);padding:16px;display:flex;align-items:center;gap:12px}
+.popular-chip{background:var(--bg);border:1px solid var(--border);border-radius:100px;padding:6px 12px;font-size:12px;color:var(--fg);cursor:pointer;display:flex;align-items:center;gap:5px;box-shadow:var(--shadow)}
+.promo-inner{background:linear-gradient(135deg,#fff9e6,#fef3c7);border-left:4px solid var(--warning);border-radius:var(--radius);padding:16px;display:flex;align-items:center;gap:12px}
 .promo-label{font-size:10px;color:#92400e;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
 .promo-title{font-size:14px;font-weight:700;color:#78350f;margin-top:2px}
 .promo-sub{font-size:11px;color:#92400e;margin-top:2px}
@@ -104,17 +100,14 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
 .info-label{font-size:13px;color:var(--text2)}
 .info-val{font-size:13px;font-weight:600;color:var(--fg)}
 .alt-brand-list{display:flex;flex-wrap:wrap;gap:8px}
-.alt-brand{background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;font-size:12px;font-weight:600;color:var(--fg);cursor:pointer;transition:all 0.15s}
-.alt-brand:active{border-color:var(--primary);background:var(--primary-light);color:var(--primary)}
+.alt-brand{background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;font-size:12px;font-weight:600;color:var(--fg);cursor:pointer}
 .add-to-cart-bar{background:var(--bg);border-top:1px solid var(--border);padding:14px 16px;position:sticky;bottom:0;display:flex;gap:12px;align-items:center;z-index:50}
 .qty-control{display:flex;align-items:center;gap:10px;background:var(--bg2);border-radius:12px;padding:6px 12px}
-.qty-btn{width:28px;height:28px;border-radius:8px;border:none;background:var(--bg);font-size:18px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--primary);box-shadow:var(--shadow)}
+.qty-btn{width:28px;height:28px;border-radius:8px;border:none;background:var(--bg);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--primary);box-shadow:var(--shadow)}
 .qty-val{font-size:16px;font-weight:700;color:var(--fg);min-width:20px;text-align:center}
-.add-cart-btn{flex:1;background:var(--primary);color:#fff;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif;transition:all 0.15s}
-.add-cart-btn:active{background:var(--primary-dark);transform:scale(0.98)}
+.add-cart-btn{flex:1;background:var(--primary);color:#fff;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif}
 .cart-item{background:var(--bg);border-radius:var(--radius);padding:14px;display:flex;gap:12px;box-shadow:var(--shadow);border:1px solid var(--border)}
 .cart-item-img{width:56px;height:56px;border-radius:12px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
-.cart-item-info{flex:1;min-width:0}
 .cart-item-name{font-size:14px;font-weight:700;color:var(--fg)}
 .cart-item-sub{font-size:11px;color:var(--text2);margin-top:2px}
 .cart-item-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
@@ -126,8 +119,7 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
 .cart-summary{background:var(--bg);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border:1px solid var(--border)}
 .summary-row{display:flex;justify-content:space-between;padding:8px 0;font-size:13px;color:var(--text2)}
 .summary-row.total{border-top:1.5px dashed var(--border);margin-top:4px;font-size:15px;font-weight:700;color:var(--fg)}
-.checkout-btn{width:100%;background:var(--primary);color:#fff;border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif;transition:all 0.15s}
-.checkout-btn:active{background:var(--primary-dark);transform:scale(0.98)}
+.checkout-btn{width:100%;background:var(--primary);color:#fff;border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif}
 .form-section{background:var(--bg);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);display:flex;flex-direction:column;gap:12px}
 .form-label{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px}
 .form-input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--fg);font-family:'Hind Siliguri',sans-serif;outline:none;background:var(--bg);transition:border-color 0.2s}
@@ -141,13 +133,12 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
 .pay-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);margin-left:auto;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .pay-opt.selected .pay-radio{border-color:var(--primary);background:var(--primary)}
 .pay-opt.selected .pay-radio::after{content:'';width:7px;height:7px;background:#fff;border-radius:50%}
-.place-order-btn{width:100%;background:linear-gradient(135deg,var(--primary),#0e9e8e);color:#fff;border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif;box-shadow:0 4px 16px rgba(10,124,110,0.3);transition:all 0.15s}
-.place-order-btn:active{transform:scale(0.98)}
+.place-order-btn{width:100%;background:linear-gradient(135deg,var(--primary),#0e9e8e);color:#fff;border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif;box-shadow:0 4px 16px rgba(10,124,110,0.3)}
 .tracking-card{background:var(--bg);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border:1px solid var(--border)}
 .order-id{font-size:12px;color:var(--text2);margin-bottom:4px}
-.order-pharmacy{font-size:16px;font-weight:700;color:var(--fg)}
+.order-pharmacy-name{font-size:16px;font-weight:700;color:var(--fg)}
 .eta-badge{display:inline-flex;align-items:center;gap:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:700;padding:6px 14px;border-radius:100px;margin-top:10px}
-.track-steps{display:flex;flex-direction:column;gap:0}
+.track-steps{display:flex;flex-direction:column}
 .track-step{display:flex;gap:14px}
 .step-line-wrap{display:flex;flex-direction:column;align-items:center}
 .step-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px}
@@ -165,8 +156,7 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
 .rider-name{font-size:14px;font-weight:700;color:var(--fg)}
 .rider-plate{font-size:11px;color:var(--text2);margin-top:2px}
 .call-btn{margin-left:auto;width:40px;height:40px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-size:18px}
-.order-hist-card{background:var(--bg);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);cursor:pointer;transition:transform 0.15s}
-.order-hist-card:active{transform:scale(0.98)}
+.order-hist-card{background:var(--bg);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);cursor:pointer}
 .order-hist-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
 .order-hist-id{font-size:12px;color:var(--text3)}
 .order-status-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px}
@@ -188,20 +178,19 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
 .stat-num{font-size:20px;font-weight:700;color:var(--primary)}
 .stat-label{font-size:10px;color:var(--text2);margin-top:2px}
 .menu-list{background:var(--bg);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border)}
-.menu-item{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s}
+.menu-item{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);cursor:pointer}
 .menu-item:last-child{border-bottom:none}
-.menu-item:active{background:var(--bg2)}
 .menu-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .menu-label{font-size:14px;font-weight:600;color:var(--fg);flex:1}
 .menu-arrow{font-size:16px;color:var(--text3)}
-.logout-btn{width:100%;background:#fee2e2;color:var(--error);border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif;transition:all 0.15s}
+.logout-btn{width:100%;background:#fee2e2;color:var(--error);border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif}
 .pharma-hero{background:var(--bg);border-radius:var(--radius);padding:20px;display:flex;gap:14px;box-shadow:var(--shadow);border:1px solid var(--border)}
 .pharma-big-img{width:72px;height:72px;border-radius:16px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0}
 .pharma-detail-name{font-size:18px;font-weight:700;color:var(--fg);margin-bottom:2px}
 .pharma-detail-area{font-size:13px;color:var(--text2);margin-bottom:8px}
 .pharma-stats{display:flex;gap:12px;flex-wrap:wrap}
 .pharma-stat{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text2)}
-.order-from-btn{width:100%;background:var(--primary);color:#fff;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif;transition:all 0.15s;margin-top:4px}
+.order-from-btn{width:100%;background:var(--primary);color:#fff;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif;margin-top:4px}
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;background:var(--bg);border-top:1px solid var(--border);padding:8px 8px 16px;display:flex;justify-content:space-around;z-index:200;box-shadow:0 -4px 20px rgba(0,0,0,0.06)}
 .nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:4px 10px;border-radius:12px;min-width:50px}
 .nav-item.active .nav-icon-wrap{color:var(--primary)}
@@ -211,15 +200,11 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
 .nav-icon-wrap{font-size:22px}
 .nav-label{font-size:10px;font-weight:600}
 .nav-center-wrap{display:flex;flex-direction:column;align-items:center;position:relative;top:-12px}
-.nav-center-btn{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#0e9e8e);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(10,124,110,0.4);border:3px solid var(--bg2);font-size:22px;cursor:pointer}
+.nav-center-btn{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#0e9e8e);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(10,124,110,0.4);border:3px solid var(--bg2);font-size:22px;cursor:pointer;position:relative}
+.cart-count{position:absolute;top:-4px;right:-4px;background:var(--error);color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:none;align-items:center;justify-content:center;border:2px solid var(--bg)}
 .nav-center-label{font-size:10px;font-weight:700;color:var(--primary);margin-top:2px}
-.cart-badge{position:relative}
-.cart-count{position:absolute;top:-6px;right:-8px;background:var(--error);color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg)}
 .sos-btn{position:fixed;bottom:82px;right:14px;width:46px;height:46px;border-radius:50%;background:var(--error);color:#fff;border:none;font-size:10px;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(231,76,60,0.45);z-index:150;font-family:'Hind Siliguri',sans-serif;display:flex;align-items:center;justify-content:center;animation:pulse-sos 2s infinite}
 @keyframes pulse-sos{0%,100%{box-shadow:0 4px 16px rgba(231,76,60,0.4)}50%{box-shadow:0 4px 28px rgba(231,76,60,0.7)}}
-.sos-btn:active{transform:scale(0.92)}
-
-/* LOGIN MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(10,30,25,0.55);z-index:500;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
 .modal-overlay.open{opacity:1;pointer-events:all}
 .modal-sheet{background:var(--bg);border-radius:24px 24px 0 0;width:100%;max-width:420px;padding:0 0 32px;transform:translateY(100%);transition:transform 0.3s cubic-bezier(.32,.72,0,1);max-height:92vh;overflow-y:auto}
@@ -248,16 +233,17 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
 .otp-resend{text-align:center;font-size:13px;color:var(--text2)}
 .otp-resend span{color:var(--primary);font-weight:600;cursor:pointer}
 .google-btn{width:100%;border:1.5px solid var(--border);border-radius:12px;padding:13px;font-size:14px;font-weight:600;color:var(--fg);background:var(--bg);cursor:pointer;font-family:'Hind Siliguri',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.15s}
-.google-btn:active{background:var(--bg2)}
 .divider{display:flex;align-items:center;gap:10px;color:var(--text3);font-size:12px}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
-.auth-btn{width:100%;background:linear-gradient(135deg,var(--primary),#0e9e8e);color:#fff;border:none;border-radius:14px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif;box-shadow:0 4px 16px rgba(10,124,110,0.3);transition:all 0.15s}
-.auth-btn:active{transform:scale(0.98)}
-.auth-btn:disabled{opacity:0.5;transform:none;cursor:not-allowed}
+.auth-btn{width:100%;background:linear-gradient(135deg,var(--primary),#0e9e8e);color:#fff;border:none;border-radius:14px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif;box-shadow:0 4px 16px rgba(10,124,110,0.3)}
+.auth-btn:disabled{opacity:0.5;cursor:not-allowed}
 .guest-link-modal{text-align:center;font-size:13px;color:var(--text2)}
 .guest-link-modal span{color:var(--primary);font-weight:600;cursor:pointer}
 .info-box{background:#fef3c7;border-left:3px solid var(--warning);border-radius:12px;padding:12px 14px;font-size:12px;color:#92400e;line-height:1.6}
-
+.loading-skeleton{background:linear-gradient(90deg,var(--bg2) 25%,var(--border) 50%,var(--bg2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:12px;height:88px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text2)}
+.empty-state div:first-child{font-size:48px;margin-bottom:12px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .page.active .main>*{animation:fadeUp 0.25s ease both}
 .page.active .main>*:nth-child(1){animation-delay:0.03s}
@@ -265,11 +251,12 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
 .page.active .main>*:nth-child(3){animation-delay:0.11s}
 .page.active .main>*:nth-child(4){animation-delay:0.15s}
 .page.active .main>*:nth-child(5){animation-delay:0.19s}
+.page.active .main>*:nth-child(6){animation-delay:0.23s}
 </style>
 </head>
 <body>
 
-<!-- ==================== PAGE: HOME ==================== -->
+<!-- ══ HOME ══ -->
 <div id="page-home" class="page active">
   <header class="header">
     <div class="header-top">
@@ -277,9 +264,9 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
         <div class="greeting" id="greeting-text">শুভ সন্ধ্যা 👋</div>
         <div class="username" id="display-name">অতিথি</div>
       </div>
-      <button class="icon-btn" onclick="openLogin()">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        <div class="notif-dot" id="notif-dot" style="display:none"></div>
+      <button class="icon-btn" onclick="openLogin()" id="header-btn">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <div class="notif-dot" id="notif-dot"></div>
       </button>
     </div>
     <div class="location-bar">
@@ -296,7 +283,7 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
     </div>
     <div class="delivery-banner">
       <div class="banner-icon">⚡</div>
-      <div class="banner-text"><div class="banner-title">৩০ মিনিটে ওষুধ দরজায়</div><div class="banner-sub">ঢাকার ১২টি এলাকায় দ্রুত ডেলিভারি</div></div>
+      <div style="flex:1"><div class="banner-title">৩০ মিনিটে ওষুধ দরজায়</div><div class="banner-sub">ঢাকার ১২টি এলাকায় দ্রুত ডেলিভারি</div></div>
       <button class="banner-btn" onclick="goPage('search')">অর্ডার করুন</button>
     </div>
     <div>
@@ -304,39 +291,32 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
       <div class="quick-grid">
         <div class="quick-card" onclick="goPage('search')"><div class="quick-icon" style="background:#fee2e2">🚨</div><div><div class="quick-label">ইমার্জেন্সি</div><div class="quick-sub">জরুরি ওষুধ</div></div></div>
         <div class="quick-card"><div class="quick-icon" style="background:#dbeafe">📋</div><div><div class="quick-label">প্রেসক্রিপশন</div><div class="quick-sub">ছবি তুলে পাঠান</div></div></div>
-        <div class="quick-card" onclick="goPage('pharmacy-detail')"><div class="quick-icon" style="background:var(--primary-light)">📍</div><div><div class="quick-label">কাছের ফার্মেসি</div><div class="quick-sub">লোকেশন দেখুন</div></div></div>
-        <div class="quick-card" onclick="goPage('orders')"><div class="quick-icon" style="background:#fef3c7">🕐</div><div><div class="quick-label">আগের অর্ডার</div><div class="quick-sub">আবার অর্ডার করুন</div></div></div>
+        <div class="quick-card" onclick="goPage('pharmacies')"><div class="quick-icon" style="background:var(--primary-light)">📍</div><div><div class="quick-label">কাছের ফার্মেসি</div><div class="quick-sub">লোকেশন দেখুন</div></div></div>
+        <div class="quick-card" onclick="requireAuth(()=>goPage('orders'))"><div class="quick-icon" style="background:#fef3c7">🕐</div><div><div class="quick-label">আগের অর্ডার</div><div class="quick-sub">আবার অর্ডার করুন</div></div></div>
       </div>
     </div>
     <div>
       <div class="section-title">ক্যাটাগরি</div>
       <div class="cat-scroll">
-        <div class="cat-chip active"><span>🌡️</span><span class="cat-name">জ্বর ও ব্যথা</span></div>
-        <div class="cat-chip"><span>🫃</span><span class="cat-name">গ্যাস্ট্রিক</span></div>
-        <div class="cat-chip"><span>💊</span><span class="cat-name">অ্যান্টিবায়োটিক</span></div>
-        <div class="cat-chip"><span>🩺</span><span class="cat-name">ডায়াবেটিস</span></div>
-        <div class="cat-chip"><span>👶</span><span class="cat-name">শিশু ওষুধ</span></div>
-        <div class="cat-chip"><span>💪</span><span class="cat-name">ভিটামিন</span></div>
-        <div class="cat-chip"><span>❤️</span><span class="cat-name">হার্ট</span></div>
-        <div class="cat-chip"><span>🧴</span><span class="cat-name">চর্মরোগ</span></div>
+        <div class="cat-chip active" data-cat="all"><span>🌡️</span><span class="cat-name">সব</span></div>
+        <div class="cat-chip" data-cat="fever-pain"><span>🌡️</span><span class="cat-name">জ্বর ও ব্যথা</span></div>
+        <div class="cat-chip" data-cat="gastric"><span>🫃</span><span class="cat-name">গ্যাস্ট্রিক</span></div>
+        <div class="cat-chip" data-cat="antibiotic"><span>💊</span><span class="cat-name">অ্যান্টিবায়োটিক</span></div>
+        <div class="cat-chip" data-cat="diabetes"><span>🩺</span><span class="cat-name">ডায়াবেটিস</span></div>
+        <div class="cat-chip" data-cat="baby"><span>👶</span><span class="cat-name">শিশু ওষুধ</span></div>
+        <div class="cat-chip" data-cat="vitamin"><span>💪</span><span class="cat-name">ভিটামিন</span></div>
+        <div class="cat-chip" data-cat="heart"><span>❤️</span><span class="cat-name">হার্ট</span></div>
+        <div class="cat-chip" data-cat="skin"><span>🧴</span><span class="cat-name">চর্মরোগ</span></div>
       </div>
     </div>
     <div>
       <div class="section-header">
         <div class="section-title" style="margin:0">কাছের ফার্মেসি</div>
-        <span class="see-all" onclick="goPage('pharmacy-detail')">সব দেখুন →</span>
+        <span class="see-all" onclick="goPage('pharmacies')">সব দেখুন →</span>
       </div>
-      <div class="pharmacy-list" id="pharmacy-list">
-        <div class="pharmacy-card" onclick="goPage('pharmacy-detail')">
-          <div class="pharmacy-img">💊</div>
-          <div class="pharmacy-info"><div class="pharmacy-name">Popular Pharmacy</div><div class="pharmacy-area">ধানমন্ডি ২৭</div><div class="pharmacy-meta"><span>⭐ 4.9</span><span class="meta-dot">•</span><span>⏱ ২০-৩০ মিনিট</span><span class="meta-dot">•</span><span>০.৮ কিমি</span></div></div>
-          <span class="open-badge">খোলা</span>
-        </div>
-        <div class="pharmacy-card" onclick="goPage('pharmacy-detail')">
-          <div class="pharmacy-img">🏥</div>
-          <div class="pharmacy-info"><div class="pharmacy-name">Lazz Pharma</div><div class="pharmacy-area">মিরপুর ১০</div><div class="pharmacy-meta"><span>⭐ 4.7</span><span class="meta-dot">•</span><span>⏱ ২৫-৩৫ মিনিট</span><span class="meta-dot">•</span><span>১.৩ কিমি</span></div></div>
-          <span class="open-badge">খোলা</span>
-        </div>
+      <div class="pharmacy-list" id="home-pharmacy-list">
+        <div class="loading-skeleton" style="height:76px"></div>
+        <div class="loading-skeleton" style="height:76px"></div>
       </div>
     </div>
     <div>
@@ -344,11 +324,11 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
         <div class="section-title" style="margin:0">জনপ্রিয় ওষুধ</div>
         <span class="see-all" onclick="goPage('search')">সব দেখুন →</span>
       </div>
-      <div class="medicine-grid">
-        <div class="med-card" onclick="goPage('medicine-detail')"><div class="med-img">💊</div><div class="med-name">Napa</div><div class="med-generic">Paracetamol 500mg</div><div class="med-brand">Beximco Pharma</div><div class="med-footer"><span class="med-price">৳৮</span><button class="add-btn" onclick="addCart(event)">+</button></div></div>
-        <div class="med-card" onclick="goPage('medicine-detail')"><div class="med-img">🟢</div><div class="med-name">Seclo</div><div class="med-generic">Omeprazole 20mg</div><div class="med-brand">Square Pharma</div><div class="med-footer"><span class="med-price">৳৬০</span><button class="add-btn" onclick="addCart(event)">+</button></div></div>
-        <div class="med-card" onclick="goPage('medicine-detail')"><div class="med-img">🔵</div><div class="med-name">Azimax</div><div class="med-generic">Azithromycin 500mg</div><div class="med-brand">Square Pharma</div><div class="med-footer"><span class="med-price">৳১২০</span><button class="add-btn" onclick="addCart(event)">+</button></div></div>
-        <div class="med-card" onclick="goPage('medicine-detail')"><div class="med-img">🟡</div><div class="med-name">Napa Extra</div><div class="med-generic">Paracetamol+Caffeine</div><div class="med-brand">Beximco Pharma</div><div class="med-footer"><span class="med-price">৳১২</span><button class="add-btn" onclick="addCart(event)">+</button></div></div>
+      <div class="medicine-grid" id="home-medicine-grid">
+        <div class="loading-skeleton"></div>
+        <div class="loading-skeleton"></div>
+        <div class="loading-skeleton"></div>
+        <div class="loading-skeleton"></div>
       </div>
     </div>
     <div class="promo-inner">
@@ -358,117 +338,92 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
     </div>
     <div>
       <div class="section-title">বেশি খোঁজা হচ্ছে</div>
-      <div class="popular-wrap">
-        <div class="popular-chip" onclick="goPage('search')">🔍 Napa</div>
-        <div class="popular-chip" onclick="goPage('search')">🔍 Seclo</div>
-        <div class="popular-chip" onclick="goPage('search')">🔍 Azimax</div>
-        <div class="popular-chip" onclick="goPage('search')">🔍 Napa Extra</div>
-        <div class="popular-chip" onclick="goPage('search')">🔍 Vitamin C</div>
-        <div class="popular-chip" onclick="goPage('search')">🔍 ORS</div>
-        <div class="popular-chip" onclick="goPage('search')">🔍 Antacid</div>
+      <div class="popular-wrap" id="popular-searches">
+        <div class="popular-chip" onclick="searchFor('Napa')">🔍 Napa</div>
+        <div class="popular-chip" onclick="searchFor('Seclo')">🔍 Seclo</div>
+        <div class="popular-chip" onclick="searchFor('Azimax')">🔍 Azimax</div>
+        <div class="popular-chip" onclick="searchFor('Vitamin C')">🔍 Vitamin C</div>
+        <div class="popular-chip" onclick="searchFor('ORS')">🔍 ORS</div>
+        <div class="popular-chip" onclick="searchFor('Antacid')">🔍 Antacid</div>
       </div>
     </div>
   </main>
 </div>
 
-<!-- ==================== PAGE: SEARCH ==================== -->
+<!-- ══ SEARCH ══ -->
 <div id="page-search" class="page">
   <div class="sub-header">
     <button class="back-btn" onclick="goPage('home')"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
     <div class="search-bar" style="flex:1;padding:10px 12px">
       <svg width="15" height="15" fill="none" stroke="var(--text3)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input class="search-input" placeholder="ওষুধের নাম, generic বা লক্ষণ...">
+      <input class="search-input" id="search-input" placeholder="ওষুধের নাম বা generic লিখুন..." oninput="handleSearch(this.value)">
     </div>
   </div>
   <main class="main">
-    <div class="filter-row">
-      <div class="filter-chip active">সব</div>
-      <div class="filter-chip">জ্বর ও ব্যথা</div>
-      <div class="filter-chip">গ্যাস্ট্রিক</div>
-      <div class="filter-chip">অ্যান্টিবায়োটিক</div>
-      <div class="filter-chip">ডায়াবেটিস</div>
-      <div class="filter-chip">ভিটামিন</div>
+    <div class="filter-row" id="search-filters">
+      <div class="filter-chip active" data-filter="all">সব</div>
+      <div class="filter-chip" data-filter="fever-pain">জ্বর ও ব্যথা</div>
+      <div class="filter-chip" data-filter="gastric">গ্যাস্ট্রিক</div>
+      <div class="filter-chip" data-filter="antibiotic">অ্যান্টিবায়োটিক</div>
+      <div class="filter-chip" data-filter="diabetes">ডায়াবেটিস</div>
+      <div class="filter-chip" data-filter="vitamin">ভিটামিন</div>
+      <div class="filter-chip" data-filter="baby">শিশু</div>
     </div>
-    <div class="search-result-list">
-      <div class="search-med-card" onclick="goPage('medicine-detail')"><div class="search-med-img">💊</div><div class="search-med-info"><div class="search-med-name">Napa</div><div class="search-med-generic">Paracetamol 500mg</div><div class="search-med-brand">Beximco Pharma</div><div class="generic-tag">Generic: Paracetamol</div></div><div style="text-align:right;flex-shrink:0"><div class="search-med-price">৳৮</div><div class="in-stock">স্টকে আছে</div><button class="add-btn" style="margin-top:6px;margin-left:auto" onclick="addCart(event)">+</button></div></div>
-      <div class="search-med-card" onclick="goPage('medicine-detail')"><div class="search-med-img">💊</div><div class="search-med-info"><div class="search-med-name">Ace</div><div class="search-med-generic">Paracetamol 500mg</div><div class="search-med-brand">Square Pharma</div><div class="generic-tag">Generic: Paracetamol</div></div><div style="text-align:right;flex-shrink:0"><div class="search-med-price">৳৮</div><div class="in-stock">স্টকে আছে</div><button class="add-btn" style="margin-top:6px;margin-left:auto" onclick="addCart(event)">+</button></div></div>
-      <div class="search-med-card" onclick="goPage('medicine-detail')"><div class="search-med-img">🟢</div><div class="search-med-info"><div class="search-med-name">Seclo</div><div class="search-med-generic">Omeprazole 20mg</div><div class="search-med-brand">Square Pharma</div><div class="generic-tag">Generic: Omeprazole</div></div><div style="text-align:right;flex-shrink:0"><div class="search-med-price">৳৬০</div><div class="in-stock">স্টকে আছে</div><button class="add-btn" style="margin-top:6px;margin-left:auto" onclick="addCart(event)">+</button></div></div>
-      <div class="search-med-card" onclick="goPage('medicine-detail')"><div class="search-med-img">🔵</div><div class="search-med-info"><div class="search-med-name">Azimax</div><div class="search-med-generic">Azithromycin 500mg</div><div class="search-med-brand">Square Pharma</div><div class="generic-tag">Generic: Azithromycin</div></div><div style="text-align:right;flex-shrink:0"><div class="search-med-price">৳১২০</div><div class="out-stock">স্টক নেই</div><button class="add-btn" style="margin-top:6px;margin-left:auto;opacity:0.4" disabled>+</button></div></div>
-      <div class="search-med-card" onclick="goPage('medicine-detail')"><div class="search-med-img">🔴</div><div class="search-med-info"><div class="search-med-name">Clavam</div><div class="search-med-generic">Amoxicillin+Clavulanate</div><div class="search-med-brand">Beximco Pharma</div><div class="generic-tag">Generic: Amoxicillin</div></div><div style="text-align:right;flex-shrink:0"><div class="search-med-price">৳১৮০</div><div class="in-stock">স্টকে আছে</div><button class="add-btn" style="margin-top:6px;margin-left:auto" onclick="addCart(event)">+</button></div></div>
+    <div class="search-result-list" id="search-results">
+      <div class="loading-skeleton" style="height:76px"></div>
+      <div class="loading-skeleton" style="height:76px"></div>
+      <div class="loading-skeleton" style="height:76px"></div>
     </div>
   </main>
 </div>
 
-<!-- ==================== PAGE: MEDICINE DETAIL ==================== -->
+<!-- ══ MEDICINE DETAIL ══ -->
 <div id="page-medicine-detail" class="page">
   <div class="sub-header">
-    <button class="back-btn" onclick="goPage('search')"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="back-btn" id="med-back-btn" onclick="goPage('search')"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
     <span class="sub-title">ওষুধের বিবরণ</span>
   </div>
-  <main class="main" style="padding-bottom:90px">
-    <div class="med-detail-hero">
-      <div class="med-detail-img">💊</div>
-      <div class="med-detail-name">Napa</div>
-      <div class="med-detail-generic">Paracetamol 500mg — ট্যাবলেট</div>
-      <div class="med-detail-price">৳৮ <span style="font-size:13px;font-weight:400;color:var(--text2)">/ ১০টি</span></div>
-      <div class="med-detail-brand">Beximco Pharmaceuticals Ltd.</div>
-      <div style="display:flex;gap:8px;margin-top:10px"><span class="open-badge">স্টকে আছে</span><span style="background:var(--primary-light);color:var(--primary);font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px">OTC</span></div>
-    </div>
-    <div class="info-card">
-      <div style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:10px">ব্যবহার ও নির্দেশনা</div>
-      <div style="font-size:13px;color:var(--text2);line-height:1.7">জ্বর, মাথাব্যথা ও মৃদু থেকে মাঝারি ব্যথায় কার্যকর। প্রাপ্তবয়স্কদের জন্য ১–২টি ট্যাবলেট ৪-৬ ঘন্টা পর পর। দিনে সর্বোচ্চ ৮টি।</div>
-    </div>
-    <div class="info-card">
-      <div class="info-row"><span class="info-label">Generic নাম</span><span class="info-val">Paracetamol</span></div>
-      <div class="info-row"><span class="info-label">Strength</span><span class="info-val">500mg</span></div>
-      <div class="info-row"><span class="info-label">ধরন</span><span class="info-val">ট্যাবলেট</span></div>
-      <div class="info-row"><span class="info-label">কোম্পানি</span><span class="info-val">Beximco Pharma</span></div>
-      <div class="info-row"><span class="info-label">প্যাকেজ</span><span class="info-val">১০টি/স্ট্রিপ</span></div>
-      <div class="info-row"><span class="info-label">মূল্য</span><span class="info-val">৳৮ / স্ট্রিপ</span></div>
-    </div>
-    <div class="info-card">
-      <div style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:12px">একই Generic — অন্য ব্র্যান্ড</div>
-      <div class="alt-brand-list">
-        <div class="alt-brand">Ace (Square)</div><div class="alt-brand">Renova (Incepta)</div><div class="alt-brand">Apacel (ACI)</div><div class="alt-brand">Dolo (Aristopharma)</div><div class="alt-brand">Pamol (Eskayef)</div>
-      </div>
-      <div style="font-size:11px;color:var(--text3);margin-top:10px">⚠️ একই salt, ভিন্ন ব্র্যান্ড। ফার্মেসিতে না থাকলে alternative নেওয়া যাবে।</div>
-    </div>
+  <main class="main" style="padding-bottom:90px" id="medicine-detail-content">
+    <div class="loading-skeleton" style="height:200px"></div>
   </main>
-  <div class="add-to-cart-bar">
+  <div class="add-to-cart-bar" id="add-to-cart-bar">
     <div class="qty-control">
       <button class="qty-btn" onclick="changeQty(-1)">−</button>
       <span class="qty-val" id="qty-display">1</span>
       <button class="qty-btn" onclick="changeQty(1)">+</button>
     </div>
-    <button class="add-cart-btn" onclick="requireAuth(()=>goPage('cart'))">🛒 কার্টে যোগ করুন — ৳৮</button>
+    <button class="add-cart-btn" id="add-cart-btn" onclick="addToCart()">🛒 কার্টে যোগ করুন</button>
   </div>
 </div>
 
-<!-- ==================== PAGE: CART ==================== -->
+<!-- ══ PHARMACIES ══ -->
+<div id="page-pharmacies" class="page">
+  <div class="sub-header">
+    <button class="back-btn" onclick="goPage('home')"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <span class="sub-title">সকল ফার্মেসি</span>
+  </div>
+  <main class="main">
+    <div class="pharmacy-list" id="all-pharmacy-list">
+      <div class="loading-skeleton" style="height:76px"></div>
+      <div class="loading-skeleton" style="height:76px"></div>
+      <div class="loading-skeleton" style="height:76px"></div>
+    </div>
+  </main>
+</div>
+
+<!-- ══ CART ══ -->
 <div id="page-cart" class="page">
   <div class="sub-header">
     <button class="back-btn" onclick="goPage('home')"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
     <span class="sub-title">আমার কার্ট</span>
-    <span style="margin-left:auto;font-size:12px;color:var(--text2)">৩টি আইটেম</span>
+    <span style="margin-left:auto;font-size:12px;color:var(--text2)" id="cart-item-count">০টি আইটেম</span>
   </div>
-  <main class="main">
-    <div style="background:var(--primary-light);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--primary);font-weight:600"><span>📍</span> Popular Pharmacy, ধানমন্ডি ২৭ থেকে ডেলিভারি</div>
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <div class="cart-item"><div class="cart-item-img">💊</div><div class="cart-item-info"><div class="cart-item-name">Napa</div><div class="cart-item-sub">Paracetamol 500mg · Beximco</div><div class="cart-item-bottom"><span class="cart-price">৳৮</span><div class="cart-qty"><button class="cart-qty-btn">−</button><span class="cart-qty-val">2</span><button class="cart-qty-btn">+</button></div></div></div><button class="del-btn">🗑</button></div>
-      <div class="cart-item"><div class="cart-item-img">🟢</div><div class="cart-item-info"><div class="cart-item-name">Seclo</div><div class="cart-item-sub">Omeprazole 20mg · Square</div><div class="cart-item-bottom"><span class="cart-price">৳৬০</span><div class="cart-qty"><button class="cart-qty-btn">−</button><span class="cart-qty-val">1</span><button class="cart-qty-btn">+</button></div></div></div><button class="del-btn">🗑</button></div>
-      <div class="cart-item"><div class="cart-item-img">🔵</div><div class="cart-item-info"><div class="cart-item-name">Azimax</div><div class="cart-item-sub">Azithromycin 500mg · Square</div><div class="cart-item-bottom"><span class="cart-price">৳১২০</span><div class="cart-qty"><button class="cart-qty-btn">−</button><span class="cart-qty-val">1</span><button class="cart-qty-btn">+</button></div></div></div><button class="del-btn">🗑</button></div>
-    </div>
-    <div class="cart-summary">
-      <div class="summary-row"><span>সাবটোটাল</span><span>৳১৯৬</span></div>
-      <div class="summary-row"><span>ডেলিভারি চার্জ</span><span>৳৩০</span></div>
-      <div class="summary-row"><span>ডিসকাউন্ট</span><span style="color:var(--success)">−৳৩৯</span></div>
-      <div class="summary-row total"><span>মোট</span><span>৳১৮৭</span></div>
-    </div>
-    <button class="checkout-btn" onclick="goPage('checkout')">✅ চেকআউট করুন — ৳১৮৭</button>
+  <main class="main" id="cart-main">
+    <div class="empty-state"><div>🛒</div><div>কার্ট খালি</div><div style="font-size:12px;margin-top:6px">ওষুধ যোগ করুন</div></div>
   </main>
 </div>
 
-<!-- ==================== PAGE: CHECKOUT ==================== -->
+<!-- ══ CHECKOUT ══ -->
 <div id="page-checkout" class="page">
   <div class="sub-header">
     <button class="back-btn" onclick="goPage('cart')"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -479,11 +434,7 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
       <div style="font-size:14px;font-weight:700;color:var(--fg)">📍 ডেলিভারি ঠিকানা</div>
       <div><div class="form-label">পূর্ণ নাম</div><input class="form-input" id="checkout-name" placeholder="আপনার নাম"></div>
       <div><div class="form-label">ফোন নম্বর</div><input class="form-input" id="checkout-phone" placeholder="01XXXXXXXXX"></div>
-      <div><div class="form-label">ঠিকানা</div><input class="form-input" placeholder="বাড়ি নম্বর, রাস্তা, এলাকা"></div>
-      <div style="display:flex;gap:10px">
-        <div style="flex:1"><div class="form-label">জেলা</div><input class="form-input" placeholder="জেলা" value="ঢাকা"></div>
-        <div style="flex:1"><div class="form-label">এলাকা</div><input class="form-input" placeholder="থানা"></div>
-      </div>
+      <div><div class="form-label">ঠিকানা</div><input class="form-input" id="checkout-address" placeholder="বাড়ি নম্বর, রাস্তা, এলাকা"></div>
     </div>
     <div class="form-section">
       <div style="font-size:14px;font-weight:700;color:var(--fg)">💳 পেমেন্ট পদ্ধতি</div>
@@ -493,39 +444,32 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
         <div class="pay-opt" onclick="selectPay(this)"><div class="pay-icon">💵</div><div><div class="pay-label">ক্যাশ অন ডেলিভারি</div><div class="pay-sub">ডেলিভারির সময় দিন</div></div><div class="pay-radio"></div></div>
       </div>
     </div>
-    <div class="cart-summary">
-      <div class="summary-row"><span>সাবটোটাল</span><span>৳১৯৬</span></div>
-      <div class="summary-row"><span>ডেলিভারি</span><span>৳৩০</span></div>
-      <div class="summary-row"><span>ডিসকাউন্ট</span><span style="color:var(--success)">−৳৩৯</span></div>
-      <div class="summary-row total"><span>মোট</span><span>৳১৮৭</span></div>
-    </div>
-    <button class="place-order-btn" onclick="goPage('tracking')">✅ অর্ডার নিশ্চিত করুন — ৳১৮৭</button>
+    <div class="cart-summary" id="checkout-summary"></div>
+    <button class="place-order-btn" onclick="placeOrder()">✅ অর্ডার নিশ্চিত করুন</button>
   </main>
 </div>
 
-<!-- ==================== PAGE: TRACKING ==================== -->
+<!-- ══ TRACKING ══ -->
 <div id="page-tracking" class="page">
   <div class="sub-header">
     <button class="back-btn" onclick="goPage('orders')"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
     <span class="sub-title">অর্ডার ট্র্যাক করুন</span>
   </div>
-  <main class="main">
-    <div class="tracking-card"><div class="order-id">#ORD-2024-00847</div><div class="order-pharmacy">Popular Pharmacy, ধানমন্ডি</div><div class="eta-badge">⏱ আনুমানিক ১৮ মিনিট বাকি</div></div>
+  <main class="main" id="tracking-content">
+    <div class="tracking-card"><div class="order-id" id="tracking-order-id">#ORD-000000</div><div class="order-pharmacy-name" id="tracking-pharmacy">লোড হচ্ছে...</div><div class="eta-badge">⏱ আনুমানিক ৩০ মিনিট</div></div>
     <div class="info-card">
       <div style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:16px">অর্ডারের অবস্থা</div>
       <div class="track-steps">
-        <div class="track-step"><div class="step-line-wrap"><div class="step-dot done">✓</div><div class="step-connector done"></div></div><div class="step-content"><div class="step-title">অর্ডার গৃহীত হয়েছে</div><div class="step-sub">১০:৩২ AM — ফার্মেসি confirm করেছে</div></div></div>
-        <div class="track-step"><div class="step-line-wrap"><div class="step-dot done">✓</div><div class="step-connector done"></div></div><div class="step-content"><div class="step-title">ওষুধ প্রস্তুত হচ্ছে</div><div class="step-sub">১০:৩৫ AM</div></div></div>
-        <div class="track-step"><div class="step-line-wrap"><div class="step-dot active">🛵</div><div class="step-connector pending"></div></div><div class="step-content"><div class="step-title">রাইডার পিক করেছে</div><div class="step-sub">১০:৪২ AM — আপনার দিকে আসছে</div></div></div>
-        <div class="track-step"><div class="step-line-wrap"><div class="step-dot pending"></div><div class="step-connector pending"></div></div><div class="step-content"><div class="step-title">পৌঁছে দেওয়া হবে</div><div class="step-sub">আনুমানিক ১১:০০ AM</div></div></div>
+        <div class="track-step"><div class="step-line-wrap"><div class="step-dot done">✓</div><div class="step-connector done"></div></div><div class="step-content"><div class="step-title">অর্ডার গৃহীত হয়েছে</div><div class="step-sub" id="t1-time">—</div></div></div>
+        <div class="track-step"><div class="step-line-wrap"><div class="step-dot active" id="step2-dot">⏳</div><div class="step-connector pending"></div></div><div class="step-content"><div class="step-title">ফার্মেসি প্রস্তুত করছে</div><div class="step-sub">অপেক্ষা করুন</div></div></div>
+        <div class="track-step"><div class="step-line-wrap"><div class="step-dot pending"></div><div class="step-connector pending"></div></div><div class="step-content"><div class="step-title">রাইডার পিক করবে</div><div class="step-sub">—</div></div></div>
         <div class="track-step"><div class="step-line-wrap"><div class="step-dot pending"></div></div><div class="step-content"><div class="step-title">ডেলিভারি সম্পন্ন</div><div class="step-sub">—</div></div></div>
       </div>
     </div>
-    <div class="rider-card"><div class="rider-avatar">🧑</div><div><div class="rider-name">Rakib Hasan</div><div class="rider-plate">ঢাকা মেট্রো — গ ১১-৫৫৬৭</div></div><button class="call-btn">📞</button></div>
   </main>
 </div>
 
-<!-- ==================== PAGE: ORDERS ==================== -->
+<!-- ══ ORDERS ══ -->
 <div id="page-orders" class="page">
   <div class="sub-header">
     <button class="back-btn" onclick="goPage('home')"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -534,18 +478,17 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
   <main class="main">
     <div class="filter-row">
       <div class="filter-chip active">সব</div>
-      <div class="filter-chip">ডেলিভারি হয়েছে</div>
       <div class="filter-chip">চলমান</div>
+      <div class="filter-chip">ডেলিভারি হয়েছে</div>
       <div class="filter-chip">বাতিল</div>
     </div>
     <div id="orders-list" style="display:flex;flex-direction:column;gap:10px">
-      <div class="order-hist-card" onclick="goPage('tracking')"><div class="order-hist-top"><span class="order-hist-id">#ORD-2024-00847</span><span class="order-status-badge badge-pending">চলমান 🟡</span></div><div class="order-hist-pharmacy">Popular Pharmacy</div><div class="order-hist-items">Napa × ২, Seclo × ১, Azimax × ১</div><div class="order-hist-bottom"><span class="order-hist-total">৳১৮৭</span><button class="reorder-btn">ট্র্যাক করুন</button></div></div>
-      <div class="order-hist-card"><div class="order-hist-top"><span class="order-hist-id">#ORD-2024-00831</span><span class="order-status-badge badge-delivered">ডেলিভারি হয়েছে ✓</span></div><div class="order-hist-pharmacy">Lazz Pharma</div><div class="order-hist-items">Napa Extra × ২, Vitamin C × ১</div><div class="order-hist-bottom"><span class="order-hist-total">৳৯৪</span><button class="reorder-btn">আবার অর্ডার</button></div></div>
+      <div class="loading-skeleton" style="height:100px"></div>
     </div>
   </main>
 </div>
 
-<!-- ==================== PAGE: PROFILE ==================== -->
+<!-- ══ PROFILE ══ -->
 <div id="page-profile" class="page">
   <main class="main" style="padding-top:20px">
     <div class="profile-hero">
@@ -554,9 +497,9 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
       <div class="profile-phone" id="profile-phone">—</div>
     </div>
     <div class="stat-row">
-      <div class="stat-item"><div class="stat-num" id="total-orders">০</div><div class="stat-label">মোট অর্ডার</div></div>
-      <div class="stat-item" style="border-left:1px solid var(--border)"><div class="stat-num" id="total-spent">৳০</div><div class="stat-label">মোট খরচ</div></div>
-      <div class="stat-item" style="border-left:1px solid var(--border)"><div class="stat-num" id="total-saved">৳০</div><div class="stat-label">সাশ্রয়</div></div>
+      <div class="stat-item"><div class="stat-num" id="stat-orders">০</div><div class="stat-label">মোট অর্ডার</div></div>
+      <div class="stat-item" style="border-left:1px solid var(--border)"><div class="stat-num" id="stat-spent">৳০</div><div class="stat-label">মোট খরচ</div></div>
+      <div class="stat-item" style="border-left:1px solid var(--border)"><div class="stat-num" id="stat-saved">৳০</div><div class="stat-label">সাশ্রয়</div></div>
     </div>
     <div class="menu-list">
       <div class="menu-item"><div class="menu-icon" style="background:#dbeafe">📍</div><span class="menu-label">সেভ করা ঠিকানা</span><span class="menu-arrow">›</span></div>
@@ -564,49 +507,22 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
       <div class="menu-item"><div class="menu-icon" style="background:#fef3c7">💊</div><span class="menu-label">নিয়মিত ওষুধ</span><span class="menu-arrow">›</span></div>
       <div class="menu-item"><div class="menu-icon" style="background:var(--primary-light)">🎁</div><span class="menu-label">অফার ও কুপন</span><span class="menu-arrow">›</span></div>
       <div class="menu-item"><div class="menu-icon" style="background:var(--bg2)">⚙️</div><span class="menu-label">সেটিংস</span><span class="menu-arrow">›</span></div>
-      <div class="menu-item"><div class="menu-icon" style="background:var(--bg2)">❓</div><span class="menu-label">সাহায্য ও সাপোর্ট</span><span class="menu-arrow">›</span></div>
     </div>
     <button class="logout-btn" onclick="handleLogout()">লগ আউট</button>
   </main>
 </div>
 
-<!-- ==================== PAGE: PHARMACY DETAIL ==================== -->
-<div id="page-pharmacy-detail" class="page">
-  <div class="sub-header">
-    <button class="back-btn" onclick="goPage('home')"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
-    <span class="sub-title">ফার্মেসির তথ্য</span>
-  </div>
-  <main class="main">
-    <div class="pharma-hero">
-      <div class="pharma-big-img">💊</div>
-      <div><div class="pharma-detail-name">Popular Pharmacy</div><div class="pharma-detail-area">ধানমন্ডি ২৭, ঢাকা-১২০৯</div><div class="pharma-stats"><span class="pharma-stat">⭐ 4.9</span><span class="pharma-stat">📦 ১২০০+ অর্ডার</span><span class="pharma-stat">⏱ ২০-৩০ মিনিট</span></div><button class="order-from-btn" onclick="goPage('search')">এই ফার্মেসি থেকে অর্ডার করুন</button></div>
-    </div>
-    <div class="info-card">
-      <div class="info-row"><span class="info-label">খোলার সময়</span><span class="info-val">সকাল ৮টা – রাত ১২টা</span></div>
-      <div class="info-row"><span class="info-label">অবস্থা</span><span class="info-val" style="color:var(--success)">এখন খোলা ✓</span></div>
-      <div class="info-row"><span class="info-label">ডেলিভারি এলাকা</span><span class="info-val">ধানমন্ডি, কলাবাগান</span></div>
-      <div class="info-row"><span class="info-label">ন্যূনতম অর্ডার</span><span class="info-val">৳৫০</span></div>
-      <div class="info-row"><span class="info-label">ডেলিভারি চার্জ</span><span class="info-val">৳৩০</span></div>
-    </div>
-  </main>
-</div>
-
-<!-- ==================== LOGIN MODAL ==================== -->
+<!-- ══ LOGIN MODAL ══ -->
 <div class="modal-overlay" id="login-modal">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-header">
-      <span class="modal-title" id="modal-title">লগইন করুন</span>
+      <span class="modal-title">লগইন করুন</span>
       <button class="modal-close" onclick="closeLogin()">✕</button>
     </div>
     <div class="modal-body">
-
-      <!-- Role Select -->
       <div class="auth-screen active" id="modal-role">
-        <div style="text-align:center">
-          <div style="font-size:48px;margin-bottom:10px">💊</div>
-          <div style="font-size:16px;font-weight:700;color:var(--fg)">আপনি কে?</div>
-        </div>
+        <div style="text-align:center"><div style="font-size:48px;margin-bottom:10px">💊</div><div style="font-size:16px;font-weight:700;color:var(--fg)">আপনি কে?</div></div>
         <div class="role-cards">
           <div class="role-card" id="modal-role-user" onclick="selectModalRole('user')"><div class="role-card-icon">👤</div><div class="role-card-label">ব্যবহারকারী</div><div class="role-card-sub">ওষুধ কিনতে চাই</div></div>
           <div class="role-card" id="modal-role-pharmacy" onclick="selectModalRole('pharmacy')"><div class="role-card-icon">🏪</div><div class="role-card-label">ফার্মেসি</div><div class="role-card-sub">অর্ডার পরিচালনা</div></div>
@@ -614,10 +530,8 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
         <button class="auth-btn" id="modal-next-btn" disabled onclick="showModalScreen('phone')">পরবর্তী →</button>
         <div class="guest-link-modal"><span onclick="closeLogin()">Guest হিসেবে দেখুন →</span></div>
       </div>
-
-      <!-- Phone -->
       <div class="auth-screen" id="modal-phone">
-        <button class="google-btn" onclick="modalGoogleLogin()">
+        <button class="google-btn" id="google-btn" onclick="modalGoogleLogin()">
           <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
           Google দিয়ে লগইন
         </button>
@@ -629,8 +543,6 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
         <button class="auth-btn" id="modal-otp-btn" disabled onclick="sendModalOtp()">OTP পাঠান</button>
         <div class="guest-link-modal"><span onclick="showModalScreen('role')">← পেছনে</span></div>
       </div>
-
-      <!-- OTP -->
       <div class="auth-screen" id="modal-otp">
         <div style="text-align:center;font-size:13px;color:var(--text2)" id="modal-otp-sub">OTP পাঠানো হয়েছে</div>
         <div class="otp-wrap">
@@ -645,28 +557,22 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
         <button class="auth-btn" id="modal-verify-btn" disabled onclick="verifyModalOtp()">যাচাই করুন →</button>
         <div class="guest-link-modal"><span onclick="showModalScreen('phone')">← পেছনে</span></div>
       </div>
-
-      <!-- Pharmacy Info -->
       <div class="auth-screen" id="modal-pharmacy-info">
-        <div class="info-box">⚠️ Trade License যাচাই হলে account সক্রিয় হবে। সাধারণত ২৪ ঘন্টার মধ্যে।</div>
+        <div class="info-box">⚠️ Trade License যাচাই হলে account সক্রিয় হবে।</div>
         <input class="form-input" placeholder="ফার্মেসির নাম *" id="modal-pharma-name" style="border-radius:12px">
         <input class="form-input" placeholder="পূর্ণ ঠিকানা *" id="modal-pharma-address" style="border-radius:12px">
         <input class="form-input" placeholder="Trade License নম্বর *" id="modal-pharma-license" style="border-radius:12px">
         <input class="form-input" placeholder="মালিকের নাম *" id="modal-pharma-owner" style="border-radius:12px">
         <button class="auth-btn" onclick="submitModalPharmacy()">আবেদন জমা দিন →</button>
       </div>
-
-      <!-- Pending -->
       <div class="auth-screen" id="modal-pending">
         <div style="text-align:center;padding:20px 0">
           <div style="font-size:52px;margin-bottom:12px">⏳</div>
           <div style="font-size:18px;font-weight:700;color:var(--fg);margin-bottom:8px">আবেদন জমা হয়েছে!</div>
-          <div style="font-size:13px;color:var(--text2);line-height:1.7">Trade License যাচাই হলে SMS এ জানানো হবে।<br>সাধারণত <strong>২৪ ঘন্টার</strong> মধ্যে।</div>
-          <div style="margin-top:16px;background:var(--primary-light);border-radius:12px;padding:14px;font-size:13px;color:var(--primary);font-weight:600">📞 জরুরি: 01700-000000</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.7">Trade License যাচাই হলে SMS এ জানানো হবে।</div>
         </div>
         <button class="auth-btn" onclick="closeLogin()">বন্ধ করুন</button>
       </div>
-
     </div>
   </div>
 </div>
@@ -679,85 +585,615 @@ body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:
   <div class="nav-item active" id="nav-home" onclick="goPage('home')"><div class="nav-icon-wrap">🏠</div><div class="nav-label">হোম</div></div>
   <div class="nav-item" id="nav-search" onclick="goPage('search')"><div class="nav-icon-wrap">🔍</div><div class="nav-label">খুঁজুন</div></div>
   <div class="nav-center-wrap" onclick="requireAuth(()=>goPage('cart'))">
-    <div class="nav-center-btn cart-badge">🛒<span class="cart-count" id="cart-count" style="display:none">0</span></div>
+    <div class="nav-center-btn">🛒<span class="cart-count" id="cart-count">0</span></div>
     <div class="nav-center-label">কার্ট</div>
   </div>
   <div class="nav-item" id="nav-orders" onclick="requireAuth(()=>goPage('orders'))"><div class="nav-icon-wrap">📦</div><div class="nav-label">অর্ডার</div></div>
   <div class="nav-item" id="nav-profile" onclick="requireAuth(()=>goPage('profile'))"><div class="nav-icon-wrap">👤</div><div class="nav-label">প্রোফাইল</div></div>
 </nav>
 
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, getDoc, addDoc, updateDoc, query, where, orderBy, limit, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey:"AIzaSyBn3uC3F6QsfNNzRTaCPfBVHu8_BlLYNy8",
+  authDomain:"pharmacy-6d661.firebaseapp.com",
+  projectId:"pharmacy-6d661",
+  storageBucket:"pharmacy-6d661.firebasestorage.app",
+  messagingSenderId:"601956352826",
+  appId:"1:601956352826:web:a639bd54f58383c33d8603"
+});
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+const googleProvider = new GoogleAuthProvider();
+const ADMIN_EMAIL = 'akayes99@gmail.com';
+
+// ── STATE ──
+let currentUser = null;
+let allMedicines = [];
+let allPharmacies = [];
+let cartItems = [];
+let currentMedicine = null;
+let currentFilter = 'all';
+let qty = 1;
+let currentModalRole = null;
+let pendingCallback = null;
+
+// ── LOAD DATA ──
+async function loadMedicines() {
+  try {
+    const snap = await getDocs(collection(db, 'medicines'));
+    allMedicines = snap.docs.map(d => ({id:d.id,...d.data()}));
+    renderHomeMedicines();
+    renderSearchResults('', 'all');
+  } catch(e) { console.error('Medicine load error:', e); }
+}
+
+async function loadPharmacies() {
+  try {
+    const snap = await getDocs(query(collection(db,'pharmacies'), where('status','==','approved')));
+    allPharmacies = snap.docs.map(d => ({id:d.id,...d.data()}));
+    renderHomePharmacies();
+    renderAllPharmacies();
+  } catch(e) { console.error('Pharmacy load error:', e); }
+}
+
+// ── RENDER HOME MEDICINES ──
+function renderHomeMedicines(cat='all') {
+  const grid = document.getElementById('home-medicine-grid');
+  let meds = cat==='all' ? allMedicines.slice(0,8) : allMedicines.filter(m=>m.category===cat).slice(0,8);
+  if(!meds.length) { grid.innerHTML='<div class="empty-state" style="grid-column:span 2"><div>💊</div><div>এই ক্যাটাগরিতে ওষুধ নেই</div></div>'; return; }
+  grid.innerHTML = meds.map(m => `
+    <div class="med-card" onclick="showMedicineDetail('${m.id}')">
+      <div class="med-img">${m.emoji||'💊'}</div>
+      <div class="med-name">${m.name}</div>
+      <div class="med-generic">${m.generic} ${m.strength}</div>
+      <div class="med-brand">${m.brand}</div>
+      <div class="med-footer">
+        <span class="med-price">৳${m.price}</span>
+        <button class="add-btn" onclick="event.stopPropagation();quickAddCart('${m.id}')">+</button>
+      </div>
+    </div>`).join('');
+}
+
+// ── RENDER HOME PHARMACIES ──
+function renderHomePharmacies() {
+  const list = document.getElementById('home-pharmacy-list');
+  const open = allPharmacies.filter(p=>p.isOpen).slice(0,2);
+  if(!open.length) { list.innerHTML='<div class="empty-state"><div>🏥</div><div>কোনো ফার্মেসি খোলা নেই</div></div>'; return; }
+  list.innerHTML = open.map(p => pharmacyCardHTML(p)).join('');
+}
+
+function renderAllPharmacies() {
+  const list = document.getElementById('all-pharmacy-list');
+  if(!allPharmacies.length) { list.innerHTML='<div class="empty-state"><div>🏥</div><div>কোনো ফার্মেসি নেই</div></div>'; return; }
+  list.innerHTML = allPharmacies.map(p => pharmacyCardHTML(p)).join('');
+}
+
+function pharmacyCardHTML(p) {
+  return `<div class="pharmacy-card" onclick="goPage('home')">
+    <div class="pharmacy-img">${p.emoji||'💊'}</div>
+    <div style="flex:1;min-width:0">
+      <div class="pharmacy-name">${p.name}</div>
+      <div class="pharmacy-area">${p.area}</div>
+      <div class="pharmacy-meta">
+        <span>⭐ ${p.rating}</span>
+        <span class="meta-dot">•</span>
+        <span>⏱ ${p.deliveryTime}</span>
+        <span class="meta-dot">•</span>
+        <span>৳${p.deliveryCharge} ডেলিভারি</span>
+      </div>
+    </div>
+    <span class="${p.isOpen?'open-badge':'closed-badge'}">${p.isOpen?'খোলা':'বন্ধ'}</span>
+  </div>`;
+}
+
+// ── SEARCH ──
+window.handleSearch = function(val) {
+  renderSearchResults(val, currentFilter);
+}
+
+function renderSearchResults(query, filter) {
+  const list = document.getElementById('search-results');
+  let results = allMedicines;
+  if(filter !== 'all') results = results.filter(m => m.category === filter);
+  if(query.trim()) {
+    const q = query.toLowerCase();
+    results = results.filter(m =>
+      m.nameLower?.includes(q) ||
+      m.generic?.toLowerCase().includes(q) ||
+      m.brand?.toLowerCase().includes(q) ||
+      m.categoryBn?.includes(q)
+    );
+  }
+  if(!results.length) {
+    list.innerHTML='<div class="empty-state"><div>🔍</div><div>কোনো ওষুধ পাওয়া যায়নি</div></div>';
+    return;
+  }
+  list.innerHTML = results.map(m => `
+    <div class="search-med-card" onclick="showMedicineDetail('${m.id}')">
+      <div class="search-med-img">${m.emoji||'💊'}</div>
+      <div class="search-med-info">
+        <div class="search-med-name">${m.name}</div>
+        <div class="search-med-generic">${m.generic} ${m.strength}</div>
+        <div class="search-med-brand">${m.brand}</div>
+        <div class="generic-tag">Generic: ${m.generic}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div class="search-med-price">৳${m.price}</div>
+        <div class="in-stock">স্টকে আছে</div>
+        <button class="add-btn" style="margin-top:6px;margin-left:auto" onclick="event.stopPropagation();quickAddCart('${m.id}')">+</button>
+      </div>
+    </div>`).join('');
+}
+
+window.searchFor = function(term) {
+  document.getElementById('search-input').value = term;
+  handleSearch(term);
+  goPage('search');
+}
+
+// ── MEDICINE DETAIL ──
+window.showMedicineDetail = function(id) {
+  currentMedicine = allMedicines.find(m=>m.id===id);
+  if(!currentMedicine) return;
+  qty = 1;
+  document.getElementById('qty-display').textContent = 1;
+  const content = document.getElementById('medicine-detail-content');
+  const m = currentMedicine;
+  content.innerHTML = `
+    <div class="med-detail-hero">
+      <div class="med-detail-img">${m.emoji||'💊'}</div>
+      <div class="med-detail-name">${m.name}</div>
+      <div class="med-detail-generic">${m.generic} ${m.strength} — ${m.type==='tablet'?'ট্যাবলেট':m.type==='capsule'?'ক্যাপসুল':m.type==='syrup'?'সিরাপ':'ক্রিম'}</div>
+      <div class="med-detail-price">৳${m.price} <span style="font-size:13px;font-weight:400;color:var(--text2)">/ ${m.stripSize}টি</span></div>
+      <div class="med-detail-brand">${m.brand}</div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <span class="open-badge">স্টকে আছে</span>
+        ${m.otc?'<span style="background:var(--primary-light);color:var(--primary);font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px">OTC</span>':''}
+      </div>
+    </div>
+    <div class="info-card">
+      <div style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:10px">ব্যবহার ও নির্দেশনা</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.7">${m.description}</div>
+    </div>
+    <div class="info-card">
+      <div class="info-row"><span class="info-label">Generic নাম</span><span class="info-val">${m.generic}</span></div>
+      <div class="info-row"><span class="info-label">Strength</span><span class="info-val">${m.strength}</span></div>
+      <div class="info-row"><span class="info-label">কোম্পানি</span><span class="info-val">${m.brand}</span></div>
+      <div class="info-row"><span class="info-label">ডোজ</span><span class="info-val">${m.dose}</span></div>
+      <div class="info-row"><span class="info-label">মূল্য</span><span class="info-val">৳${m.price} / ${m.stripSize}টি</span></div>
+    </div>
+    ${m.altBrands?.length?`<div class="info-card">
+      <div style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:12px">একই Generic — অন্য ব্র্যান্ড</div>
+      <div class="alt-brand-list">${m.altBrands.map(b=>`<div class="alt-brand">${b}</div>`).join('')}</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:10px">⚠️ একই salt, ভিন্ন ব্র্যান্ড। ফার্মেসিতে না থাকলে alternative নেওয়া যাবে।</div>
+    </div>`:''}`;
+  document.getElementById('add-cart-btn').textContent = `🛒 কার্টে যোগ করুন — ৳${m.price}`;
+  goPage('medicine-detail');
+}
+
+// ── CART ──
+window.quickAddCart = function(id) {
+  if(!currentUser) { pendingCallback=null; openLogin(); return; }
+  const med = allMedicines.find(m=>m.id===id);
+  if(!med) return;
+  const existing = cartItems.find(i=>i.id===id);
+  if(existing) existing.qty++;
+  else cartItems.push({...med, qty:1});
+  updateCartUI();
+}
+
+window.addToCart = function() {
+  if(!currentUser) { pendingCallback=null; openLogin(); return; }
+  if(!currentMedicine) return;
+  const existing = cartItems.find(i=>i.id===currentMedicine.id);
+  if(existing) existing.qty += qty;
+  else cartItems.push({...currentMedicine, qty});
+  updateCartUI();
+  goPage('cart');
+}
+
+function updateCartUI() {
+  const total = cartItems.reduce((s,i)=>s+i.qty,0);
+  const cc = document.getElementById('cart-count');
+  cc.textContent = total;
+  cc.style.display = total>0 ? 'flex' : 'none';
+  document.getElementById('cart-item-count').textContent = `${total}টি আইটেম`;
+  renderCart();
+}
+
+function renderCart() {
+  const main = document.getElementById('cart-main');
+  if(!cartItems.length) {
+    main.innerHTML='<div class="empty-state"><div>🛒</div><div>কার্ট খালি</div><div style="font-size:12px;margin-top:6px">ওষুধ যোগ করুন</div></div>';
+    return;
+  }
+  const subtotal = cartItems.reduce((s,i)=>s+(i.price*i.qty),0);
+  const delivery = 30;
+  const total = subtotal + delivery;
+  main.innerHTML = `
+    <div style="background:var(--primary-light);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--primary);font-weight:600">
+      <span>📍</span> নিকটতম ফার্মেসি থেকে ডেলিভারি
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      ${cartItems.map((item,idx) => `
+        <div class="cart-item">
+          <div class="cart-item-img">${item.emoji||'💊'}</div>
+          <div style="flex:1;min-width:0">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-sub">${item.generic} ${item.strength} · ${item.brand}</div>
+            <div class="cart-item-bottom">
+              <span class="cart-price">৳${item.price * item.qty}</span>
+              <div class="cart-qty">
+                <button class="cart-qty-btn" onclick="updateCartQty(${idx},-1)">−</button>
+                <span class="cart-qty-val">${item.qty}</span>
+                <button class="cart-qty-btn" onclick="updateCartQty(${idx},1)">+</button>
+              </div>
+            </div>
+          </div>
+          <button class="del-btn" onclick="removeFromCart(${idx})">🗑</button>
+        </div>`).join('')}
+    </div>
+    <div class="cart-summary">
+      <div class="summary-row"><span>সাবটোটাল</span><span>৳${subtotal}</span></div>
+      <div class="summary-row"><span>ডেলিভারি চার্জ</span><span>৳${delivery}</span></div>
+      <div class="summary-row total"><span>মোট</span><span>৳${total}</span></div>
+    </div>
+    <button class="checkout-btn" onclick="goToCheckout()">✅ চেকআউট করুন — ৳${total}</button>`;
+}
+
+window.updateCartQty = function(idx, d) {
+  cartItems[idx].qty = Math.max(1, cartItems[idx].qty + d);
+  updateCartUI();
+}
+
+window.removeFromCart = function(idx) {
+  cartItems.splice(idx, 1);
+  updateCartUI();
+}
+
+window.goToCheckout = function() {
+  const subtotal = cartItems.reduce((s,i)=>s+(i.price*i.qty),0);
+  const total = subtotal + 30;
+  document.getElementById('checkout-name').value = currentUser?.displayName || '';
+  document.getElementById('checkout-phone').value = currentUser?.phoneNumber || '';
+  document.getElementById('checkout-summary').innerHTML = `
+    <div class="summary-row"><span>সাবটোটাল</span><span>৳${subtotal}</span></div>
+    <div class="summary-row"><span>ডেলিভারি</span><span>৳৩০</span></div>
+    <div class="summary-row total"><span>মোট</span><span>৳${total}</span></div>`;
+  goPage('checkout');
+}
+
+window.placeOrder = async function() {
+  if(!currentUser) { openLogin(); return; }
+  const name = document.getElementById('checkout-name').value;
+  const phone = document.getElementById('checkout-phone').value;
+  const address = document.getElementById('checkout-address').value;
+  const payLabel = document.querySelector('.pay-opt.selected .pay-label');
+  const payMethod = payLabel ? payLabel.textContent.trim() : 'ক্যাশ অন ডেলিভারি';
+  if(!name||!phone||!address) { alert('সব তথ্য পূরণ করুন'); return; }
+
+  const btn = document.querySelector('.place-order-btn');
+  btn.textContent = '⏳ অর্ডার দেওয়া হচ্ছে...';
+  btn.disabled = true;
+
+  const subtotal = cartItems.reduce((s,i)=>s+(i.price*i.qty),0);
+  const total = subtotal + 30;
+
+  try {
+    const nearestPharmacy = allPharmacies.find(p=>p.isOpen) || allPharmacies[0];
+    const orderRef = await addDoc(collection(db,'orders'), {
+      userId: currentUser.uid,
+      userName: name,
+      userPhone: phone,
+      userEmail: currentUser.email || '',
+      deliveryAddress: address,
+      items: cartItems.map(i=>({id:i.id,name:i.name,qty:i.qty,price:i.price,emoji:i.emoji||'💊'})),
+      subtotal,
+      deliveryCharge: 30,
+      total,
+      paymentMethod: payMethod,
+      paymentStatus: payMethod==='ক্যাশ অন ডেলিভারি' ? 'cod_pending' : 'pending',
+      status: 'confirmed',
+      pharmacyId: nearestPharmacy?.id || '',
+      pharmacyName: nearestPharmacy?.name || 'Sondhan Pharmacy',
+      riderId: null,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+
+    const shortId = '#' + orderRef.id.slice(0,8).toUpperCase();
+
+    if(payMethod === 'bKash') {
+      btn.textContent = '✅ অর্ডার নিশ্চিত করুন'; btn.disabled = false;
+      showBkashModal(total, orderRef.id); return;
+    }
+    if(payMethod === 'Nagad') {
+      btn.textContent = '✅ অর্ডার নিশ্চিত করুন'; btn.disabled = false;
+      showNagadModal(total, orderRef.id); return;
+    }
+
+    // COD
+    document.getElementById('tracking-order-id').textContent = shortId;
+    document.getElementById('tracking-pharmacy').textContent = nearestPharmacy?.name || 'Sondhan Pharmacy';
+    document.getElementById('t1-time').textContent = new Date().toLocaleTimeString('bn-BD');
+    cartItems = []; updateCartUI();
+    btn.textContent = '✅ অর্ডার নিশ্চিত করুন'; btn.disabled = false;
+    listenToOrder(orderRef.id);
+    goPage('tracking');
+
+  } catch(e) {
+    alert('অর্ডার দিতে সমস্যা হয়েছে: '+e.message);
+    btn.textContent = '✅ অর্ডার নিশ্চিত করুন'; btn.disabled = false;
+  }
+}
+
+function listenToOrder(orderId) {
+  if(window.__orderUnsubscribe) window.__orderUnsubscribe();
+  window.__orderUnsubscribe = onSnapshot(doc(db,'orders',orderId), (snap) => {
+    if(!snap.exists()) return;
+    const order = snap.data();
+    const stepMap = {'confirmed':0,'preparing':1,'picked':2,'delivered':3};
+    const currentStep = stepMap[order.status] ?? 0;
+    const dots = document.querySelectorAll('.step-dot');
+    const connectors = document.querySelectorAll('.step-connector');
+    const icons = ['✓','⏳','🛵','✅'];
+    dots.forEach((dot,i) => {
+      dot.className = 'step-dot';
+      if(i < currentStep){dot.classList.add('done');dot.textContent='✓';}
+      else if(i===currentStep){dot.classList.add('active');dot.textContent=icons[i];}
+      else{dot.classList.add('pending');dot.textContent='';}
+    });
+    connectors.forEach((c,i)=>{c.className='step-connector';c.classList.add(i<currentStep?'done':'pending');});
+    if(order.pharmacyName) document.getElementById('tracking-pharmacy').textContent=order.pharmacyName;
+  });
+}
+
+function showBkashModal(amount, orderId) {
+  const m = document.createElement('div');
+  m.id = 'payment-modal';
+  m.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:600;display:flex;align-items:center;justify-content:center;padding:20px';
+  m.innerHTML = `<div style="background:#fff;border-radius:20px;padding:24px;width:100%;max-width:360px;text-align:center">
+    <div style="font-size:48px;margin-bottom:10px">📱</div>
+    <div style="font-size:18px;font-weight:700;color:#e2136e;margin-bottom:6px">bKash পেমেন্ট</div>
+    <div style="font-size:13px;color:#666;margin-bottom:16px">নিচের নম্বরে <strong>৳${amount}</strong> পাঠান</div>
+    <div style="background:#fce4ec;border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="font-size:22px;font-weight:700;color:#e2136e;letter-spacing:2px">01700-000000</div>
+      <div style="font-size:11px;color:#c62828;margin-top:4px">Merchant নম্বর</div>
+    </div>
+    <div style="font-size:13px;color:#666;margin-bottom:8px">Transaction ID দিন:</div>
+    <input id="bkash-txn" style="width:100%;border:1.5px solid #ddd;border-radius:10px;padding:12px;font-size:14px;margin-bottom:14px;outline:none" placeholder="8N6XXXXXXX">
+    <button onclick="confirmPayment('bkash','${orderId}',${amount})" style="width:100%;background:#e2136e;color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif">✅ নিশ্চিত করুন</button>
+    <div style="margin-top:10px;font-size:12px;color:#999;cursor:pointer" onclick="document.getElementById('payment-modal').remove()">বাতিল করুন</div>
+  </div>`;
+  document.body.appendChild(m);
+}
+
+function showNagadModal(amount, orderId) {
+  const m = document.createElement('div');
+  m.id = 'payment-modal';
+  m.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:600;display:flex;align-items:center;justify-content:center;padding:20px';
+  m.innerHTML = `<div style="background:#fff;border-radius:20px;padding:24px;width:100%;max-width:360px;text-align:center">
+    <div style="font-size:48px;margin-bottom:10px">🟠</div>
+    <div style="font-size:18px;font-weight:700;color:#f7941d;margin-bottom:6px">Nagad পেমেন্ট</div>
+    <div style="font-size:13px;color:#666;margin-bottom:16px">নিচের নম্বরে <strong>৳${amount}</strong> পাঠান</div>
+    <div style="background:#fff3e0;border-radius:12px;padding:14px;margin-bottom:16px">
+      <div style="font-size:22px;font-weight:700;color:#e65100;letter-spacing:2px">01700-000000</div>
+      <div style="font-size:11px;color:#bf360c;margin-top:4px">Merchant নম্বর</div>
+    </div>
+    <div style="font-size:13px;color:#666;margin-bottom:8px">Transaction ID দিন:</div>
+    <input id="nagad-txn" style="width:100%;border:1.5px solid #ddd;border-radius:10px;padding:12px;font-size:14px;margin-bottom:14px;outline:none" placeholder="Transaction ID">
+    <button onclick="confirmPayment('nagad','${orderId}',${amount})" style="width:100%;background:#f7941d;color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif">✅ নিশ্চিত করুন</button>
+    <div style="margin-top:10px;font-size:12px;color:#999;cursor:pointer" onclick="document.getElementById('payment-modal').remove()">বাতিল করুন</div>
+  </div>`;
+  document.body.appendChild(m);
+}
+
+window.confirmPayment = async function(method, orderId, amount) {
+  const txnId = document.getElementById(method+'-txn')?.value?.trim();
+  if(!txnId) { alert('Transaction ID দিন'); return; }
+  try {
+    await updateDoc(doc(db,'orders',orderId), {
+      paymentStatus: 'paid',
+      paymentTxnId: txnId,
+      paymentMethod: method,
+      paidAt: serverTimestamp()
+    });
+    document.getElementById('payment-modal')?.remove();
+    const shortId = '#' + orderId.slice(0,8).toUpperCase();
+    document.getElementById('tracking-order-id').textContent = shortId;
+    document.getElementById('t1-time').textContent = new Date().toLocaleTimeString('bn-BD');
+    cartItems = []; updateCartUI();
+    listenToOrder(orderId);
+    goPage('tracking');
+  } catch(e) { alert('সমস্যা হয়েছে: '+e.message); }
+}
+
+// ── ORDERS ──
+window.loadOrders = function() {
+  if(!currentUser) return;
+  const list = document.getElementById('orders-list');
+  list.innerHTML = '<div class="empty-state"><div>⏳</div><div>লোড হচ্ছে...</div></div>';
+  const q = query(
+    collection(db,'orders'),
+    where('userId','==',currentUser.uid),
+    orderBy('createdAt','desc'),
+    limit(20)
+  );
+  if(window.__ordersUnsubscribe) window.__ordersUnsubscribe();
+  window.__ordersUnsubscribe = onSnapshot(q, (snap) => {
+    if(snap.empty) {
+      list.innerHTML='<div class="empty-state"><div>📦</div><div>কোনো অর্ডার নেই</div></div>';
+      return;
+    }
+    list.innerHTML = snap.docs.map(d => {
+      const o = d.data();
+      const isActive = ['confirmed','preparing','picked'].includes(o.status);
+      const statusBadge = o.status==='delivered'?'badge-delivered':o.status==='cancelled'?'badge-cancelled':'badge-pending';
+      const statusText = {'confirmed':'নিশ্চিত হয়েছে 🟡','preparing':'প্রস্তুত হচ্ছে ⏳','picked':'রাইডার আসছে 🛵','delivered':'ডেলিভারি হয়েছে ✓','cancelled':'বাতিল ✕'}[o.status]||'চলমান 🟡';
+      const time = o.createdAt?.toDate ? o.createdAt.toDate().toLocaleDateString('bn-BD',{day:'numeric',month:'short'}) : '';
+      const oid = d.id;
+      const trackBtn = isActive
+        ? `<button class="reorder-btn" onclick="event.stopPropagation();viewOrder('${oid}')">ট্র্যাক করুন</button>`
+        : `<button class="reorder-btn" onclick="event.stopPropagation();alert('শীঘ্রই আসছে!')">আবার অর্ডার</button>`;
+      return `<div class="order-hist-card" onclick="viewOrder('${oid}')">
+        <div class="order-hist-top">
+          <span class="order-hist-id">#${oid.slice(0,8).toUpperCase()}</span>
+          <span class="order-status-badge ${statusBadge}">${statusText}</span>
+        </div>
+        <div class="order-hist-pharmacy">${o.pharmacyName||'Sondhan Pharmacy'}</div>
+        <div class="order-hist-items">${o.items?.map(i=>(i.emoji||'💊')+' '+i.name+' × '+i.qty).join(', ')||''}</div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:8px">${time} · ${o.paymentMethod||'COD'}</div>
+        <div class="order-hist-bottom">
+          <span class="order-hist-total">৳${o.total}</span>
+          ${trackBtn}
+        </div>
+      </div>`;
+    }).join('');
+  }, (e) => {
+    list.innerHTML='<div class="empty-state"><div>⚠️</div><div>লোড করতে সমস্যা</div></div>';
+  });
+}
+
+window.viewOrder = function(orderId) {
+  document.getElementById('tracking-order-id').textContent = '#'+orderId.slice(0,8).toUpperCase();
+  listenToOrder(orderId);
+  goPage('tracking');
+}
+
+// ── AUTH ──
+onAuthStateChanged(auth, async (user) => {
+  currentUser = user;
+  if(user) {
+    document.getElementById('display-name').textContent = user.displayName || 'আপনি';
+    document.getElementById('profile-name').textContent = user.displayName || 'আপনি';
+    document.getElementById('profile-phone').textContent = user.phoneNumber || user.email || '—';
+    if(user.photoURL) document.getElementById('profile-avatar').innerHTML=`<img src="${user.photoURL}" alt="">`;
+    document.getElementById('notif-dot').style.display = 'block';
+    // Header button — show initial letter, not broken image
+    const initial = (user.displayName||user.email||'U')[0].toUpperCase();
+    document.getElementById('header-btn').innerHTML = `<span style="font-size:14px;font-weight:700;color:var(--primary);font-family:'Hind Siliguri',sans-serif">${initial}</span>`;
+    if(user.email === ADMIN_EMAIL) window.location.href = 'login.html';
+  } else {
+    document.getElementById('display-name').textContent = 'অতিথি';
+    document.getElementById('notif-dot').style.display = 'none';
+  }
+});
+
+window.modalGoogleLogin = async function() {
+  const btn = document.getElementById('google-btn');
+  btn.textContent = '⏳ লগইন হচ্ছে...';
+  btn.disabled = true;
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+    if(user.email === ADMIN_EMAIL) { window.location.href='login.html'; return; }
+    closeLogin();
+    if(currentModalRole==='pharmacy') { showModalScreen('pharmacy-info'); return; }
+    if(pendingCallback) { pendingCallback(); pendingCallback=null; }
+  } catch(e) {
+    btn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/></svg> Google দিয়ে লগইন';
+    btn.disabled = false;
+  }
+}
+
+window.handleLogout = async function() {
+  await signOut(auth);
+  currentUser = null;
+  cartItems = [];
+  updateCartUI();
+  document.getElementById('display-name').textContent = 'অতিথি';
+  document.getElementById('header-btn').innerHTML='<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+  goPage('home');
+}
+
+// ── INIT ──
+loadMedicines();
+loadPharmacies();
+
+// Category chips
+document.querySelectorAll('.cat-chip[data-cat]').forEach(c => {
+  c.addEventListener('click', () => {
+    document.querySelectorAll('.cat-chip[data-cat]').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+    currentFilter = c.dataset.cat;
+    renderHomeMedicines(currentFilter);
+  });
+});
+
+// Search filter chips
+document.querySelectorAll('#search-filters .filter-chip').forEach(c => {
+  c.addEventListener('click', () => {
+    document.querySelectorAll('#search-filters .filter-chip').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+    currentFilter = c.dataset.filter || 'all';
+    renderSearchResults(document.getElementById('search-input').value, currentFilter);
+  });
+});
+</script>
+
 <script>
 // ── PAGE SYSTEM ──
-const pageMap = {'home':'page-home','search':'page-search','medicine-detail':'page-medicine-detail','cart':'page-cart','checkout':'page-checkout','tracking':'page-tracking','orders':'page-orders','profile':'page-profile','pharmacy-detail':'page-pharmacy-detail'};
-const navMap = {'home':'nav-home','search':'nav-search','orders':'nav-orders','profile':'nav-profile'};
-let cartCount = 0, qty = 1, currentModalRole = null, pendingCallback = null;
+const pageMap={'home':'page-home','search':'page-search','medicine-detail':'page-medicine-detail','pharmacies':'page-pharmacies','cart':'page-cart','checkout':'page-checkout','tracking':'page-tracking','orders':'page-orders','profile':'page-profile'};
+const navMap={'home':'nav-home','search':'nav-search','orders':'nav-orders','profile':'nav-profile'};
 
-function goPage(name) {
+window.goPage = function(name) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  const el = document.getElementById(pageMap[name]);
+  const el=document.getElementById(pageMap[name]);
   if(el){el.classList.add('active');window.scrollTo(0,0);}
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   if(navMap[name]) document.getElementById(navMap[name]).classList.add('active');
+  if(name==='orders') window.loadOrders?.();
 }
 
-function requireAuth(callback) {
-  if(window.__isLoggedIn){callback();return;}
-  pendingCallback = callback;
+window.requireAuth = function(cb) {
+  if(window.currentUser){cb();return;}
+  window.pendingCallback=cb;
   openLogin();
 }
 
-function addCart(e) {
-  if(!window.__isLoggedIn){pendingCallback=null;openLogin();return;}
-  e.stopPropagation();
-  const btn = e.currentTarget;
-  btn.textContent='✓';btn.style.background='var(--primary)';btn.style.color='#fff';
-  cartCount++;
-  const cc=document.getElementById('cart-count');
-  cc.textContent=cartCount;cc.style.display='flex';
-  setTimeout(()=>{btn.textContent='+';btn.style.background='';btn.style.color='';},1200);
+window.changeQty = function(d){
+  window.qty=Math.max(1,(window.qty||1)+d);
+  document.getElementById('qty-display').textContent=window.qty;
 }
 
-function changeQty(d){qty=Math.max(1,qty+d);document.getElementById('qty-display').textContent=qty;}
-function selectPay(el){document.querySelectorAll('.pay-opt').forEach(p=>p.classList.remove('selected'));el.classList.add('selected');}
-
-document.querySelectorAll('.cat-chip').forEach(c=>{c.addEventListener('click',()=>{c.closest('.cat-scroll').querySelectorAll('.cat-chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');});});
-document.querySelectorAll('.filter-chip').forEach(c=>{c.addEventListener('click',()=>{c.closest('.filter-row').querySelectorAll('.filter-chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');});});
-
-const h=new Date().getHours();
-document.getElementById('greeting-text').textContent=h<12?'শুভ সকাল 👋':h<17?'শুভ অপরাহ্ন 👋':'শুভ সন্ধ্যা 👋';
+window.selectPay = function(el){document.querySelectorAll('.pay-opt').forEach(p=>p.classList.remove('selected'));el.classList.add('selected');}
 
 // ── LOGIN MODAL ──
-function openLogin(){document.getElementById('login-modal').classList.add('open');showModalScreen('role');}
-function closeLogin(){document.getElementById('login-modal').classList.remove('open');}
+window.openLogin=function(){document.getElementById('login-modal').classList.add('open');showModalScreen('role');}
+window.closeLogin=function(){document.getElementById('login-modal').classList.remove('open');}
 document.getElementById('login-modal').addEventListener('click',function(e){if(e.target===this)closeLogin();});
 
-function showModalScreen(name){
+window.showModalScreen=function(name){
   document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('modal-'+name).classList.add('active');
 }
 
-function selectModalRole(role){
-  currentModalRole=role;
+window.selectModalRole=function(role){
+  window.currentModalRole=role;
   document.querySelectorAll('.role-card').forEach(c=>c.classList.remove('selected'));
   document.getElementById('modal-role-'+role).classList.add('selected');
   document.getElementById('modal-next-btn').disabled=false;
 }
 
-function checkModalPhone(){
+window.checkModalPhone=function(){
   document.getElementById('modal-otp-btn').disabled=document.getElementById('modal-phone-input').value.length<11;
 }
 
-function sendModalOtp(){
+window.sendModalOtp=function(){
   const phone=document.getElementById('modal-phone-input').value;
   document.getElementById('modal-otp-sub').textContent=`+880 ${phone} নম্বরে কোড পাঠানো হয়েছে`;
   showModalScreen('otp');
   startModalResendTimer();
-  // Demo auto-fill
   setTimeout(()=>{document.querySelectorAll('.otp-box').forEach((b,i)=>b.value=i+1);document.getElementById('modal-verify-btn').disabled=false;},800);
 }
 
 let modalResendInterval;
-function startModalResendTimer(){
+window.startModalResendTimer=function(){
   let sec=30;
   const btn=document.getElementById('modal-resend');
   const timer=document.getElementById('modal-resend-timer');
@@ -765,117 +1201,29 @@ function startModalResendTimer(){
   clearInterval(modalResendInterval);
   modalResendInterval=setInterval(()=>{sec--;timer.textContent=`(${sec}s)`;if(sec<=0){clearInterval(modalResendInterval);btn.style.pointerEvents='';btn.style.opacity='1';timer.textContent='';}},1000);
 }
+window.resendModalOtp=function(){startModalResendTimer();}
 
-function otpBoxNext(el,idx){
+window.otpBoxNext=function(el,idx){
   if(el.value.length===1&&idx<6)document.querySelectorAll('.otp-box')[idx].focus();
   document.getElementById('modal-verify-btn').disabled=![...document.querySelectorAll('.otp-box')].every(b=>b.value.length===1);
 }
 
-function resendModalOtp(){startModalResendTimer();}
-
-function verifyModalOtp(){
-  if(currentModalRole==='pharmacy'){showModalScreen('pharmacy-info');return;}
-  loginSuccess({displayName:'Kayes',email:'',phoneNumber:'',photoURL:''});
+window.verifyModalOtp=function(){
+  if(window.currentModalRole==='pharmacy'){showModalScreen('pharmacy-info');return;}
+  closeLogin();
+  if(window.pendingCallback){window.pendingCallback();window.pendingCallback=null;}
 }
 
-function submitModalPharmacy(){
+window.submitModalPharmacy=function(){
   const name=document.getElementById('modal-pharma-name').value;
   const license=document.getElementById('modal-pharma-license').value;
   if(!name||!license){alert('ফার্মেসির নাম ও Trade License দিন');return;}
   showModalScreen('pending');
 }
 
-function loginSuccess(user){
-  window.__isLoggedIn=true;
-  window.__currentUser=user;
-  document.getElementById('display-name').textContent=user.displayName||'আপনি';
-  document.getElementById('profile-name').textContent=user.displayName||'আপনি';
-  document.getElementById('profile-phone').textContent=user.phoneNumber||user.email||'—';
-  if(user.photoURL){document.getElementById('profile-avatar').innerHTML=`<img src="${user.photoURL}" alt="">`;}
-  document.getElementById('notif-dot').style.display='block';
-  closeLogin();
-  if(pendingCallback){pendingCallback();pendingCallback=null;}
-}
-
-function handleLogout(){
-  window.__isLoggedIn=false;
-  window.__currentUser=null;
-  document.getElementById('display-name').textContent='অতিথি';
-  document.getElementById('notif-dot').style.display='none';
-  cartCount=0;
-  document.getElementById('cart-count').style.display='none';
-  goPage('home');
-}
-</script>
-
-<script type="module">
-import { onAuthChange, loginWithGoogle, logoutUser, getUserProfile, ADMIN_EMAIL } from './firebase.js';
-
-// Auth state change listener
-onAuthChange(async (user) => {
-  if (user) {
-    const profile = await getUserProfile(user.uid);
-    const role = profile?.role || 'user';
-    localStorage.setItem('sondhan_role', role);
-    localStorage.setItem('sondhan_logged_in', 'true');
-
-    if (role === 'admin' || role === 'pharmacy') {
-      window.location.href = role === 'admin' ? 'login.html' : 'dashboard.html';
-      return;
-    }
-
-    // Regular user — update UI
-    window.loginSuccess({
-      displayName: user.displayName || 'আপনি',
-      email: user.email || '',
-      phoneNumber: user.phoneNumber || '',
-      photoURL: user.photoURL || ''
-    });
-  } else {
-    localStorage.removeItem('sondhan_logged_in');
-    localStorage.removeItem('sondhan_role');
-  }
-});
-
-// Google login from modal
-window.modalGoogleLogin = async function() {
-  const btn = document.querySelector('.google-btn');
-  btn.textContent = '⏳ লগইন হচ্ছে...';
-  btn.disabled = true;
-
-  const result = await loginWithGoogle();
-
-  if (!result.success) {
-    btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/></svg> Google দিয়ে লগইন`;
-    btn.disabled = false;
-    return;
-  }
-
-  localStorage.setItem('sondhan_role', result.role);
-  localStorage.setItem('sondhan_logged_in', 'true');
-
-  if (result.role === 'admin') {
-    window.location.href = 'login.html';
-  } else if (result.role === 'pharmacy') {
-    window.location.href = 'dashboard.html';
-  } else {
-    window.loginSuccess({
-      displayName: result.user.displayName || 'আপনি',
-      email: result.user.email || '',
-      phoneNumber: result.user.phoneNumber || '',
-      photoURL: result.user.photoURL || ''
-    });
-  }
-};
-
-// Real logout
-window.handleLogout = async function() {
-  await logoutUser();
-  window.__isLoggedIn = false;
-  document.getElementById('display-name').textContent = 'অতিথি';
-  document.getElementById('notif-dot').style.display = 'none';
-  goPage('home');
-};
+// Greeting
+const h=new Date().getHours();
+document.getElementById('greeting-text').textContent=h<12?'শুভ সকাল 👋':h<17?'শুভ অপরাহ্ন 👋':'শুভ সন্ধ্যা 👋';
 </script>
 </body>
 </html>
