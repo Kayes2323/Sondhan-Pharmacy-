@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Admin Panel — Sondhan Pharmacy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+body{font-family:'Hind Siliguri','Inter',sans-serif;background:var(--bg2);color:var(--fg);max-width:420px;margin:0 auto;min-height:100vh;padding-bottom:40px}
+.header{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);padding:14px 16px 10px;z-index:100}
+.header-top{display:flex;align-items:center;justify-content:space-between}
+.admin-badge{background:#fee2e2;color:var(--error);font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px}
+.main{padding:16px;display:flex;flex-direction:column;gap:16px}
+.stat-row{display:flex;gap:1px;background:var(--border);border-radius:var(--radius);overflow:hidden}
+.stat-item{flex:1;background:var(--bg);padding:14px 10px;text-align:center}
+.stat-num{font-size:22px;font-weight:700;color:var(--primary)}
+.stat-label{font-size:10px;color:var(--text2);margin-top:2px}
+.dash-tabs{display:flex;gap:1px;background:var(--border);border-radius:var(--radius);overflow:hidden}
+.dash-tab{flex:1;background:var(--bg);padding:11px 6px;text-align:center;cursor:pointer;font-size:11px;font-weight:600;color:var(--text2);border:none}
+.dash-tab.active{background:var(--primary);color:#fff}
+.tab-content{display:none}
+.tab-content.active{display:flex;flex-direction:column;gap:12px}
+.card{background:var(--bg);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.pharmacy-req-card{background:var(--bg);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.req-name{font-size:15px;font-weight:700;color:var(--fg);margin-bottom:4px}
+.req-info{font-size:12px;color:var(--text2);margin-bottom:3px}
+.req-license{background:var(--primary-light);color:var(--primary);font-size:11px;font-weight:600;padding:4px 10px;border-radius:8px;display:inline-block;margin:6px 0 10px}
+.req-actions{display:flex;gap:8px}
+.btn-approve{flex:1;background:var(--success);color:#fff;border:none;border-radius:10px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif}
+.btn-reject-sm{flex:1;background:#fee2e2;color:var(--error);border:none;border-radius:10px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif}
+.approved-badge{background:#dcfce7;color:var(--success);font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px}
+.pending-badge{background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px}
+.rejected-badge{background:#fee2e2;color:var(--error);font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px}
+.order-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.order-row:last-child{border-bottom:none}
+.user-card{background:var(--bg);border-radius:var(--radius);padding:14px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.user-avatar{width:42px;height:42px;border-radius:50%;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text2)}
+.empty-state div:first-child{font-size:48px;margin-bottom:12px}
+.medicine-admin-card{background:var(--bg);border-radius:var(--radius);padding:12px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.btn-danger{width:100%;background:#fee2e2;color:var(--error);border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif;margin-top:8px}
+.revenue-card{background:linear-gradient(135deg,var(--primary),#0e9e8e);border-radius:var(--radius);padding:20px;color:#fff}
+.revenue-amount{font-size:32px;font-weight:700;margin-bottom:4px}
+.revenue-label{font-size:13px;opacity:0.85}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-top">
+    <div>
+      <div style="font-size:12px;color:var(--text2)">Super Admin 🛡️</div>
+      <div style="font-size:18px;font-weight:700;color:var(--fg)">Sondhan Admin</div>
+    </div>
+    <span class="admin-badge">ADMIN</span>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- Stats -->
+  <div class="stat-row">
+    <div class="stat-item"><div class="stat-num" id="stat-pharmacies">০</div><div class="stat-label">ফার্মেসি</div></div>
+    <div class="stat-item" style="border-left:1px solid var(--border)"><div class="stat-num" id="stat-orders">০</div><div class="stat-label">অর্ডার</div></div>
+    <div class="stat-item" style="border-left:1px solid var(--border)"><div class="stat-num" id="stat-users">০</div><div class="stat-label">Users</div></div>
+    <div class="stat-item" style="border-left:1px solid var(--border)"><div class="stat-num" style="color:#92400e" id="stat-pending">০</div><div class="stat-label">Pending</div></div>
+  </div>
+
+  <!-- Revenue Card -->
+  <div class="revenue-card">
+    <div class="revenue-label">মোট Revenue</div>
+    <div class="revenue-amount" id="total-revenue">৳০</div>
+    <div style="font-size:12px;opacity:0.8;margin-top:4px" id="revenue-sub">সব সময়ের মোট</div>
+  </div>
+
+  <!-- Tabs -->
+  <div>
+    <div class="dash-tabs">
+      <button class="dash-tab active" onclick="switchTab('pharmacies')">🏪 ফার্মেসি</button>
+      <button class="dash-tab" onclick="switchTab('orders')">📦 অর্ডার</button>
+      <button class="dash-tab" onclick="switchTab('medicines')">💊 ওষুধ</button>
+      <button class="dash-tab" onclick="switchTab('users')">👤 Users</button>
+    </div>
+
+    <!-- Pharmacies Tab -->
+    <div class="tab-content active" id="tab-pharmacies">
+      <div style="display:flex;gap:8px">
+        <button onclick="filterPharmacies('pending')" style="flex:1;background:#fef3c7;color:#92400e;border:none;border-radius:10px;padding:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif" id="btn-pending">⏳ Pending</button>
+        <button onclick="filterPharmacies('approved')" style="flex:1;background:#dcfce7;color:var(--success);border:none;border-radius:10px;padding:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif">✅ Approved</button>
+        <button onclick="filterPharmacies('all')" style="flex:1;background:var(--bg2);color:var(--text2);border:none;border-radius:10px;padding:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif">সব</button>
+      </div>
+      <div id="pharmacy-list">
+        <div class="empty-state"><div>⏳</div><div>লোড হচ্ছে...</div></div>
+      </div>
+    </div>
+
+    <!-- Orders Tab -->
+    <div class="tab-content" id="tab-orders">
+      <div class="card">
+        <div style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:12px">সাম্প্রতিক অর্ডার</div>
+        <div id="all-orders-list">
+          <div class="empty-state"><div>📦</div><div>লোড হচ্ছে...</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medicines Tab -->
+    <div class="tab-content" id="tab-medicines">
+      <button onclick="goToSeed()" style="width:100%;background:var(--primary);color:#fff;border:none;border-radius:12px;padding:13px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif">+ নতুন ওষুধ Add করুন</button>
+      <div id="medicines-list">
+        <div class="empty-state"><div>⏳</div><div>লোড হচ্ছে...</div></div>
+      </div>
+    </div>
+
+    <!-- Users Tab -->
+    <div class="tab-content" id="tab-users">
+      <div id="users-list">
+        <div class="empty-state"><div>⏳</div><div>লোড হচ্ছে...</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="btn-danger" onclick="logout()">লগ আউট</button>
+
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, getDocs, serverTimestamp, limit, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey:"AIzaSyBn3uC3F6QsfNNzRTaCPfBVHu8_BlLYNy8",
+  authDomain:"pharmacy-6d661.firebaseapp.com",
+  projectId:"pharmacy-6d661",
+  storageBucket:"pharmacy-6d661.firebasestorage.app",
+  messagingSenderId:"601956352826",
+  appId:"1:601956352826:web:a639bd54f58383c33d8603"
+});
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+const ADMIN_EMAIL = 'akayes99@gmail.com';
+
+let allPharmacies = [];
+let currentFilter = 'pending';
+
+// ── AUTH CHECK ──
+onAuthStateChanged(auth, (user) => {
+  if(!user || user.email !== ADMIN_EMAIL) {
+    window.location.href = 'login.html';
+    return;
+  }
+  loadAll();
+});
+
+async function loadAll() {
+  await Promise.all([
+    loadPharmacies(),
+    loadOrders(),
+    loadMedicines(),
+    loadUsers()
+  ]);
+}
+
+// ── PHARMACIES ──
+async function loadPharmacies() {
+  const snap = await getDocs(collection(db,'pharmacies'));
+  allPharmacies = snap.docs.map(d=>({id:d.id,...d.data()}));
+
+  const pending = allPharmacies.filter(p=>p.status==='pending').length;
+  const approved = allPharmacies.filter(p=>p.status==='approved').length;
+
+  document.getElementById('stat-pharmacies').textContent = approved;
+  document.getElementById('stat-pending').textContent = pending;
+
+  renderPharmacies(currentFilter);
+}
+
+function renderPharmacies(filter) {
+  currentFilter = filter;
+  const list = document.getElementById('pharmacy-list');
+  let pharmacies = allPharmacies;
+  if(filter !== 'all') pharmacies = allPharmacies.filter(p=>p.status===filter);
+
+  if(!pharmacies.length) {
+    list.innerHTML = '<div class="empty-state"><div>🏪</div><div>কোনো ফার্মেসি নেই</div></div>';
+    return;
+  }
+
+  list.innerHTML = pharmacies.map(p => {
+    const badgeClass = p.status==='approved'?'approved-badge':p.status==='rejected'?'rejected-badge':'pending-badge';
+    const badgeText = p.status==='approved'?'Approved ✓':p.status==='rejected'?'Rejected ✕':'Pending ⏳';
+    return `<div class="pharmacy-req-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div class="req-name">${p.name}</div>
+        <span class="${badgeClass}">${badgeText}</span>
+      </div>
+      <div class="req-info">📍 ${p.address||p.area||'—'}</div>
+      <div class="req-info">👤 ${p.ownerName||'—'} · 📞 ${p.phone||'—'}</div>
+      ${p.tradeLicense?`<div class="req-license">📄 Trade License: ${p.tradeLicense}</div>`:''}
+      <div style="font-size:11px;color:var(--text2);margin-bottom:10px">
+        ⭐ ${p.rating||'0'} · 📦 ${p.totalOrders||0} অর্ডার · ${p.isOpen?'🟢 খোলা':'🔴 বন্ধ'}
+      </div>
+      ${p.status==='pending'?`
+      <div class="req-actions">
+        <button class="btn-approve" onclick="approvePharmacy('${p.id}')">✅ Approve করুন</button>
+        <button class="btn-reject-sm" onclick="rejectPharmacy('${p.id}')">❌ Reject</button>
+      </div>`:
+      p.status==='approved'?`
+      <div style="display:flex;gap:8px">
+        <button onclick="togglePharmacyOpen('${p.id}',${!p.isOpen})" style="flex:1;background:${p.isOpen?'#fee2e2':'#dcfce7'};color:${p.isOpen?'var(--error)':'var(--success)'};border:none;border-radius:10px;padding:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif">
+          ${p.isOpen?'🔴 বন্ধ করুন':'🟢 খুলুন'}
+        </button>
+        <button onclick="rejectPharmacy('${p.id}')" style="flex:1;background:#fee2e2;color:var(--error);border:none;border-radius:10px;padding:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif">Suspend</button>
+      </div>`:''}
+    </div>`;
+  }).join('');
+}
+
+window.filterPharmacies = function(filter) { renderPharmacies(filter); }
+
+window.approvePharmacy = async function(id) {
+  if(!confirm('এই ফার্মেসি approve করবেন?')) return;
+  try {
+    await updateDoc(doc(db,'pharmacies',id), {
+      status: 'approved',
+      isOpen: true,
+      approvedAt: serverTimestamp()
+    });
+    await loadPharmacies();
+    alert('✅ ফার্মেসি approve হয়েছে!');
+  } catch(e) { alert('সমস্যা: '+e.message); }
+}
+
+window.rejectPharmacy = async function(id) {
+  if(!confirm('এই ফার্মেসি reject/suspend করবেন?')) return;
+  try {
+    await updateDoc(doc(db,'pharmacies',id), {
+      status: 'rejected',
+      isOpen: false,
+      rejectedAt: serverTimestamp()
+    });
+    await loadPharmacies();
+    alert('ফার্মেসি reject করা হয়েছে।');
+  } catch(e) { alert('সমস্যা: '+e.message); }
+}
+
+window.togglePharmacyOpen = async function(id, isOpen) {
+  try {
+    await updateDoc(doc(db,'pharmacies',id), {isOpen});
+    await loadPharmacies();
+  } catch(e) { alert('সমস্যা: '+e.message); }
+}
+
+// ── ORDERS ──
+async function loadOrders() {
+  const q = query(collection(db,'orders'), orderBy('createdAt','desc'), limit(100));
+  onSnapshot(q, (snap) => {
+    const orders = snap.docs.map(d=>({id:d.id,...d.data()}));
+    document.getElementById('stat-orders').textContent = orders.length;
+
+    const revenue = orders
+      .filter(o=>o.status==='delivered')
+      .reduce((s,o)=>s+(o.total||0),0);
+    document.getElementById('total-revenue').textContent = '৳'+revenue.toLocaleString();
+
+    const list = document.getElementById('all-orders-list');
+    if(!orders.length) {
+      list.innerHTML='<div class="empty-state"><div>📦</div><div>কোনো অর্ডার নেই</div></div>';
+      return;
+    }
+    const statusColor = {'confirmed':'#92400e','preparing':'#1d4ed8','picked':'#6d28d9','delivered':'var(--success)','cancelled':'var(--error)'};
+    const statusText = {'confirmed':'নিশ্চিত','preparing':'প্রস্তুত','picked':'রাইডার','delivered':'ডেলিভারি ✓','cancelled':'বাতিল'};
+    list.innerHTML = orders.slice(0,30).map(o => `
+      <div class="order-row">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--fg)">#${o.id.slice(0,8).toUpperCase()}</div>
+          <div style="font-size:11px;color:var(--text2)">${o.userName||'—'} · ৳${o.total}</div>
+          <div style="font-size:10px;color:var(--text3)">${o.pharmacyName||'—'}</div>
+        </div>
+        <span style="font-size:11px;font-weight:700;color:${statusColor[o.status]||'var(--text2)'}">
+          ${statusText[o.status]||o.status}
+        </span>
+      </div>`).join('');
+  });
+}
+
+// ── MEDICINES ──
+async function loadMedicines() {
+  const snap = await getDocs(collection(db,'medicines'));
+  const medicines = snap.docs.map(d=>({id:d.id,...d.data()}));
+  const list = document.getElementById('medicines-list');
+  if(!medicines.length) {
+    list.innerHTML='<div class="empty-state"><div>💊</div><div>কোনো ওষুধ নেই</div></div>';
+    return;
+  }
+  list.innerHTML = medicines.map(m=>`
+    <div class="medicine-admin-card">
+      <div style="font-size:22px">${m.emoji||'💊'}</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:700">${m.name}</div>
+        <div style="font-size:11px;color:var(--text2)">${m.generic} ${m.strength} · ${m.brand}</div>
+        <div style="font-size:11px;color:var(--text3)">${m.categoryBn||m.category}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:13px;font-weight:700;color:var(--primary)">৳${m.price}</div>
+        <div style="font-size:10px;color:${m.otc?'var(--success)':'var(--warning)'}">${m.otc?'OTC':'Rx'}</div>
+      </div>
+    </div>`).join('');
+}
+
+window.goToSeed = function() {
+  window.open('seed-medicines.html','_blank');
+}
+
+// ── USERS ──
+async function loadUsers() {
+  const snap = await getDocs(collection(db,'users'));
+  const users = snap.docs.map(d=>({id:d.id,...d.data()}));
+  document.getElementById('stat-users').textContent = users.length;
+  const list = document.getElementById('users-list');
+  if(!users.length) {
+    list.innerHTML='<div class="empty-state"><div>👤</div><div>কোনো user নেই</div></div>';
+    return;
+  }
+  list.innerHTML = users.map(u=>`
+    <div class="user-card">
+      <div class="user-avatar">${u.photoURL?`<img src="${u.photoURL}" style="width:42px;height:42px;border-radius:50%;object-fit:cover">`:(u.name||u.email||'U')[0].toUpperCase()}</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:700">${u.name||'—'}</div>
+        <div style="font-size:11px;color:var(--text2)">${u.email||u.phone||'—'}</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px">${u.role||'user'}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ── TABS ──
+window.switchTab = function(name) {
+  document.querySelectorAll('.dash-tab').forEach((t,i)=>{
+    const tabs=['pharmacies','orders','medicines','users'];
+    t.classList.toggle('active',tabs[i]===name);
+  });
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+}
+
+// ── LOGOUT ──
+window.logout = async function() {
+  await signOut(auth);
+  localStorage.clear();
+  window.location.href = 'login.html';
+}
+</script>
+</body>
+</html>

@@ -200,6 +200,14 @@ onAuthStateChanged(auth, async (user) => {
       document.getElementById('open-toggle').checked = currentPharmacy.isOpen;
       updateOpenStatusUI(currentPharmacy.isOpen);
       startListeningOrders(currentPharmacy.id);
+      // Init FCM for pharmacy
+      try {
+        const { initNotifications, onForegroundMessage } = await import('./notifications.js');
+        await initNotifications(user.uid);
+        onForegroundMessage((payload) => {
+          if(payload.data?.type === 'new_order') playNotifSound();
+        });
+      } catch(e) { console.log('FCM skip:', e.message); }
     } else {
       document.getElementById('pharmacy-name').innerHTML = 'অ্যাকাউন্ট pending approval';
     }

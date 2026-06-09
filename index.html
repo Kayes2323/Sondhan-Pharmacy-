@@ -4,9 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Sondhan Pharmacy — ৩০ মিনিটে ওষুধ</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230a7c6e'/><text y='.9em' font-size='80'>💊</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a7c6e">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Sondhan Pharmacy">
+<meta name="description" content="৩০ মিনিটে ওষুধ দরজায় — Sondhan Pharmacy">
 <style>
 .page{display:none;min-height:100vh;padding-bottom:80px}.page.active{display:block}
 .header{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);padding:14px 16px 10px;z-index:100}
@@ -456,7 +463,12 @@
     <span class="sub-title">অর্ডার ট্র্যাক করুন</span>
   </div>
   <main class="main" id="tracking-content">
-    <div class="tracking-card"><div class="order-id" id="tracking-order-id">#ORD-000000</div><div class="order-pharmacy-name" id="tracking-pharmacy">লোড হচ্ছে...</div><div class="eta-badge">⏱ আনুমানিক ৩০ মিনিট</div></div>
+    <div class="tracking-card">
+      <div class="order-id" id="tracking-order-id">#ORD-000000</div>
+      <div class="order-pharmacy-name" id="tracking-pharmacy">লোড হচ্ছে...</div>
+      <div class="eta-badge">⏱ আনুমানিক ৩০ মিনিট</div>
+      <button id="cancel-order-btn" onclick="cancelOrder()" style="margin-top:12px;width:100%;background:#fee2e2;color:var(--error);border:none;border-radius:10px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif;display:none">❌ অর্ডার বাতিল করুন</button>
+    </div>
     <div class="info-card">
       <div style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:16px">অর্ডারের অবস্থা</div>
       <div class="track-steps">
@@ -495,18 +507,37 @@
       <div class="profile-avatar" id="profile-avatar">👤</div>
       <div class="profile-name" id="profile-name">লোড হচ্ছে...</div>
       <div class="profile-phone" id="profile-phone">—</div>
+      <button onclick="showEditProfile()" style="background:rgba(255,255,255,0.2);color:#fff;border:none;border-radius:10px;padding:6px 16px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Hind Siliguri',sans-serif;margin-top:4px">✏️ Edit Profile</button>
     </div>
     <div class="stat-row">
       <div class="stat-item"><div class="stat-num" id="stat-orders">০</div><div class="stat-label">মোট অর্ডার</div></div>
       <div class="stat-item" style="border-left:1px solid var(--border)"><div class="stat-num" id="stat-spent">৳০</div><div class="stat-label">মোট খরচ</div></div>
       <div class="stat-item" style="border-left:1px solid var(--border)"><div class="stat-num" id="stat-saved">৳০</div><div class="stat-label">সাশ্রয়</div></div>
     </div>
+    <!-- Saved Address -->
+    <div class="info-card">
+      <div style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:10px">📍 সেভ করা ঠিকানা</div>
+      <div id="saved-addresses">
+        <div style="font-size:13px;color:var(--text2)">কোনো ঠিকানা সেভ নেই</div>
+      </div>
+      <button onclick="showAddAddress()" style="margin-top:10px;width:100%;background:var(--primary-light);color:var(--primary);border:none;border-radius:10px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif">+ নতুন ঠিকানা যোগ করুন</button>
+    </div>
+    <!-- Prescription Upload -->
+    <div class="info-card">
+      <div style="font-size:14px;font-weight:700;color:var(--fg);margin-bottom:10px">📋 প্রেসক্রিপশন আপলোড</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:12px">ডাক্তারের প্রেসক্রিপশনের ছবি তুলে পাঠান</div>
+      <label style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--primary);color:#fff;border-radius:12px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif">
+        📷 ছবি তুলুন / আপলোড করুন
+        <input type="file" accept="image/*" capture="environment" style="display:none" onchange="uploadPrescription(this)">
+      </label>
+      <div id="prescription-preview" style="margin-top:10px"></div>
+    </div>
     <div class="menu-list">
-      <div class="menu-item"><div class="menu-icon" style="background:#dbeafe">📍</div><span class="menu-label">সেভ করা ঠিকানা</span><span class="menu-arrow">›</span></div>
-      <div class="menu-item"><div class="menu-icon" style="background:#dcfce7">📋</div><span class="menu-label">প্রেসক্রিপশন</span><span class="menu-arrow">›</span></div>
+      <div class="menu-item" onclick="goPage('orders')"><div class="menu-icon" style="background:#dbeafe">📦</div><span class="menu-label">আমার অর্ডার</span><span class="menu-arrow">›</span></div>
       <div class="menu-item"><div class="menu-icon" style="background:#fef3c7">💊</div><span class="menu-label">নিয়মিত ওষুধ</span><span class="menu-arrow">›</span></div>
       <div class="menu-item"><div class="menu-icon" style="background:var(--primary-light)">🎁</div><span class="menu-label">অফার ও কুপন</span><span class="menu-arrow">›</span></div>
-      <div class="menu-item"><div class="menu-icon" style="background:var(--bg2)">⚙️</div><span class="menu-label">সেটিংস</span><span class="menu-arrow">›</span></div>
+      <div class="menu-item" onclick="shareApp()"><div class="menu-icon" style="background:#f3e8ff">📤</div><span class="menu-label">বন্ধুকে শেয়ার করুন</span><span class="menu-arrow">›</span></div>
+      <div class="menu-item"><div class="menu-icon" style="background:var(--bg2)">❓</div><span class="menu-label">সাহায্য ও সাপোর্ট</span><span class="menu-arrow">›</span></div>
     </div>
     <button class="logout-btn" onclick="handleLogout()">লগ আউট</button>
   </main>
@@ -584,12 +615,12 @@
 <nav class="bottom-nav">
   <div class="nav-item active" id="nav-home" onclick="goPage('home')"><div class="nav-icon-wrap">🏠</div><div class="nav-label">হোম</div></div>
   <div class="nav-item" id="nav-search" onclick="goPage('search')"><div class="nav-icon-wrap">🔍</div><div class="nav-label">খুঁজুন</div></div>
-  <div class="nav-center-wrap" onclick="requireAuth(()=>goPage('cart'))">
+  <div class="nav-center-wrap" onclick="window.__currentUser ? goPage('cart') : openLogin()">
     <div class="nav-center-btn">🛒<span class="cart-count" id="cart-count">0</span></div>
     <div class="nav-center-label">কার্ট</div>
   </div>
-  <div class="nav-item" id="nav-orders" onclick="requireAuth(()=>goPage('orders'))"><div class="nav-icon-wrap">📦</div><div class="nav-label">অর্ডার</div></div>
-  <div class="nav-item" id="nav-profile" onclick="requireAuth(()=>goPage('profile'))"><div class="nav-icon-wrap">👤</div><div class="nav-label">প্রোফাইল</div></div>
+  <div class="nav-item" id="nav-orders" onclick="window.__currentUser ? goPage('orders') : openLogin()"><div class="nav-icon-wrap">📦</div><div class="nav-label">অর্ডার</div></div>
+  <div class="nav-item" id="nav-profile" onclick="window.__currentUser ? goPage('profile') : openLogin()"><div class="nav-icon-wrap">👤</div><div class="nav-label">প্রোফাইল</div></div>
 </nav>
 
 <script type="module">
@@ -674,7 +705,14 @@ function renderAllPharmacies() {
 }
 
 function pharmacyCardHTML(p) {
-  return `<div class="pharmacy-card" onclick="goPage('home')">
+  let distText = '';
+  if(window.__userLat && p.location) {
+    const dist = getDistance(window.__userLat, window.__userLng,
+      p.location._lat||p.location.latitude||23.8103,
+      p.location._long||p.location.longitude||90.4125);
+    distText = `<span class="meta-dot">•</span><span>${dist.toFixed(1)} কিমি</span>`;
+  }
+  return `<div class="pharmacy-card" onclick="goPage('pharmacies')">
     <div class="pharmacy-img">${p.emoji||'💊'}</div>
     <div style="flex:1;min-width:0">
       <div class="pharmacy-name">${p.name}</div>
@@ -685,6 +723,7 @@ function pharmacyCardHTML(p) {
         <span>⏱ ${p.deliveryTime}</span>
         <span class="meta-dot">•</span>
         <span>৳${p.deliveryCharge} ডেলিভারি</span>
+        ${distText}
       </div>
     </div>
     <span class="${p.isOpen?'open-badge':'closed-badge'}">${p.isOpen?'খোলা':'বন্ধ'}</span>
@@ -692,8 +731,26 @@ function pharmacyCardHTML(p) {
 }
 
 // ── SEARCH ──
+// Symptom → medicine mapping
+const symptomMap = {
+  'জ্বর':'fever-pain','মাথাব্যথা':'fever-pain','ব্যথা':'fever-pain','fever':'fever-pain',
+  'গ্যাস্ট্রিক':'gastric','পেটব্যথা':'gastric','বুক জ্বালা':'gastric','gastric':'gastric',
+  'সর্দি':'antibiotic','কাশি':'antibiotic','ইনফেকশন':'antibiotic',
+  'ডায়াবেটিস':'diabetes','সুগার':'diabetes','diabetes':'diabetes',
+  'ভিটামিন':'vitamin','vitamin':'vitamin','শক্তি':'vitamin',
+  'বাচ্চা':'baby','শিশু':'baby','baby':'baby',
+  'চুলকানি':'skin','চর্মরোগ':'skin','skin':'skin',
+  'হার্ট':'heart','blood pressure':'heart','প্রেসার':'heart',
+};
+
 window.handleSearch = function(val) {
-  renderSearchResults(val, currentFilter);
+  // Symptom detection
+  const lower = val.toLowerCase();
+  let autoFilter = currentFilter;
+  for(const [symptom, cat] of Object.entries(symptomMap)) {
+    if(lower.includes(symptom)) { autoFilter = cat; break; }
+  }
+  renderSearchResults(val, autoFilter);
 }
 
 function renderSearchResults(query, filter) {
@@ -704,9 +761,12 @@ function renderSearchResults(query, filter) {
     const q = query.toLowerCase();
     results = results.filter(m =>
       m.nameLower?.includes(q) ||
+      m.name?.toLowerCase().includes(q) ||
       m.generic?.toLowerCase().includes(q) ||
       m.brand?.toLowerCase().includes(q) ||
-      m.categoryBn?.includes(q)
+      m.categoryBn?.includes(q) ||
+      m.uses?.toLowerCase().includes(q) ||
+      m.description?.toLowerCase().includes(q)
     );
   }
   if(!results.length) {
@@ -778,7 +838,7 @@ window.showMedicineDetail = function(id) {
 
 // ── CART ──
 window.quickAddCart = function(id) {
-  if(!currentUser) { pendingCallback=null; openLogin(); return; }
+  if(!window.__currentUser) { window.pendingCallback=null; openLogin(); return; }
   const med = allMedicines.find(m=>m.id===id);
   if(!med) return;
   const existing = cartItems.find(i=>i.id===id);
@@ -788,7 +848,7 @@ window.quickAddCart = function(id) {
 }
 
 window.addToCart = function() {
-  if(!currentUser) { pendingCallback=null; openLogin(); return; }
+  if(!window.__currentUser) { window.pendingCallback=null; openLogin(); return; }
   if(!currentMedicine) return;
   const existing = cartItems.find(i=>i.id===currentMedicine.id);
   if(existing) existing.qty += qty;
@@ -869,7 +929,8 @@ window.goToCheckout = function() {
 }
 
 window.placeOrder = async function() {
-  if(!currentUser) { openLogin(); return; }
+  if(!window.__currentUser) { openLogin(); return; }
+  currentUser = window.__currentUser;
   const name = document.getElementById('checkout-name').value;
   const phone = document.getElementById('checkout-phone').value;
   const address = document.getElementById('checkout-address').value;
@@ -885,7 +946,12 @@ window.placeOrder = async function() {
   const total = subtotal + 30;
 
   try {
+    // Find nearest open pharmacy (GPS sorted if available)
     const nearestPharmacy = allPharmacies.find(p=>p.isOpen) || allPharmacies[0];
+    const nearestDistance = window.__userLat && nearestPharmacy?.location ?
+      getDistance(window.__userLat, window.__userLng,
+        nearestPharmacy.location._lat||23.8103,
+        nearestPharmacy.location._long||90.4125).toFixed(1) + ' কিমি দূরে' : '';
     const orderRef = await addDoc(collection(db,'orders'), {
       userId: currentUser.uid,
       userName: name,
@@ -1014,8 +1080,265 @@ window.confirmPayment = async function(method, orderId, amount) {
 }
 
 // ── ORDERS ──
-window.loadOrders = function() {
+// ── GPS LOCATION ──
+window.getGPSLocation = function() {
+  if(!navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const { latitude, longitude } = pos.coords;
+      window.__userLat = latitude;
+      window.__userLng = longitude;
+      // Reverse geocode using nominatim (free)
+      fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`)
+        .then(r=>r.json())
+        .then(data => {
+          const area = data.address?.suburb || data.address?.neighbourhood || data.address?.city_district || 'ঢাকা';
+          document.getElementById('user-location').textContent = area;
+        })
+        .catch(()=>{});
+      // Sort pharmacies by distance
+      if(allPharmacies.length > 0) sortPharmaciesByDistance(latitude, longitude);
+    },
+    (err) => { console.log('GPS denied:', err.message); }
+  );
+}
+
+function sortPharmaciesByDistance(lat, lng) {
+  allPharmacies.sort((a, b) => {
+    const distA = getDistance(lat, lng, a.location?._lat||23.8103, a.location?._long||90.4125);
+    const distB = getDistance(lat, lng, b.location?._lat||23.8103, b.location?._long||90.4125);
+    return distA - distB;
+  });
+  renderHomePharmacies();
+  renderAllPharmacies();
+}
+
+function getDistance(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = (lat2-lat1) * Math.PI/180;
+  const dLng = (lng2-lng1) * Math.PI/180;
+  const a = Math.sin(dLat/2)*Math.sin(dLat/2) +
+    Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*
+    Math.sin(dLng/2)*Math.sin(dLng/2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+// Call GPS on load
+window.getGPSLocation();
+
+// ── PROFILE EDIT ──
+window.showEditProfile = function() {
   if(!currentUser) return;
+  const name = currentUser.displayName || '';
+  const modal = document.createElement('div');
+  modal.id = 'edit-profile-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:600;display:flex;align-items:flex-end;justify-content:center';
+  modal.innerHTML = `<div style="background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:420px;padding:24px 20px 32px">
+    <div style="font-size:18px;font-weight:700;color:var(--fg);margin-bottom:16px">Profile Edit করুন</div>
+    <div style="margin-bottom:12px">
+      <div class="form-label">পূর্ণ নাম</div>
+      <input id="edit-name" class="form-input" value="${name}" placeholder="আপনার নাম">
+    </div>
+    <div style="margin-bottom:12px">
+      <div class="form-label">ডিফল্ট ঠিকানা</div>
+      <input id="edit-address" class="form-input" placeholder="বাড়ি, রাস্তা, এলাকা">
+    </div>
+    <button onclick="saveProfile()" style="width:100%;background:var(--primary);color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif;margin-bottom:8px">✅ সেভ করুন</button>
+    <button onclick="document.getElementById('edit-profile-modal').remove()" style="width:100%;background:var(--bg2);color:var(--text2);border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Hind Siliguri',sans-serif">বাতিল</button>
+  </div>`;
+  document.body.appendChild(modal);
+}
+
+window.saveProfile = async function() {
+  const name = document.getElementById('edit-name')?.value?.trim();
+  const address = document.getElementById('edit-address')?.value?.trim();
+  if(!name) { alert('নাম দিন'); return; }
+  try {
+    await updateDoc(doc(db,'users',currentUser.uid), {
+      name, defaultAddress: address, updatedAt: serverTimestamp()
+    });
+    document.getElementById('display-name').textContent = name;
+    document.getElementById('profile-name').textContent = name;
+    document.getElementById('edit-profile-modal')?.remove();
+    if(address) loadSavedAddresses();
+  } catch(e) { alert('সমস্যা: '+e.message); }
+}
+
+// ── SAVED ADDRESSES ──
+window.showAddAddress = function() {
+  const modal = document.createElement('div');
+  modal.id = 'add-address-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:600;display:flex;align-items:flex-end;justify-content:center';
+  modal.innerHTML = `<div style="background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:420px;padding:24px 20px 32px">
+    <div style="font-size:18px;font-weight:700;color:var(--fg);margin-bottom:16px">নতুন ঠিকানা</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+      <input id="addr-label" class="form-input" placeholder="লেবেল (বাড়ি / অফিস)">
+      <input id="addr-full" class="form-input" placeholder="পূর্ণ ঠিকানা *">
+      <input id="addr-area" class="form-input" placeholder="এলাকা (ধানমন্ডি, মিরপুর)">
+    </div>
+    <button onclick="saveAddress()" style="width:100%;background:var(--primary);color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif;margin-bottom:8px">✅ সেভ করুন</button>
+    <button onclick="document.getElementById('add-address-modal').remove()" style="width:100%;background:var(--bg2);color:var(--text2);border:none;border-radius:12px;padding:12px;font-size:13px;cursor:pointer;font-family:'Hind Siliguri',sans-serif">বাতিল</button>
+  </div>`;
+  document.body.appendChild(modal);
+}
+
+window.saveAddress = async function() {
+  const label = document.getElementById('addr-label')?.value || 'বাড়ি';
+  const full = document.getElementById('addr-full')?.value?.trim();
+  const area = document.getElementById('addr-area')?.value?.trim();
+  if(!full) { alert('ঠিকানা দিন'); return; }
+  try {
+    await addDoc(collection(db,'users',currentUser.uid,'addresses'), {
+      label, full, area, createdAt: serverTimestamp()
+    });
+    document.getElementById('add-address-modal')?.remove();
+    loadSavedAddresses();
+  } catch(e) { alert('সমস্যা: '+e.message); }
+}
+
+async function loadSavedAddresses() {
+  if(!currentUser) return;
+  try {
+    const snap = await getDocs(collection(db,'users',currentUser.uid,'addresses'));
+    const el = document.getElementById('saved-addresses');
+    if(snap.empty) { el.innerHTML='<div style="font-size:13px;color:var(--text2)">কোনো ঠিকানা সেভ নেই</div>'; return; }
+    el.innerHTML = snap.docs.map(d => {
+      const a = d.data();
+      return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+        <div style="font-size:20px">📍</div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700">${a.label}</div>
+          <div style="font-size:12px;color:var(--text2)">${a.full}${a.area?', '+a.area:''}</div>
+        </div>
+        <button onclick="useAddress('${a.full}','${a.area||''}')" style="background:var(--primary-light);color:var(--primary);border:none;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif">ব্যবহার করুন</button>
+      </div>`;
+    }).join('');
+  } catch(e) {}
+}
+
+window.useAddress = function(full, area) {
+  const addrInput = document.getElementById('checkout-address');
+  if(addrInput) addrInput.value = full + (area?', '+area:'');
+  goPage('cart');
+}
+
+// ── PRESCRIPTION UPLOAD ──
+window.uploadPrescription = async function(input) {
+  const file = input.files[0];
+  if(!file) return;
+  const preview = document.getElementById('prescription-preview');
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    preview.innerHTML = `
+      <div style="position:relative;margin-top:8px">
+        <img src="${e.target.result}" style="width:100%;border-radius:12px;max-height:200px;object-fit:cover">
+        <div style="position:absolute;top:8px;right:8px;background:var(--success);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px">✓ আপলোড হয়েছে</div>
+      </div>
+      <button onclick="sendPrescription('${e.target.result}')" style="margin-top:10px;width:100%;background:var(--primary);color:#fff;border:none;border-radius:12px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif">📤 ফার্মেসিতে পাঠান</button>`;
+  };
+  reader.readAsDataURL(file);
+}
+
+window.sendPrescription = async function(imageData) {
+  if(!currentUser) { openLogin(); return; }
+  try {
+    await addDoc(collection(db,'prescriptions'), {
+      userId: currentUser.uid,
+      userName: currentUser.displayName || '',
+      imageData: imageData.substring(0,100)+'...', // store reference only
+      status: 'pending',
+      createdAt: serverTimestamp()
+    });
+    alert('✅ প্রেসক্রিপশন পাঠানো হয়েছে! ফার্মেসি শীঘ্রই যোগাযোগ করবে।');
+    document.getElementById('prescription-preview').innerHTML = '';
+  } catch(e) { alert('সমস্যা হয়েছে'); }
+}
+
+// ── REVIEW SYSTEM ──
+window.showReviewModal = function(pharmacyId, orderId) {
+  const modal = document.createElement('div');
+  modal.id = 'review-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:600;display:flex;align-items:flex-end;justify-content:center';
+  let selectedRating = 5;
+  modal.innerHTML = `<div style="background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:420px;padding:24px 20px 32px">
+    <div style="font-size:18px;font-weight:700;color:var(--fg);margin-bottom:6px">রিভিউ দিন</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:16px">এই ডেলিভারি কেমন ছিল?</div>
+    <div style="display:flex;justify-content:center;gap:8px;margin-bottom:16px" id="star-row">
+      ${[1,2,3,4,5].map(i=>`<span onclick="setRating(${i})" style="font-size:32px;cursor:pointer" data-star="${i}">⭐</span>`).join('')}
+    </div>
+    <textarea id="review-text" style="width:100%;border:1.5px solid var(--border);border-radius:12px;padding:12px;font-size:13px;font-family:'Hind Siliguri',sans-serif;outline:none;resize:none;height:80px" placeholder="আপনার অভিজ্ঞতা লিখুন..."></textarea>
+    <button onclick="submitReview('${pharmacyId}','${orderId}')" style="margin-top:12px;width:100%;background:var(--primary);color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif">✅ Submit করুন</button>
+    <button onclick="document.getElementById('review-modal').remove()" style="margin-top:8px;width:100%;background:var(--bg2);color:var(--text2);border:none;border-radius:12px;padding:12px;font-size:13px;cursor:pointer;font-family:'Hind Siliguri',sans-serif">পরে করব</button>
+  </div>`;
+  document.body.appendChild(modal);
+}
+
+window.setRating = function(n) {
+  window.__selectedRating = n;
+  document.querySelectorAll('[data-star]').forEach(s => {
+    s.textContent = parseInt(s.dataset.star) <= n ? '⭐' : '☆';
+  });
+}
+window.__selectedRating = 5;
+
+window.submitReview = async function(pharmacyId, orderId) {
+  const text = document.getElementById('review-text')?.value?.trim();
+  const rating = window.__selectedRating || 5;
+  try {
+    await addDoc(collection(db,'reviews'), {
+      userId: currentUser.uid,
+      userName: currentUser.displayName || 'ব্যবহারকারী',
+      pharmacyId, orderId, rating, text,
+      createdAt: serverTimestamp()
+    });
+    document.getElementById('review-modal')?.remove();
+    alert('✅ রিভিউ দেওয়ার জন্য ধন্যবাদ!');
+  } catch(e) { alert('সমস্যা: '+e.message); }
+}
+
+// Show review prompt after delivery
+function checkAndShowReview(order) {
+  if(order.status === 'delivered' && !order.reviewed) {
+    setTimeout(() => {
+      showReviewModal(order.pharmacyId, order.id);
+    }, 2000);
+  }
+}
+
+// ── SHARE APP ──
+window.shareApp = function() {
+  if(navigator.share) {
+    navigator.share({
+      title: 'Sondhan Pharmacy',
+      text: '৩০ মিনিটে ওষুধ দরজায়! Sondhan Pharmacy ব্যবহার করুন।',
+      url: 'https://sondhan-pharmacy.vercel.app'
+    });
+  } else {
+    navigator.clipboard.writeText('https://sondhan-pharmacy.vercel.app');
+    alert('লিংক copy হয়েছে!');
+  }
+}
+
+// ── LOAD PROFILE STATS ──
+async function loadProfileStats() {
+  if(!currentUser) return;
+  try {
+    const snap = await getDocs(query(
+      collection(db,'orders'),
+      where('userId','==',currentUser.uid)
+    ));
+    const orders = snap.docs.map(d=>d.data());
+    const total = orders.length;
+    const spent = orders.filter(o=>o.status==='delivered').reduce((s,o)=>s+(o.total||0),0);
+    document.getElementById('stat-orders').textContent = total;
+    document.getElementById('stat-spent').textContent = '৳'+spent;
+    loadSavedAddresses();
+  } catch(e) {}
+}
+
+window.loadOrders = function() {
+  if(!window.__currentUser) return;
+  currentUser = window.__currentUser;
   const list = document.getElementById('orders-list');
   list.innerHTML = '<div class="empty-state"><div>⏳</div><div>লোড হচ্ছে...</div></div>';
   const q = query(
@@ -1068,16 +1391,23 @@ window.viewOrder = function(orderId) {
 // ── AUTH ──
 onAuthStateChanged(auth, async (user) => {
   currentUser = user;
+  window.__currentUser = user; // expose to global scope
   if(user) {
     document.getElementById('display-name').textContent = user.displayName || 'আপনি';
     document.getElementById('profile-name').textContent = user.displayName || 'আপনি';
     document.getElementById('profile-phone').textContent = user.phoneNumber || user.email || '—';
     if(user.photoURL) document.getElementById('profile-avatar').innerHTML=`<img src="${user.photoURL}" alt="">`;
     document.getElementById('notif-dot').style.display = 'block';
-    // Header button — show initial letter, not broken image
     const initial = (user.displayName||user.email||'U')[0].toUpperCase();
     document.getElementById('header-btn').innerHTML = `<span style="font-size:14px;font-weight:700;color:var(--primary);font-family:'Hind Siliguri',sans-serif">${initial}</span>`;
-    if(user.email === ADMIN_EMAIL) window.location.href = 'login.html';
+    if(user.email === ADMIN_EMAIL) { window.location.href = 'admin.html'; return; }
+    // Init FCM
+    loadProfileStats();
+    try {
+      const { initNotifications, onForegroundMessage } = await import('./notifications.js');
+      await initNotifications(user.uid);
+      onForegroundMessage((payload) => { console.log('Notification:', payload); });
+    } catch(e) { console.log('FCM skip:', e.message); }
   } else {
     document.getElementById('display-name').textContent = 'অতিথি';
     document.getElementById('notif-dot').style.display = 'none';
@@ -1092,9 +1422,15 @@ window.modalGoogleLogin = async function() {
     const result = await signInWithPopup(auth, googleProvider);
     const user = result.user;
     if(user.email === ADMIN_EMAIL) { window.location.href='login.html'; return; }
+    // onAuthStateChanged will handle currentUser update
     closeLogin();
     if(currentModalRole==='pharmacy') { showModalScreen('pharmacy-info'); return; }
-    if(pendingCallback) { pendingCallback(); pendingCallback=null; }
+    // Execute pending callback after short delay (let auth state update)
+    if(window.pendingCallback) {
+      const cb = window.pendingCallback;
+      window.pendingCallback = null;
+      setTimeout(() => cb(), 300);
+    }
   } catch(e) {
     btn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/></svg> Google দিয়ে লগইন';
     btn.disabled = false;
@@ -1112,6 +1448,43 @@ window.handleLogout = async function() {
 }
 
 // ── INIT ──
+// ── CANCEL ORDER ──
+window.__currentOrderId = null;
+
+window.cancelOrder = async function() {
+  if(!window.__currentOrderId) return;
+  if(!window.__currentUser) { openLogin(); return; }
+  if(!confirm('অর্ডার বাতিল করবেন?')) return;
+  currentUser = window.__currentUser;
+  try {
+    await updateDoc(doc(db,'orders',window.__currentOrderId), {
+      status: 'cancelled',
+      cancelledAt: serverTimestamp(),
+      cancelledBy: 'user'
+    });
+    document.getElementById('cancel-order-btn').style.display = 'none';
+    alert('অর্ডার বাতিল হয়েছে।');
+    goPage('orders');
+  } catch(e) { alert('সমস্যা: '+e.message); }
+}
+
+// Override listenToOrder to track orderId + show cancel btn
+const _origListenToOrder = listenToOrder;
+window.listenToOrder = function(orderId) {
+  window.__currentOrderId = orderId;
+  // Show cancel button only for cancellable statuses
+  if(window.__orderUnsubscribe2) window.__orderUnsubscribe2();
+  window.__orderUnsubscribe2 = onSnapshot(doc(db,'orders',orderId), (snap) => {
+    if(!snap.exists()) return;
+    const status = snap.data().status;
+    const cancelBtn = document.getElementById('cancel-order-btn');
+    if(cancelBtn) {
+      cancelBtn.style.display = ['confirmed','preparing'].includes(status) ? 'block' : 'none';
+    }
+  });
+  _origListenToOrder(orderId);
+}
+
 loadMedicines();
 loadPharmacies();
 
@@ -1142,17 +1515,26 @@ const pageMap={'home':'page-home','search':'page-search','medicine-detail':'page
 const navMap={'home':'nav-home','search':'nav-search','orders':'nav-orders','profile':'nav-profile'};
 
 window.goPage = function(name) {
+  // Protected pages — only cart, orders, profile need auth
+  const protected_ = ['cart','checkout','orders','profile'];
+  const user = window.__currentUser;
+  if(protected_.includes(name) && !user) {
+    window.pendingCallback = () => goPage(name);
+    openLogin();
+    return;
+  }
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const el=document.getElementById(pageMap[name]);
   if(el){el.classList.add('active');window.scrollTo(0,0);}
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   if(navMap[name]) document.getElementById(navMap[name]).classList.add('active');
   if(name==='orders') window.loadOrders?.();
+  if(name==='profile') window.loadProfileStats?.();
 }
 
 window.requireAuth = function(cb) {
-  if(window.currentUser){cb();return;}
-  window.pendingCallback=cb;
+  if(window.__currentUser) { cb(); return; }
+  window.pendingCallback = cb;
   openLogin();
 }
 
@@ -1219,6 +1601,48 @@ window.submitModalPharmacy=function(){
   const license=document.getElementById('modal-pharma-license').value;
   if(!name||!license){alert('ফার্মেসির নাম ও Trade License দিন');return;}
   showModalScreen('pending');
+}
+
+// PWA Install prompt
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Show install banner after 10s
+  setTimeout(() => {
+    if(deferredPrompt) showInstallBanner();
+  }, 10000);
+});
+
+function showInstallBanner() {
+  if(document.getElementById('install-banner')) return;
+  const banner = document.createElement('div');
+  banner.id = 'install-banner';
+  banner.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--fg);color:#fff;border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;max-width:380px;width:calc(100% - 32px);z-index:300;box-shadow:0 8px 24px rgba(0,0,0,0.3)';
+  banner.innerHTML = `
+    <div style="font-size:28px">💊</div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:700">App Install করুন</div>
+      <div style="font-size:11px;opacity:0.8;margin-top:2px">দ্রুত access এর জন্য</div>
+    </div>
+    <button onclick="installPWA()" style="background:var(--primary);color:#fff;border:none;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif">Install</button>
+    <button onclick="document.getElementById('install-banner').remove()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;opacity:0.7">✕</button>`;
+  document.body.appendChild(banner);
+}
+
+window.installPWA = async function() {
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  document.getElementById('install-banner')?.remove();
+}
+
+// Register service worker
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    .then(reg => console.log('SW registered'))
+    .catch(err => console.log('SW error:', err));
 }
 
 // Greeting

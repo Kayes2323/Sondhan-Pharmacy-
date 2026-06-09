@@ -331,13 +331,10 @@ async function googleLogin() {
 
 // Admin navigation choice
 function adminGo(dest) {
-  if (dest === 'dashboard') {
-    localStorage.setItem('sondhan_role', 'admin');
-    window.location.href = 'dashboard.html';
-  } else {
-    localStorage.setItem('sondhan_role', 'admin');
-    window.location.href = 'index.html';
-  }
+  localStorage.setItem('sondhan_role', 'admin');
+  if(dest === 'dashboard') window.location.href = 'dashboard.html';
+  else if(dest === 'admin-panel') window.location.href = 'admin.html';
+  else window.location.href = 'index.html';
 }
 
 function adminLogout() {
